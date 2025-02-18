@@ -23,10 +23,7 @@ const LanguagesScreen = () => {
       const handleEdit = () => {
         setIsEditing(!isEditing);
       }
-      const fields = [
-        { name: "languages", label: "Language", type: "text" },
-        { name: "experience", label: "Months of Experience", type: "number" },
-      ];
+      
 
   return (
     <div className="container mx-auto ">
