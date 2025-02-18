@@ -13,10 +13,7 @@ function Home() {
     <LanguagesScreen/>,
     <FrameworkScreen/>,
     <DatabaseScreen/>,
-    <div>Step 2</div>,
-    <div>Step 3</div>,
-    <div>Step 3</div>,
-    <div>Step 3</div>,
+
   ]);
 
   return (
