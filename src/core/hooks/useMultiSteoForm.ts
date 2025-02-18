@@ -2,26 +2,27 @@ import { ReactElement, useState } from "react";
 
 export function useMultiStepForm(steps: ReactElement[]) {
     const [currentStep, setCurrentStep] = useState(0);
+    const [completedSteps, setCompletedSteps] = useState<boolean[]>(new Array(steps.length).fill(false));
     const [formData, setFormData] = useState({});
-    
+
     const next = () => {
-        setCurrentStep( i => {
-            if (i >= steps.length - 1) return i;
-            return i + 1;
+        setCompletedSteps(prev => {
+            const updated = [...prev];
+            updated[currentStep] = true; // Mark current step as completed
+            return updated;
         });
+
+        setCurrentStep(i => (i >= steps.length - 1 ? i : i + 1));
     };
-    
+
     const previous = () => {
-        setCurrentStep( i => {
-            if (i <= 0 ) return i;
-            return i - 1;
-        });
+        setCurrentStep(i => (i <= 0 ? i : i - 1));
     };
-    
+
     const goTo = (index: number) => {
         setCurrentStep(index);
     };
-    
+
     return {
         currentStep,
         step: steps[currentStep],
@@ -34,6 +35,6 @@ export function useMultiStepForm(steps: ReactElement[]) {
         totalSteps: steps.length,
         isLastStep: currentStep === steps.length - 1,
         isFirstStep: currentStep === 0,
-        currentStepElement: steps[currentStep],
+        completedSteps, // Track completed steps
     };
 }
