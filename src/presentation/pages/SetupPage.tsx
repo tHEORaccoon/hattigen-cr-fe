@@ -6,6 +6,8 @@ import LanguagesScreen from "../components/LanguagesScreen";
 import FrameworkScreen from "../components/FrameworkScreen";
 import DatabaseScreen from "../components/DatabaseScreen";
 import ProfileInfo from "../components/ProfileInfo";
+import CloudPlatformScreen from "../components/CloudPlatformScreen";
+import AIScreen from "../components/AIExperienceScreen";
 
 function Home() {
   const { step, next, previous, isFirstStep, isLastStep, currentStep, goTo, completedSteps, totalSteps } = useMultiStepForm([
@@ -13,6 +15,8 @@ function Home() {
     <LanguagesScreen/>,
     <FrameworkScreen/>,
     <DatabaseScreen/>,
+    <CloudPlatformScreen/>,
+    <AIScreen/>
 
   ]);
 

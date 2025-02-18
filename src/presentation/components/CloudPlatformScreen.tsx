@@ -3,14 +3,14 @@ import Header from "./Header"
 import CheckButton from "../../assets/check.svg"
 import Rectagle from "../../assets/Rectangle.png"
 
-interface LanguagesScreenProps {
-    languages: string;
+interface CloudPlatformScreenProps {
+    platform: string;
     experience: number;
 }
 
-const LanguagesScreen = () => {
-      const [formData, setFormData] = useState<LanguagesScreenProps>({
-        languages: "",
+const CloudPlatformScreen = () => {
+      const [formData, setFormData] = useState<CloudPlatformScreenProps>({
+        platform: "",
         experience: 0,
       });
     
@@ -23,25 +23,21 @@ const LanguagesScreen = () => {
       const handleEdit = () => {
         setIsEditing(!isEditing);
       }
-      const fields = [
-        { name: "languages", label: "Language", type: "text" },
-        { name: "experience", label: "Months of Experience", type: "number" },
-      ];
 
   return (
     <div className="container mx-auto ">
-      <Header title={"Let’s add your languages"} description={"Include your full name and at least one way for employers to reach you."} clicked={isEditing} onclick={handleEdit}/>
+      <Header title={"Let’s add your Cloud Platforms"} description={"Include frameworks you are experienced in and the number if months you have experience in them."} clicked={isEditing} onclick={handleEdit}/>
 
         <div className="flex flex-col md:flex-row gap-[121px] mt-20">
             <div className="flex gap-20 w-1/2 justify-center">
                 {/* Form Section */}
                 <div className="flex flex-col w-[500px]">
-                    <label htmlFor="languages" className="mb-2">Language</label>
+                    <label htmlFor="platform" className="mb-2">Cloud Platform</label>
                     <input
                         type="text"
-                        name="languages"
-                        placeholder="Find a language"
-                        value={formData.languages}
+                        name="platform"
+                        placeholder="Find a cloud platform"
+                        value={formData.platform}
                         onChange={handleChange}
                         className="w-full p-2 border rounded mb-3"
                     />
@@ -68,7 +64,7 @@ const LanguagesScreen = () => {
                     <img src={Rectagle} alt="" className="w-full" />
                 </div>
                 <div className="w-full h-20 bg-white flex items-center justify-center">
-                    <p>{formData.languages}</p>
+                    <p>{formData.platform}</p>
                 </div>
                 <div className="w-full h-20 bg-white flex items-center justify-center">
                     <p>{formData.experience}</p>
@@ -79,4 +75,4 @@ const LanguagesScreen = () => {
   )
 }
 
-export default LanguagesScreen
+export default CloudPlatformScreen
