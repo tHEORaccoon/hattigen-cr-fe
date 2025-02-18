@@ -122,7 +122,7 @@
 
 
 import React from "react";
-import { Edit,Trash2, Download, LogOut, ArrowDownToLine } from "lucide-react";
+import { Edit,Trash2,  ArrowDownToLine } from "lucide-react";
 import LogoImage from "../../assets/logo.png"; 
 import profileImg from "../../assets/profile-img.png"
 
