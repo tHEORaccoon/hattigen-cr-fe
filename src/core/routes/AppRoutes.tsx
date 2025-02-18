@@ -13,6 +13,7 @@ const AppRoutes = () => {
       {/* Protected Routes */}
       <Route path="/setup-page" element={<ProtectedRoute><Home /></ProtectedRoute>} />
 
+  
 
       {/* Redirect unknown routes */}
       <Route path="*" element={<Navigate to="/login" />} />
