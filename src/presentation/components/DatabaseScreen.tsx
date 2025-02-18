@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Header from "./Header"
 import CheckButton from "../../assets/check.svg"
-import Rectagle from "../../assets/rectangle.png"
+import Rectagle from "../../assets/Rectangle.png"
 
 interface DatabaseScreenProps {
     database: string;
