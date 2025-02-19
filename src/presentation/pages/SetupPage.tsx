@@ -11,23 +11,39 @@ import AIScreen from "../components/AIExperienceScreen";
 
 function Home() {
   const { step, next, previous, isFirstStep, isLastStep, currentStep, goTo, completedSteps, totalSteps } = useMultiStepForm([
-    <ProfileInfo/>,
-    <LanguagesScreen/>,
-    <FrameworkScreen/>,
-    <DatabaseScreen/>,
-    <CloudPlatformScreen/>,
-    <AIScreen/>
-
+    <ProfileInfo />,
+    <LanguagesScreen />,
+    <FrameworkScreen />,
+    <DatabaseScreen />,
+    <CloudPlatformScreen />,
+    <AIScreen />,
   ]);
 
   return (
-    <div className="flex flex-row w-full h-screen">
-      {/* Sidebar */}
-      <Sidebar totalSteps={totalSteps} currentStep={currentStep} completedSteps={completedSteps} goTo={goTo} />
+    <div className="flex flex-col md:flex-row w-full h-screen">
+      {/* Sidebar - Hidden on small screens */}
+      <div className="hidden md:flex">
+        <Sidebar totalSteps={totalSteps} currentStep={currentStep} completedSteps={completedSteps} goTo={goTo} />
+      </div>
+
+      {/* Mobile Step Indicator */}
+      <div className="flex md:hidden w-full justify-center py-4 bg-gray-100 shadow-sm">
+        {Array.from({ length: totalSteps }, (_, index) => (
+          <button
+            key={index}
+            className={`w-8 h-8 mx-1 text-sm font-bold rounded-full border-2 ${
+              completedSteps[index] ? "bg-green-500 text-white border-green-500" : "border-gray-400 text-gray-600"
+            } ${index === currentStep ? "bg-green-700 text-white border-green-700" : ""}`}
+            onClick={() => goTo(index)}
+          >
+            {index + 1}
+          </button>
+        ))}
+      </div>
 
       {/* Main Content */}
       <div className="flex flex-col items-center justify-center w-full mx-[46px]">
-        <form className="flex flex-col w-full mt-40">
+        <form className="flex flex-col w-full mt-10 md:mt-40">
           <div>{step}</div>
           <Buttons next={next} previous={previous} isFirstStep={isFirstStep} isLastStep={isLastStep} />
         </form>
@@ -44,3 +60,4 @@ function Home() {
 }
 
 export default Home;
+
