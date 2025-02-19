@@ -5,6 +5,7 @@ import Rectagle from "../../assets/Rectangle.png"
 import Delete from "../../assets/delete.svg";
 
 
+
 interface DatabaseScreenProps {
     database: string;
     experience: number;
