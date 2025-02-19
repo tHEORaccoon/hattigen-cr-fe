@@ -15,7 +15,7 @@ const initialState: AuthState = {
 }
 
 export const authSlice = createSlice({
-  name: 'auth',
+  name: 'form',
   initialState,
   reducers: {
     login: (_state, _action: PayloadAction<User>) => {

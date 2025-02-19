@@ -1,8 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
 import authReducer from '../slice/authSlice'
+import cvFormReducer from '../slice/cvFormSlice'
 
 const rootReducer = {
-    auth:authReducer
+    auth:authReducer,
+    cvForm:cvFormReducer,
 }
 
 export const store = configureStore({

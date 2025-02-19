@@ -2,8 +2,13 @@ import { useState } from "react";
 import Header from "./Header";
 import Rectagle from "../../assets/Rectangle.png"
 import NoImage from "../../assets/no-image.png"
+import { updateProfileInfoData } from "../../core/redux/slice/cvFormSlice";
+import {useSelector, useDispatch} from "react-redux";
+
 
 function ProfileInfo() {
+
+    
     const [isEdit, setIsEdited] = useState(false);
     const [image, setImage] = useState<string | null>(null);
     const [userData, setUserData] = useState({
@@ -12,10 +17,17 @@ function ProfileInfo() {
         email: "",
         city: "",
         country: "",
-        postalCode: "",
+        postalCode:"",
         phone: "",
     });
     const [isTyping, setIsTyping] = useState<{ [key: string]: boolean }>({});
+
+    const dispatch = useDispatch()
+    const state = useSelector((h)=>(
+        console.log(h,"dd")
+    ))
+
+    console.log(state)
 
     const handleInputFocus = (name: string) => {
         setIsTyping((prev) => ({ ...prev, [name]: true }));
@@ -38,10 +50,14 @@ function ProfileInfo() {
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        setUserData((prevData) => ({
-            ...prevData,
+        const updatedUserData = {
+            ...userData,
             [name]: value,
-        }));
+        };
+    
+        setUserData(updatedUserData);
+        dispatch(updateProfileInfoData(updatedUserData));
+
     };
 
     return (
