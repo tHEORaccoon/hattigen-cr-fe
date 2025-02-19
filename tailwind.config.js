@@ -16,10 +16,10 @@ export default {
         'secondary': '#0A0E0F',
         'secondary-light': '#33383C',
         'secondary-dark': '#050607',
-        'gray': '#5C5C5C',
+        'cv-gray': '#5C5C5C',
         'gray-light': '#8C8C8C',
         'gray-dark': '#3A3A3A',
-        'white': '#FEFEFE',
+        'cv-white': '#FEFEFE',
         'off-white': '#F5F5F5',
         'cv-blue': "#005AE0",
         'error': "#FF1A1A"
