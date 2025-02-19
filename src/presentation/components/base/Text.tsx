@@ -16,7 +16,7 @@ const textVariants = cva("", {
       "heading": "text-[32px] font-semibold",
       "sub-heading": "text-[24px] font-semibold",
       "body": "text-[15px] font-regular",
-      "footnote": "font-light text-[11px] text-gray",
+      "footnote": "font-light text-[11px]",
       "label-text": "font-regular text-[13px]"
     },
   },
