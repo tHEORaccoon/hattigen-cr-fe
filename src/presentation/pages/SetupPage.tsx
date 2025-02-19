@@ -42,7 +42,7 @@ function Home() {
       </div>
 
       {/* Main Content */}
-      <div className="flex flex-col items-center justify-center w-full mx-[46px]">
+      <div className="flex flex-col items-center justify-center w-full container mx-auto px-4">
         <form className="flex flex-col w-full mt-10 md:mt-40">
           <div>{step}</div>
           <Buttons next={next} previous={previous} isFirstStep={isFirstStep} isLastStep={isLastStep} />

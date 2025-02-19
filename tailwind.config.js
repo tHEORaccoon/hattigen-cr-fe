@@ -21,7 +21,7 @@ export default {
         'gray-dark': '#3A3A3A',
         'white': '#FEFEFE',
         'off-white': '#F5F5F5',
-        'blue': "#005AE0",
+        'cv-blue': "#005AE0",
         'error': "#FF1A1A"
       },
     },
