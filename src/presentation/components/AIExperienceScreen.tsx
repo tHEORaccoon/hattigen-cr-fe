@@ -4,7 +4,7 @@ import CheckButton from "../../assets/check.svg"
 import Rectagle from "../../assets/Rectangle.png"
 import Delete from "../../assets/delete.svg";
 import { updateAIData } from "../../core/redux/slice/cvFormSlice";
-import {useSelector, useDispatch} from "react-redux";
+import {useDispatch} from "react-redux";
 
 interface AIScreenScreenProps {
     aiExp: string;
