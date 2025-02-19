@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useMultiStepForm } from "../../core/hooks/useMultiSteoForm";
+import { useMultiStepForm } from "../../core/hooks/useMultiStepForm";
 import Buttons from "../components/Buttons";
 import Sidebar from "../components/SideBar";
 import LanguagesScreen from "../components/LanguagesScreen";

@@ -3,6 +3,8 @@ import Header from "./Header"
 import CheckButton from "../../assets/check.svg"
 import Rectagle from "../../assets/Rectangle.png"
 import Delete from "../../assets/delete.svg";
+import { updateFrameworkData } from "../../core/redux/slice/cvFormSlice";
+import { useDispatch } from "react-redux";
 
 interface FrameworkScreenProps {
     framework: string;
@@ -17,6 +19,8 @@ const FrameworkScreen = () => {
     
         const [isEditing, setIsEditing] = useState(false);
         const [frameworks, setFrameworks] = useState<FrameworkScreenProps[]>([]);
+         
+         const dispatch = useDispatch()
 
         const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
             const { name, value } = e.target;
@@ -24,7 +28,7 @@ const FrameworkScreen = () => {
             setFormData((prev) => ({
               ...prev,
               [name]: name === "experience" 
-                ? (value === "" ? "" : Math.max(1, Number(value)))  // Ensure min 1
+                ? (value === "" ? "" : Math.max(1, Number(value)))  
                 : value,
             }));
           };
@@ -32,13 +36,15 @@ const FrameworkScreen = () => {
           
 
         const handleEdit = () => {
-            setIsEditing((prev) => !prev); // Toggle edit mode
+            setIsEditing((prev) => !prev); 
         };
 
         const handleAddFramework = () => {
             if (formData.framework.trim() && formData.experience >= 1) {
+              const updateFramework  = [...frameworks, formData];
             setFrameworks([...frameworks, formData]);
-            setFormData({ framework: "", experience: 0 }); // Reset input fields
+            setFormData({ framework: "", experience: 0 });
+            dispatch(updateFrameworkData(updateFramework)) 
             }
         };
 

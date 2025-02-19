@@ -3,6 +3,8 @@ import Header from "./Header"
 import CheckButton from "../../assets/check.svg"
 import Rectagle from "../../assets/Rectangle.png"
 import Delete from "../../assets/delete.svg";
+import { useDispatch } from "react-redux";
+import { updateCloudPlatformData } from "../../core/redux/slice/cvFormSlice";
 
 interface CloudPlatformScreenProps {
     platform: string;
@@ -17,6 +19,8 @@ const CloudPlatformScreen = () => {
     
         const [isEditing, setIsEditing] = useState(false);
         const [cloudPlatforms, setCloudPlatforms] = useState<CloudPlatformScreenProps[]>([]);
+
+        const dispatch = useDispatch()
 
         const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
             const { name, value } = e.target;
@@ -34,8 +38,10 @@ const CloudPlatformScreen = () => {
 
         const handleAddCloud = () => {
             if (formData.platform.trim() && formData.experience >= 1) {
+              let updateCloudPlatform = [...cloudPlatforms, formData] 
             setCloudPlatforms([...cloudPlatforms, formData]);
-            setFormData({ platform: "", experience: 0 }); // Reset input fields
+            setFormData({ platform: "", experience: 0 });
+            dispatch(updateCloudPlatformData(updateCloudPlatform))
             }
         };
 

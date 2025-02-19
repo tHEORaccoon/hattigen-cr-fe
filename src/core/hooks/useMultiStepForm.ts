@@ -5,10 +5,14 @@ export function useMultiStepForm(steps: ReactElement[]) {
     const [completedSteps, setCompletedSteps] = useState<boolean[]>(new Array(steps.length).fill(false));
     const [formData, setFormData] = useState({});
 
+
+
+
+
     const next = () => {
         setCompletedSteps(prev => {
             const updated = [...prev];
-            updated[currentStep] = true; // Mark current step as completed
+            updated[currentStep] = true; 
             return updated;
         });
 
@@ -35,6 +39,6 @@ export function useMultiStepForm(steps: ReactElement[]) {
         totalSteps: steps.length,
         isLastStep: currentStep === steps.length - 1,
         isFirstStep: currentStep === 0,
-        completedSteps, // Track completed steps
+        completedSteps, 
     };
 }
