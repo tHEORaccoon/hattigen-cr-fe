@@ -3,6 +3,7 @@ import Header from "./Header"
 import CheckButton from "../../assets/check.svg"
 import Rectagle from "../../assets/Rectangle.png"
 import Delete from "../../assets/delete.svg";
+import { data } from "react-router-dom";
 
 
 interface DatabaseScreenProps {
