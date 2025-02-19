@@ -12,25 +12,27 @@ interface Language {
 const LanguagesScreen = () => {
   const [formData, setFormData] = useState<Language>({
     languages: "",
-    experience: 0,
+    experience: 1,
   });
 
   const [isEditing, setIsEditing] = useState(false);
   const [languages, setLanguages] = useState<Language[]>([]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.name === "experience" ? Number(e.target.value) : e.target.value,
-    });
+    const { name, value } = e.target;
+  
+    setFormData((prev) => ({
+      ...prev,
+      [name]: name === "experience" ? (value === "" ? "" : Number(value)) : value,
+    }));
   };
-
+  
   const handleEdit = () => {
     setIsEditing((prev) => !prev); // Toggle edit mode
   };
 
   const handleAddLanguage = () => {
-    if (formData.languages.trim() && formData.experience >= 0) {
+    if (formData.languages.trim() && formData.experience >= 1) {
       setLanguages([...languages, formData]);
       setFormData({ languages: "", experience: 0 }); // Reset input fields
     }
@@ -39,6 +41,9 @@ const LanguagesScreen = () => {
   const handleDeleteLanguage = (index: number) => {
     setLanguages(languages.filter((_, i) => i !== index));
   };
+
+  console.log("Languages",languages);
+  
 
   return (
     <div className="container mx-auto">
