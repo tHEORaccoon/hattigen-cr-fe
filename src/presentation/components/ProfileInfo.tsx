@@ -53,6 +53,7 @@ function ProfileInfo() {
                 onclick={() => {
                     setIsEdited(!isEdit);
                 }}
+                hideEditButton={true}
             />
 
             <div className="grid sm:grid-cols-2 gap-[121px] mt-20">
@@ -230,7 +231,7 @@ function ProfileInfo() {
                 </div>
 
                       {/* Live Preview Section */}
-                <div className="w-full max-w-2xl  bg-white shadow-lg pt-2 px-2 border border-black ">
+                      <div className="hidden md:block w-full max-w-2xl h-[400px] bg-white shadow-lg pt-2 px-2 border border-black">
                     <div className="w-full">
                         <img src={Rectagle} alt="" className="w-full" />
                     </div>

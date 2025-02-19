@@ -54,10 +54,10 @@ const LanguagesScreen = () => {
         onclick={handleEdit} // Toggle edit mode
       />
 
-      <div className="flex flex-col md:flex-row gap-[121px] mt-20">
-        <div className="flex flex-col w-1/2">
-          <div className="flex gap-20 justify-between">
-            <div className="flex flex-col w-[500px]">
+      <div className="flex flex-col md:flex-row md:gap-[121px] mt-20">
+        <div className="flex flex-col md:w-1/2">
+          <div className="grid grid-rows-3 md:flex md:gap-20 md:justify-between">
+            <div className="flex flex-col w-full md:w-[500px]">
               <label htmlFor="languages" className="mb-2">Language</label>
               <input
                 type="text"
@@ -68,7 +68,7 @@ const LanguagesScreen = () => {
                 className="w-full p-2 border rounded mb-3"
               />
             </div>
-            <div className="flex flex-col w-[500px]">
+            <div className="flex flex-col md:w-[500px]">
               <label htmlFor="experience" className="mb-2">Months of Experience</label>
               <input
                 type="number"
@@ -79,15 +79,20 @@ const LanguagesScreen = () => {
                 className="w-full p-2 border rounded mb-3"
               />
             </div>
-            <div className="w-16 h-10 shadow-2xl rounded-full flex items-center justify-center bg-green-600 relative top-8">
+            <div className="md:w-16 h-10 shadow-2xl rounded-full flex items-center justify-center bg-green-600 relative top-8">
               <button
                 type="button"
                 onClick={handleAddLanguage}
-                className="w-10 h-10 flex items-center justify-center bg-green-600 rounded-full border shadow-slate-700"
+                className="w-10 h-10 flex items-center justify-center bg-green-600 rounded-full md:border shadow-slate-700"
               >
-                <img src={CheckButton} alt="" className="w-4 h-4" />
+                {/* Image (Hidden on Mobile) */}
+                <img src={CheckButton} alt="" className="hidden md:block w-4 h-4" />
+
+                {/* Text "Add" (Visible Only on Mobile) */}
+                <span className="block md:hidden text-black font-semibold text-lg">Add</span>
               </button>
             </div>
+
           </div>
 
           {/* Display Added Languages as Chips */}
@@ -117,7 +122,7 @@ const LanguagesScreen = () => {
         </div>
 
         {/* Live Preview Section */}
-        <div className="w-full max-w-2xl h-[400px] bg-white shadow-lg pt-2 px-2 border border-black">
+        <div className="hidden md:block w-full max-w-2xl h-[400px] bg-white shadow-lg pt-2 px-2 border border-black">
           <div className="w-full">
             <img src={Rectagle} alt="" className="w-full" />
           </div>

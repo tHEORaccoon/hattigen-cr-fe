@@ -9,7 +9,7 @@ interface ButtonsProps {
 
 const Buttons = ({next, previous, isFirstStep, isLastStep}: ButtonsProps) => {
   return (
-    <div className="flex justify-between w-full mt-20">
+    <div className="flex gap-4 md:justify-between w-full mt-20">
     {/* Back Button - Takes Space But Invisible When isFirstStep */}
     <button
       className={`flex justify-center items-center border border-black font-semibold w-40 h-10 rounded-full ${
