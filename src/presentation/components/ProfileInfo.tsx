@@ -58,7 +58,7 @@ function ProfileInfo() {
 
             <div className="grid sm:grid-cols-2 gap-[121px] mt-20">
                 <div className="">
-                    <div className="w-1/2 flex flex-col md:flex-row md:mb-6 px-4 py-2">
+                    <div className=" flex md:items-center mb-4 md:mb-6 px-4 py-2 ">
                         <div className="border p-4 flex items-center justify-center w-[100px] h-[100px]" style={{ backgroundImage: image ? `url(${image})` : 'none' }}>
                             {!image && 
                                 <span className="text-gray-500 text-xs">

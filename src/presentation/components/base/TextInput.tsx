@@ -159,7 +159,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                     alt="Button Icon"
                     className="w-5 md:w-7 h-5 md:h-7"
                 /></div>}
-            <div className={`absolute bottom-0 w-full h-1 ${isFocused && "bg-blue"} ${hasError && "bg-error"}`}></div>
+            <div className={`absolute bottom-0 w-full h-1 ${isFocused && "bg-cv-blue"} ${hasError && "bg-error"}`}></div>
           {!iconRightUrl && hasError ? <div className="pr-2"><img
                     src={AlertImage}
                     alt="Button Icon"
