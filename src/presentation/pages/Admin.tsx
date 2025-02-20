@@ -1,6 +1,6 @@
 
 
-import React, { useState, useEffect } from "react";
+import React, { useRef,useState, useEffect } from "react";
 import { SlidersHorizontal, Search, ChevronDown,X, CheckCircle } from "lucide-react";
 import { Sheet, SheetTrigger, SheetContent, SheetClose} from "../../components/ui/sheet";
 import { Button } from "../../components/ui/button";
@@ -8,34 +8,140 @@ import { Button } from "../../components/ui/button";
 
 import LogoImage from "../../assets/logo.png";
 import adminProfile from "../../assets/admin-profile-img.png";
+import img1 from "../../assets/img1.jpg";
+import img2 from "../../assets/img2.jpg";
+import CheckCircleSuccess from "../../assets/success.png";
 
 const developers = [
   {
     name: "Ingrid Blue Appiah",
-    role: "Fullstack Engineer",
+    role: "Frontend Engineer",
     email: "ingrid.appiah@coderaccoon.com",
-    image: "https://via.placeholder.com/100",
+    image: img1,
   },
   {
     name: "Ingrid Blue Appiah",
-    role: "Fullstack Engineer",
+    role: "UI designer",
     email: "ingrid.appiah@coderaccoon.com",
-    image: "https://via.placeholder.com/100",
+    image: img2,
   },
   {
     name: "Ingrid Blue Appiah",
-    role: "Fullstack Engineer",
+    role: "Backend Engineer",
     email: "ingrid.appiah@coderaccoon.com",
-    image: "https://via.placeholder.com/100",
+    image: img1,
   },
   {
     name: "Ingrid Blue Appiah",
-    role: "Fullstack Engineer",
+    role: "DevOps Engineer",
     email: "ingrid.appiah@coderaccoon.com",
-    image: "https://via.placeholder.com/100",
+    image: img2,
   },
+  {
+    name: "Ingrid Blue Appiah",
+    role: "DevOps Engineer",
+    email: "ingrid.appiah@coderaccoon.com",
+    image: img2,
+  },
+  {
+    name: "Ingrid Blue Appiah",
+    role: "DevOps Engineer",
+    email: "ingrid.appiah@coderaccoon.com",
+    image: img2,
+  },
+  {
+    name: "Ingrid Blue Appiah",
+    role: "DevOps Engineer",
+    email: "ingrid.appiah@coderaccoon.com",
+    image: img2,
+  },
+  {
+    name: "Ingrid Blue Appiah",
+    role: "DevOps Engineer",
+    email: "ingrid.appiah@coderaccoon.com",
+    image: img2,
+  },
+  
+  {
+    name: "Ingrid Blue Appiah",
+    role: "DevOps Engineer",
+    email: "ingrid.appiah@coderaccoon.com",
+    image: img2,
+  },
+  {
+    name: "Ingrid Blue Appiah",
+    role: "DevOps Engineer",
+    email: "ingrid.appiah@coderaccoon.com",
+    image: img2,
+  },
+  {
+    name: "Ingrid Blue Appiah",
+    role: "DevOps Engineer",
+    email: "ingrid.appiah@coderaccoon.com",
+    image: img2,
+  },
+  {
+    name: "Ingrid Blue Appiah",
+    role: "DevOps Engineer",
+    email: "ingrid.appiah@coderaccoon.com",
+    image: img2,
+  },
+  {
+    name: "Ingrid Blue Appiah",
+    role: "DevOps Engineer",
+    email: "ingrid.appiah@coderaccoon.com",
+    image: img2,
+  },
+  {
+    name: "Ingrid Blue Appiah",
+    role: "DevOps Engineer",
+    email: "ingrid.appiah@coderaccoon.com",
+    image: img2,
+  },
+  {
+    name: "Ingrid Blue Appiah",
+    role: "DevOps Engineer",
+    email: "ingrid.appiah@coderaccoon.com",
+    image: img2,
+  },
+  {
+    name: "Ingrid Blue Appiah",
+    role: "DevOps Engineer",
+    email: "ingrid.appiah@coderaccoon.com",
+    image: img2,
+  },
+  {
+    name: "Ingrid Blue Appiah",
+    role: "DevOps Engineer",
+    email: "ingrid.appiah@coderaccoon.com",
+    image: img2,
+  },
+  {
+    name: "Ingrid Blue Appiah",
+    role: "DevOps Engineer",
+    email: "ingrid.appiah@coderaccoon.com",
+    image: img2,
+  },
+  {
+    name: "Ingrid Blue Appiah",
+    role: "DevOps Engineer",
+    email: "ingrid.appiah@coderaccoon.com",
+    image: img2,
+  },
+  {
+    name: "Ingrid Blue Appiah",
+    role: "DevOps Engineer",
+    email: "ingrid.appiah@coderaccoon.com",
+    image: img2,
+  },
+  {
+    name: "Ingrid Blue Appiah",
+    role: "Frontend Engineer",
+    email: "ingrid.appiah@coderaccoon.com",
+    image: img1,
+  },
+ 
 ];
-
 
 export interface Developer {
   name: string;
@@ -50,7 +156,7 @@ const DeveloperCard: React.FC<{ developer: Developer }>  = ({ developer }) => {
       <img
         src={developer.image}
         alt={developer.name}
-        className="w-24 h-24 rounded-full mx-auto"
+        className="w-32 h-32 rounded-full mx-auto object-cover"
       />
       <h3 className="mt-4 font-semibold text-lg">{developer.name}</h3>
       <p className="text-green-600">{developer.role}</p>
@@ -62,13 +168,20 @@ const DeveloperCard: React.FC<{ developer: Developer }>  = ({ developer }) => {
 const DeveloperDirectory = () => {
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({});
   const [isDropdownOpen, setDropdownOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const [filteredDevelopers, setFilteredDevelopers] = useState<Developer[]>([]);
+  const [visibleDevelopers, setVisibleDevelopers] = useState<Developer[]>([]);
+  const [page, setPage] = useState(1);
+  const ITEMS_PER_PAGE = 6;
+  const observer = useRef<IntersectionObserver | null>(null);
+  const lastElementRef = useRef<HTMLDivElement | null>(null);
 
   const toggleSection = (section: string) => {
     setOpenSections((prev) => ({ ...prev, [section]: !prev[section] }));
   };
 
-
-
+  //dropdown menu toogle function
   const toggleDropdown = () => {
     setDropdownOpen(!isDropdownOpen);
   };
@@ -77,17 +190,59 @@ const DeveloperDirectory = () => {
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (!event.target || !(event.target instanceof HTMLElement)) return;
-      
       if (!event.target.closest(".profile-menu")) {
         setDropdownOpen(false);
       }
     };
-  
     document.addEventListener("click", handleClickOutside);
     return () => {
       document.removeEventListener("click", handleClickOutside);
     };
   }, []);
+
+  useEffect(() => {
+    setVisibleDevelopers(developers.slice(0, ITEMS_PER_PAGE));
+  }, []); 
+    
+  // Infinite Scroll with Intersection Observer
+  useEffect(() => {
+    if (!lastElementRef.current) return;
+    if (observer.current) observer.current.disconnect();
+    observer.current = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting && visibleDevelopers.length < filteredDevelopers.length) {
+        loadMoreDevelopers();
+      }
+    });
+  observer.current.observe(lastElementRef.current);
+  return () => observer.current?.disconnect();
+}, [visibleDevelopers, filteredDevelopers]); 
+
+  
+
+// Load More Developers on Scroll function
+const loadMoreDevelopers = () => {
+  setPage((prevPage) => {
+    const nextPage = prevPage + 1;
+    setVisibleDevelopers((prevState) => [
+      ...prevState,
+      ...filteredDevelopers.slice(prevState.length, nextPage * ITEMS_PER_PAGE),
+    ]);
+    return nextPage;
+  });
+};
+  
+// Filter Developers Based on Search Term function
+useEffect(() => {
+  const filtered = developers.filter(
+    (dev) =>
+      dev.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      dev.role.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      dev.email.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+  setFilteredDevelopers(filtered);
+  setPage(1);
+  setVisibleDevelopers(filtered.slice(0, ITEMS_PER_PAGE));
+}, [searchTerm]);
 
   return (
     <div className="bg-gray-100 min-h-screen">
@@ -101,18 +256,25 @@ const DeveloperDirectory = () => {
           />
 
           {/* Search Bar */}
-          <div className="relative w-full sm:w-72 md:w-80">
-            <input
-              type="text"
-              placeholder="Find a developer..."
-              className="w-full border border-gray-300 rounded-full px-4 py-2 pl-10 focus:outline-none focus:ring-2 focus:ring-green-500"
-            />
-            <Search className="absolute left-3 top-2.5 w-5 h-5 text-gray-400" />
-          </div>
+          <div className="relative w-full sm:w-80 md:w-96 lg:w-[28rem]">
+          <input
+            type="text"
+            placeholder="Find a developer..."
+            className="w-full border border-gray-300 rounded-full px-4 py-2 pl-10 focus:outline-none focus:ring-2 focus:ring-green-500"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <Search className="absolute left-3 top-2.5 w-5 h-5 text-gray-400" />
         </div>
-         <div className="relative profile-menu mt-4 md:mt-0">
+
+        </div>
+        <div className="relative profile-menu mt-4 md:mt-0">
           <div className="flex items-center space-x-2 cursor-pointer" onClick={toggleDropdown}>
-            <img src={adminProfile} alt="User Avatar" width={40} height={40} className="rounded-full" />
+            <img
+              src={adminProfile}
+              alt="User Avatar"
+              className="w-12 h-12 rounded-full object-cover border border-gray-300 shadow-md"
+            />
             <ChevronDown className="w-5 h-5 text-gray-500" />
           </div>
           {isDropdownOpen && (
@@ -122,7 +284,7 @@ const DeveloperDirectory = () => {
               <a href="#" className="block px-4 py-2 text-red-600 hover:bg-gray-100">Logout</a>
             </div>
           )}
-        </div>
+    </div>
       </header>
        {/* Filter Button */}
        <div className="flex justify-end px-4 md:px-10 py-4">
@@ -175,7 +337,8 @@ const DeveloperDirectory = () => {
                         <div className="flex items-center gap-2">
                           <input type="text" placeholder="Find language..." className="flex-1 border rounded px-3 py-2" />
                           <input type="number" className="w-12 border rounded px-3 py-2" />
-                          <CheckCircle className="text-green-500" size={24} />
+                          {/* <CheckCircle className="text-green-500" size={24} /> */}
+                          <img src={CheckCircleSuccess} alt="Checkmark" className="w-7 h-7" />
                         </div>
                         <div className="flex flex-wrap gap-2 mt-2">
                           {["HTML 25", "Java 36", "TypeScript 12"].map((lang) => (
@@ -208,7 +371,6 @@ const DeveloperDirectory = () => {
               </div>
             ))}
           </div>
-
           {/* Action Buttons */}
           <div className="mt-6 flex justify-between">
             <button className="text-red-500">Clear All</button>
@@ -219,12 +381,15 @@ const DeveloperDirectory = () => {
         </SheetContent>
       </Sheet>
     </div>
-      {/* Developer Grid section*/}
+      {/* Developer section*/}
       <div className="px-4 md:px-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {developers.map((dev, index) => (
-          <DeveloperCard key={index} developer={dev} />
+          {visibleDevelopers.map((dev, index) => (
+          <div key={index} ref={index === visibleDevelopers.length - 1 ? lastElementRef : null}>
+            <DeveloperCard developer={dev} />
+          </div>
         ))}
       </div>
+
     </div>
   );
 };
