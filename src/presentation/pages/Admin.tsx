@@ -230,26 +230,7 @@ const developers = [
     email: "ingrid.appiah@coderaccoon.com",
     image: img1,
   },
-  {
-    name: "Ingrid Blue Appiah",
-    role: "Frontend Engineer",
-    email: "ingrid.appiah@coderaccoon.com",
-    image: img1,
-  },
-  {
-    name: "Ingrid Blue Appiah",
-    role: "Frontend Engineer",
-    email: "ingrid.appiah@coderaccoon.com",
-    image: img1,
-  },
-  {
-    name: "Ingrid Blue Appiah",
-    role: "Frontend Engineer",
-    email: "ingrid.appiah@coderaccoon.com",
-    image: img1,
-  },
 
- 
 ];
 
 export interface Developer {
@@ -284,6 +265,18 @@ const DeveloperDirectory = () => {
   const ITEMS_PER_PAGE = 6;
   const observer = useRef<IntersectionObserver | null>(null);
   const lastElementRef = useRef<HTMLDivElement | null>(null);
+
+  const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
+
+// Function to add/remove a selected language
+const toggleLanguage = (language: string) => {
+  setSelectedLanguages((prev) =>
+    prev.includes(language) ? prev.filter((lang) => lang !== language) : [...prev, language]
+  );
+};
+
+// Function to check if any language is selected
+const isAnyLanguageSelected = selectedLanguages.length > 0;
 
   const toggleSection = (section: string) => {
     setOpenSections((prev) => ({ ...prev, [section]: !prev[section] }));
@@ -395,6 +388,7 @@ useEffect(() => {
             <SlidersHorizontal className="w-5 h-5 mr-1 text-[#1866FD]" /> Filters
           </button>
         </SheetTrigger>
+          {/* Filter Section */}
         <SheetContent side="right" className="w-[350px] sm:w-[400px] bg-white p-4 overflow-y-auto">
           {/* Header */}
           
@@ -438,8 +432,7 @@ useEffect(() => {
                         <div className="flex items-center gap-2">
                           <input type="text" placeholder="Find language..." className="flex-1 border rounded px-3 py-2" />
                           <input type="number" className="w-12 border rounded px-3 py-2" />
-                          {/* <CheckCircle className="text-green-500" size={24} /> */}
-                          <img src={CheckCircleSuccess} alt="Checkmark" className="w-7 h-7" />
+                          <img src={CheckCircleSuccess} alt="Checkmark" className="w-7 h-7 cursor-pointer shadow-lg shadow-green-500 rounded-full" />
                         </div>
                         <div className="flex flex-wrap gap-2 mt-2">
                           {["HTML 25", "Java 36", "TypeScript 12"].map((lang) => (
