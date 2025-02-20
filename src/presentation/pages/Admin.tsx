@@ -4,7 +4,6 @@ import React, { useRef,useState, useEffect } from "react";
 import { SlidersHorizontal, Search, ChevronDown,X, CheckCircle } from "lucide-react";
 import { Sheet, SheetTrigger, SheetContent, SheetClose} from "../../components/ui/sheet";
 import { Button } from "../../components/ui/button";
-import { useRouter } from "next/router";
 import { Link } from "react-router-dom";
 
 
