@@ -61,18 +61,19 @@ const DeveloperCard: React.FC<{ developer: Developer }>  = ({ developer }) => {
 
 const DeveloperDirectory = () => {
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({});
+  const [isDropdownOpen, setDropdownOpen] = useState(false);
 
   const toggleSection = (section: string) => {
     setOpenSections((prev) => ({ ...prev, [section]: !prev[section] }));
   };
-  const [isDropdownOpen, setDropdownOpen] = useState(false);
 
-  // Toggle Dropdown
+
+
   const toggleDropdown = () => {
     setDropdownOpen(!isDropdownOpen);
   };
 
-  // Close dropdown when clicking outside
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (!event.target || !(event.target instanceof HTMLElement)) return;
