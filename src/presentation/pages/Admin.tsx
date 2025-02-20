@@ -4,6 +4,7 @@ import React, { useRef,useState, useEffect } from "react";
 import { SlidersHorizontal, Search, ChevronDown,X, CheckCircle } from "lucide-react";
 import { Sheet, SheetTrigger, SheetContent, SheetClose} from "../../components/ui/sheet";
 import { Button } from "../../components/ui/button";
+import { Link } from "react-router-dom";
 
 
 import LogoImage from "../../assets/logo.png";
@@ -241,8 +242,12 @@ export interface Developer {
 }
 
 const DeveloperCard: React.FC<{ developer: Developer }>  = ({ developer }) => {
+
+
   return (
-    <div className="bg-white shadow-md rounded-lg p-6 text-center">
+    <Link  to={`/profile-page`}>
+    <div className="bg-white shadow-md rounded-lg p-6 text-center" 
+>
       <img
         src={developer.image}
         alt={developer.name}
@@ -252,6 +257,7 @@ const DeveloperCard: React.FC<{ developer: Developer }>  = ({ developer }) => {
       <p className="text-green-600">{developer.role}</p>
       <p className="text-gray-500 text-sm">{developer.email}</p>
     </div>
+    </Link>
   );
 };
 
