@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Edit, Trash2, ArrowDownToLine } from "lucide-react";
 import LogoImage from "../../assets/logo.png";
 import profileImg from "../../assets/profile-img.png";
+import { useNavigate } from "react-router-dom";
 
 const tabs = [
   "Programming Languages",
@@ -39,6 +40,12 @@ const tabContent: Record<string, { name: string; duration: string }[]> = {
 
 const Profile: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>(tabs[0]); 
+  const navigate = useNavigate(); // Get the navigate function
+
+  const handleLogout = () => {
+    localStorage.setItem("isAuthenticated", "false"); // Store in localStorage
+    navigate("/login"); // Redirect to login page
+  };
 
   return (
     <div className="w-screen h-screen bg-gray-100 flex flex-col">
@@ -56,7 +63,7 @@ const Profile: React.FC = () => {
           <button className="text-gray-600 hover:text-black flex items-center text-sm sm:text-base px-2 py-1 sm:px-4 sm:py-2">
             Download CV <ArrowDownToLine className="w-4 h-4 sm:w-5 sm:h-5 ml-1 sm:ml-2" />
           </button>
-          <button className="text-red-500 hover:text-red-700 font-medium text-sm sm:text-base px-2 py-1 sm:px-4 sm:py-2">
+          <button onClick={handleLogout} className="text-red-500 hover:text-red-700 font-medium text-sm sm:text-base px-2 py-1 sm:px-4 sm:py-2">
             Logout
           </button>
         </div>

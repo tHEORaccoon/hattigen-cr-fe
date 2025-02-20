@@ -43,9 +43,9 @@ function Home() {
 
       {/* Main Content */}
       <div className="flex flex-col items-center justify-center w-full container mx-auto px-4">
-        <form className="flex flex-col w-full mt-10 md:mt-40">
+        <form  className="flex flex-col w-full mt-10 md:mt-40">
           <div>{step}</div>
-          <Buttons next={next} previous={previous} isFirstStep={isFirstStep} isLastStep={isLastStep} />
+          <Buttons next={next} previous={previous} isFirstStep={isFirstStep} isLastStep={isLastStep} currentStep={currentStep} />
         </form>
         <div className="w-full flex flex-col items-start justify-start mt-8">
           <div>
