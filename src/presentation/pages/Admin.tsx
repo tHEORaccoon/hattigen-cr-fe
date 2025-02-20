@@ -266,18 +266,6 @@ const DeveloperDirectory = () => {
   const observer = useRef<IntersectionObserver | null>(null);
   const lastElementRef = useRef<HTMLDivElement | null>(null);
 
-  const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
-
-// Function to add/remove a selected language
-const toggleLanguage = (language: string) => {
-  setSelectedLanguages((prev) =>
-    prev.includes(language) ? prev.filter((lang) => lang !== language) : [...prev, language]
-  );
-};
-
-// Function to check if any language is selected
-const isAnyLanguageSelected = selectedLanguages.length > 0;
-
   const toggleSection = (section: string) => {
     setOpenSections((prev) => ({ ...prev, [section]: !prev[section] }));
   };
