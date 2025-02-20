@@ -1,3 +1,5 @@
+import { Button } from "./base/Button";
+
 interface HeaderProps {
   title: string;
   description: string;
@@ -18,8 +20,7 @@ return (
       </div>
       {!hideEditButton && (
         <div className="flex  md:justify-center items-center">
-
-            <button className="bg-black text-white w-20 h-8 mt-5 md:mt-0 md:w-[120px] md:h-[50px] rounded-full font-semibold" type="button" onClick={onclick}>{isEdit ? "Done" : "Edit"}</button>
+            <Button variant="secondary" onClick={onclick}>{isEdit ? "Done" : "Edit"}</Button>
         </div>
         
       )}

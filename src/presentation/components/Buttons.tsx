@@ -1,3 +1,4 @@
+import { Button } from "./base/Button";
 
 
 interface ButtonsProps {
@@ -10,26 +11,12 @@ interface ButtonsProps {
 const Buttons = ({next, previous, isFirstStep, isLastStep}: ButtonsProps) => {
   return (
     <div className="flex gap-5 md:justify-between w-full mt-20">
-    {/* Back Button - Takes Space But Invisible When isFirstStep */}
-    <button
-      className={`flex justify-center items-center border border-black font-semibold w-40 h-10 rounded-full ${
-        isFirstStep ? "invisible" : ""
-      }`}
-      type="button"
-      onClick={previous}
-    >
-      Back
-    </button>
+      {/* Back Button - Takes Space But Invisible When isFirstStep */}
+      {isFirstStep ? <div></div> : <Button variant="outline" onClick={previous}>Back</Button>}
 
-    {/* Continue Button - Always in the Same Position */}
-    <button
-      type="button"
-      className="flex justify-center items-center text-white font-semibold bg-blue-500 w-40 h-10 rounded-full"
-      onClick={next}
-    >
-      {isLastStep ? "Finish" : "Continue"}
-    </button>
-  </div>
+      {/* Continue Button - Always in the Same Position */}
+      <Button onClick={next}>{isLastStep ? "Finish" : "Continue"}</Button>
+    </div>
   )
 }
 
