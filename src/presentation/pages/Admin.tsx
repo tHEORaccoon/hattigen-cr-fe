@@ -140,6 +140,115 @@ const developers = [
     email: "ingrid.appiah@coderaccoon.com",
     image: img1,
   },
+  {
+    name: "Ingrid Blue Appiah",
+    role: "Frontend Engineer",
+    email: "ingrid.appiah@coderaccoon.com",
+    image: img1,
+  },
+  {
+    name: "Ingrid Blue Appiah",
+    role: "Frontend Engineer",
+    email: "ingrid.appiah@coderaccoon.com",
+    image: img1,
+  },
+  {
+    name: "Ingrid Blue Appiah",
+    role: "Frontend Engineer",
+    email: "ingrid.appiah@coderaccoon.com",
+    image: img1,
+  },
+  {
+    name: "Ingrid Blue Appiah",
+    role: "Frontend Engineer",
+    email: "ingrid.appiah@coderaccoon.com",
+    image: img1,
+  },
+  {
+    name: "Ingrid Blue Appiah",
+    role: "Frontend Engineer",
+    email: "ingrid.appiah@coderaccoon.com",
+    image: img1,
+  },
+  {
+    name: "Ingrid Blue Appiah",
+    role: "Frontend Engineer",
+    email: "ingrid.appiah@coderaccoon.com",
+    image: img1,
+  },
+  {
+    name: "Ingrid Blue Appiah",
+    role: "Frontend Engineer",
+    email: "ingrid.appiah@coderaccoon.com",
+    image: img1,
+  },
+  {
+    name: "Ingrid Blue Appiah",
+    role: "Frontend Engineer",
+    email: "ingrid.appiah@coderaccoon.com",
+    image: img1,
+  },
+  {
+    name: "Ingrid Blue Appiah",
+    role: "Frontend Engineer",
+    email: "ingrid.appiah@coderaccoon.com",
+    image: img1,
+  },
+  {
+    name: "Ingrid Blue Appiah",
+    role: "Frontend Engineer",
+    email: "ingrid.appiah@coderaccoon.com",
+    image: img1,
+  },
+  {
+    name: "Ingrid Blue Appiah",
+    role: "Frontend Engineer",
+    email: "ingrid.appiah@coderaccoon.com",
+    image: img1,
+  },
+  {
+    name: "Ingrid Blue Appiah",
+    role: "Frontend Engineer",
+    email: "ingrid.appiah@coderaccoon.com",
+    image: img1,
+  },
+  {
+    name: "Ingrid Blue Appiah",
+    role: "Frontend Engineer",
+    email: "ingrid.appiah@coderaccoon.com",
+    image: img1,
+  },
+  {
+    name: "Ingrid Blue Appiah",
+    role: "Frontend Engineer",
+    email: "ingrid.appiah@coderaccoon.com",
+    image: img1,
+  },
+  {
+    name: "Ingrid Blue Appiah",
+    role: "Frontend Engineer",
+    email: "ingrid.appiah@coderaccoon.com",
+    image: img1,
+  },
+  {
+    name: "Ingrid Blue Appiah",
+    role: "Frontend Engineer",
+    email: "ingrid.appiah@coderaccoon.com",
+    image: img1,
+  },
+  {
+    name: "Ingrid Blue Appiah",
+    role: "Frontend Engineer",
+    email: "ingrid.appiah@coderaccoon.com",
+    image: img1,
+  },
+  {
+    name: "Ingrid Blue Appiah",
+    role: "Frontend Engineer",
+    email: "ingrid.appiah@coderaccoon.com",
+    image: img1,
+  },
+
  
 ];
 
@@ -172,7 +281,6 @@ const DeveloperDirectory = () => {
 
   const [filteredDevelopers, setFilteredDevelopers] = useState<Developer[]>([]);
   const [visibleDevelopers, setVisibleDevelopers] = useState<Developer[]>([]);
-  const [page, setPage] = useState(1);
   const ITEMS_PER_PAGE = 6;
   const observer = useRef<IntersectionObserver | null>(null);
   const lastElementRef = useRef<HTMLDivElement | null>(null);
@@ -217,21 +325,14 @@ const DeveloperDirectory = () => {
   return () => observer.current?.disconnect();
 }, [visibleDevelopers, filteredDevelopers]); 
 
-  
 
-// Load More Developers on Scroll function
 const loadMoreDevelopers = () => {
-  setPage((prevPage) => {
-    const nextPage = prevPage + 1;
-    setVisibleDevelopers((prevState) => [
-      ...prevState,
-      ...filteredDevelopers.slice(prevState.length, nextPage * ITEMS_PER_PAGE),
-    ]);
-    return nextPage;
-  });
+  setVisibleDevelopers((prevState) => [
+    ...prevState,
+    ...filteredDevelopers.slice(prevState.length, prevState.length + ITEMS_PER_PAGE),
+  ]);
 };
-  
-// Filter Developers Based on Search Term function
+
 useEffect(() => {
   const filtered = developers.filter(
     (dev) =>
@@ -240,9 +341,9 @@ useEffect(() => {
       dev.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
   setFilteredDevelopers(filtered);
-  setPage(1);
   setVisibleDevelopers(filtered.slice(0, ITEMS_PER_PAGE));
 }, [searchTerm]);
+
 
   return (
     <div className="bg-gray-100 min-h-screen">
