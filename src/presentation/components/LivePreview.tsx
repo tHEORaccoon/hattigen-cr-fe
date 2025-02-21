@@ -12,12 +12,12 @@ interface LivePreviewProps {
 }
 
 
-const LivePreview = ({ formData }: LivePreviewProps) => {
+const LivePreview = () => {
     return (
-      <div className="w-full max-w-2xl h-auto bg-white shadow-lg p-4 border border-black mt-8">
-        <h2 className="text-lg font-bold mb-2">Live Preview</h2>
+      <div className="w-full max-w-2xl h-[500px] bg-white shadow-lg p-1 border border-black mt-8">
+        <div className="h-3 bg-[#9F9F9F]"></div>
   
-        <div className="mb-4">
+        {/* <div className="mb-4">
           <h3 className="font-semibold">Personal Info</h3>
           <p>{formData.personalInfo.name}</p>
           <p>{formData.personalInfo.email}</p>
@@ -61,7 +61,7 @@ const LivePreview = ({ formData }: LivePreviewProps) => {
               {ai.aiExp} - {ai.experience} months
             </p>
           ))}
-        </div>
+        </div> */}
       </div>
     );
   };

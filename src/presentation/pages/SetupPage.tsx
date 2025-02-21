@@ -1,12 +1,4 @@
-// import { Link } from "react-router-dom";
-// import { useMultiStepForm } from "../../core/hooks/useMultiSteoForm";
 import Sidebar from "../components/SideBar";
-// import LanguagesScreen from "../components/LanguagesScreen";
-// import FrameworkScreen from "../components/FrameworkScreen";
-// import DatabaseScreen from "../components/DatabaseScreen";
-// import ProfileInfo from "../components/ProfileInfo";
-// import CloudPlatformScreen from "../components/CloudPlatformScreen";
-// import AIScreen from "../components/AIExperienceScreen";
 import { Text } from "../components/base/Text";
 import MultiStepForm from "../components/MultiStepForm";
 import { useState } from "react";
@@ -19,16 +11,6 @@ export type StepInfo = {
 }
 
 function Home() {
-  // const { step, next, previous, isFirstStep, isLastStep, currentStep, goTo, completedSteps, totalSteps } = useMultiStepForm([
-  //   <ProfileInfo />,
-  //   <LanguagesScreen />,
-  //   <FrameworkScreen />,
-  //   <DatabaseScreen />,
-  //   <CloudPlatformScreen />,
-  //   <AIScreen />,
-  // ]);
-
-  // const [currentStep, setCurrentStep] = useState(0);
   const [stepInfo, setStepInfo] = useState<StepInfo>({
     step: "", 
     totalSteps: 5,
@@ -36,13 +18,16 @@ function Home() {
     completedSteps: []
   })
 
-  const goTo = (i: number) => {}
+  const goTo = (i: number) => {
+    if (i > stepInfo.completedSteps.length) return
+    setStepInfo({...stepInfo, currentStep: i})
+  }
 
   return (
     <div className="flex flex-col md:flex-row w-full h-screen">
       {/* Sidebar - Hidden on small screens */}
       <div className="hidden md:flex">
-        <Sidebar totalSteps={stepInfo.totalSteps} currentStep={stepInfo.currentStep} completedSteps={stepInfo.completedSteps} goTo={() => {}} />
+        <Sidebar totalSteps={stepInfo.totalSteps} currentStep={stepInfo.currentStep} completedSteps={stepInfo.completedSteps} goTo={goTo} />
       </div>
 
       {/* Mobile Step Indicator */}

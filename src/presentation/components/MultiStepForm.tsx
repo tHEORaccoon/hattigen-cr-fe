@@ -7,8 +7,10 @@ import Header from "./Header";
 // import { useMultiStepForm } from "../../core/hooks/useMultiSteoForm";
 import { Button } from "./base/Button";
 import CheckMark from "../../assets/check.svg";
+import Delete from "../../assets/delete.svg";
 import { Text } from "./base/Text";
 import { StepInfo } from "../pages/SetupPage";
+import LivePreview from "./LivePreview";
 
 type Step = {
     name: string,
@@ -22,28 +24,28 @@ type Skill = {
     category_id: number
 }
 
+const steps: Step[] = [
+    {
+        name: "personal info",
+        title: "Let’s start with your personal info",
+        description: "Include your full name and at least one way for employers to reach you."
+    },
+    {
+        name: "programming language",
+        title: "Let’s add your languages",
+        description: "Add every programming language you have ever worked with."
+    },
+    {
+        name: "database",
+        title: "Let’s add your databases",
+        description: "Have you done any database work?. This is where you put them."
+    }
+];
+
 const MultiStepForm = ({stepInfo, setStepInfo}: {stepInfo: StepInfo, setStepInfo: (stepInfo: StepInfo) => void}) => {
-    // const { step, next, previous, isFirstStep, isLastStep, currentStep, goTo, completedSteps, totalSteps } = useMultiStepForm([]);
-    // const [currentStep, setCurrentStep] = useState(0);
-    // const [personalInfo, setPersonalInfo] = useState<any>(null);
     const [skills, setSkills] = useState<Skill[]>([])
-    const steps: Step[] = [
-        {
-            name: "personal info",
-            title: "Let’s start with your personal info",
-            description: "Include your full name and at least one way for employers to reach you."
-        },
-        {
-            name: "programming language",
-            title: "Let’s add your languages",
-            description: "Include your full name and at least one way for employers to reach you."
-        },
-        {
-            name: "database",
-            title: "Let’s add your databases",
-            description: "Include your full name and at least one way for employers to reach you."
-        }
-    ];
+    const [isEditing, setIsEditing] = useState(false);
+
 
     const saveSkill = (skill: Skill) => {
         setSkills([...skills, skill]);
@@ -73,7 +75,8 @@ const MultiStepForm = ({stepInfo, setStepInfo}: {stepInfo: StepInfo, setStepInfo
         control,
         handleSubmit,
         setError,
-        reset
+        reset,
+        clearErrors
     } = useForm<FormData>({
         defaultValues: {
             first_name: "",
@@ -89,14 +92,22 @@ const MultiStepForm = ({stepInfo, setStepInfo}: {stepInfo: StepInfo, setStepInfo
         resolver: zodResolver(formSchema)
     });
 
+    const restExcess = () => {
+        setIsEditing(false);
+        clearErrors();
+    }
+
     const next = () => {
         if (stepInfo.currentStep === steps.length - 1) return;
         setStepInfo({...stepInfo, currentStep: stepInfo.currentStep + 1, completedSteps: [...stepInfo.completedSteps, true]})
+        restExcess()
     }
 
     const previous = () => {
         if (stepInfo.currentStep < 1) return;
         setStepInfo({...stepInfo, currentStep: stepInfo.currentStep - 1})
+        restExcess()
+        
     }
 
     const handleSave:SubmitHandler<FormData> = async (values: FormData) => {
@@ -109,8 +120,6 @@ const MultiStepForm = ({stepInfo, setStepInfo}: {stepInfo: StepInfo, setStepInfo
                 months_of_experience: values.months as number
             });
 
-            
-            
             reset({
                 first_name: values.first_name,
                 last_name: values.last_name,
@@ -124,6 +133,19 @@ const MultiStepForm = ({stepInfo, setStepInfo}: {stepInfo: StepInfo, setStepInfo
         }
         next();
     };
+
+    const handleDeleteSkill = (index: number) => {
+        setSkills(skills.filter((_, i) => i !== index));
+    }
+
+    useEffect(() => {
+        setStepInfo({
+            step: "",
+            totalSteps: steps.length,
+            currentStep: 0, 
+            completedSteps: []
+        })
+    }, [steps])
 
     const PersonalInfo = () => {
         return (
@@ -315,9 +337,18 @@ const MultiStepForm = ({stepInfo, setStepInfo}: {stepInfo: StepInfo, setStepInfo
                     {skills.filter(s => s.category_id === stepInfo.currentStep).map((s) => (
                         <button 
                             key={s.title}
-                            className="px-3 py-1 border border-[#75ACFF] bg-[#438EFF28] rounded-full flex gap-3 items-center">
+                            className={`px-3 py-1 border border-[#75ACFF] bg-[#438EFF28] rounded-full flex gap-3 items-center ${isEditing && "animate-wiggle"}`}>
                             <Text className="font-semibold" color="blue">{s.title}</Text>
                             <Text className="font-semibold" color="blue">{s.months_of_experience}</Text>
+
+                            {isEditing && (
+                                <button
+                                    onClick={() => handleDeleteSkill(skills.indexOf(s))}
+                                    className="absolute right-0.5 top-1/9 -translate-y-1/2 translate-x-1/2 w-5 h-5 flex items-center justify-center bg-[#CCCCCC] text-white rounded-full shadow-md transition"
+                                >
+                                    <img src={Delete} alt="delete-icon" className="w-3 h-3" />
+                                </button>
+                            )}
                         </button>))}
                 </div>
             </div>
@@ -329,15 +360,20 @@ const MultiStepForm = ({stepInfo, setStepInfo}: {stepInfo: StepInfo, setStepInfo
             <Header
                 title={steps[stepInfo.currentStep].title}
                 description={steps[stepInfo.currentStep].description}
-                clicked={true}
-                onclick={() => {}} // Toggle edit mode
+                isEditing={isEditing}
+                setIsEditing={() => setIsEditing(!isEditing)} // Toggle edit mode
+                hideEditButton={stepInfo.currentStep === 0 || skills.filter(s => s.category_id === stepInfo.currentStep).length === 0}
             />
-            <div>
-                <div className="w-3/5">
+            <div className="flex">
+                <div className="w-3/5 pr-14">
                     <div className="mt-10">
                         {/* PERSONAL INFO FORM */}
                          {stepInfo.currentStep === 0 ? <PersonalInfo /> : <OtherSteps />}
                     </div>
+                </div>
+
+                <div className="w-2/5 pl-14">
+                    <LivePreview />
                 </div>
             </div>
             <div className="flex gap-5 md:justify-between w-full mt-20">
@@ -347,6 +383,22 @@ const MultiStepForm = ({stepInfo, setStepInfo}: {stepInfo: StepInfo, setStepInfo
                 {/* Continue Button - Always in the Same Position */}
                 <Button onClick={stepInfo.currentStep === 0 ? handleSubmit(handleSave) : () => next()}>{stepInfo.currentStep === steps.length - 1 ? "Finish" : "Continue"}</Button>
             </div>
+
+            <style>
+                {`
+                    @keyframes wiggle {
+                        0% { transform: rotate(0deg); }
+                        25% { transform: rotate(2deg); }
+                        50% { transform: rotate(-2deg); }
+                        75% { transform: rotate(2deg); }
+                        100% { transform: rotate(0deg); }
+                    }
+
+                    .animate-wiggle {
+                        animation: wiggle 0.4s infinite ease-in;
+                    }
+                `}
+            </style>
         </div>
     )
 }
