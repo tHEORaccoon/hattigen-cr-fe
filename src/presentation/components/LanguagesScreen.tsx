@@ -3,6 +3,8 @@ import Header from "./Header";
 import CheckButton from "../../assets/check.svg";
 import Rectagle from "../../assets/Rectangle.png";
 import Delete from "../../assets/delete.svg";
+import {  updateLanguageData } from "../../core/redux/slice/cvFormSlice";
+import { useDispatch } from "react-redux";
 
 interface Language {
   languages: string;
@@ -18,6 +20,8 @@ const LanguagesScreen = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [languages, setLanguages] = useState<Language[]>([]);
 
+  const dispatch = useDispatch()
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
   
@@ -28,13 +32,17 @@ const LanguagesScreen = () => {
   };
   
   const handleEdit = () => {
-    setIsEditing((prev) => !prev); // Toggle edit mode
+    setIsEditing((prev) => !prev); 
   };
 
   const handleAddLanguage = () => {
     if (formData.languages.trim() && formData.experience >= 1) {
+      const updatedLanguages = [...languages, formData];
+    
       setLanguages([...languages, formData]);
-      setFormData({ languages: "", experience: 0 }); // Reset input fields
+      setFormData({ languages: "", experience: 0 }); 
+  
+      dispatch(updateLanguageData(updatedLanguages));
     }
   };
 

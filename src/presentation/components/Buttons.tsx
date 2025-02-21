@@ -1,11 +1,12 @@
 import { Button } from "./base/Button";
-
+import { useNavigate } from "react-router-dom";
 
 interface ButtonsProps {
     next: () => void;
     previous: () => void;
     isFirstStep: boolean;
     isLastStep: boolean;
+    currentStep: number;
 }
 
 const Buttons = ({next, previous, isFirstStep, isLastStep}: ButtonsProps) => {
@@ -20,4 +21,4 @@ const Buttons = ({next, previous, isFirstStep, isLastStep}: ButtonsProps) => {
   )
 }
 
-export default Buttons
+export default Buttons;

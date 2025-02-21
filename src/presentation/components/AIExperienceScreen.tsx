@@ -3,6 +3,8 @@ import Header from "./Header"
 import CheckButton from "../../assets/check.svg"
 import Rectagle from "../../assets/Rectangle.png"
 import Delete from "../../assets/delete.svg";
+import { updateAIData } from "../../core/redux/slice/cvFormSlice";
+import {useDispatch} from "react-redux";
 
 interface AIScreenScreenProps {
     aiExp: string;
@@ -16,7 +18,9 @@ const AIScreen = () => {
       });
     
         const [isEditing, setIsEditing] = useState(false);
-        const [aiExperience, setAiExperience] = useState<AIScreenScreenProps[]>([]);
+        const [aiExperience, setAiExperience] = useState<AIScreenScreenProps[]>([]); 
+       const dispatch = useDispatch()
+
 
         const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
             const { name, value } = e.target;
@@ -29,14 +33,16 @@ const AIScreen = () => {
           
 
         const handleEdit = () => {
-            setIsEditing((prev) => !prev); // Toggle edit mode
+            setIsEditing((prev) => !prev); 
         };
 
         const handleAddAi = () => {
-            if (formData.aiExp.trim() && formData.experience >= 1) {
-            setAiExperience([...aiExperience, formData]);
-            setFormData({ aiExp: "", experience: 0 }); // Reset input fields
-            }
+          if (formData.aiExp.trim() && formData.experience >= 1) {
+            const updatedAiExperience = [...aiExperience, formData];
+            setAiExperience(updatedAiExperience);
+            setFormData({ aiExp: "", experience: 1 });
+            dispatch(updateAIData(updatedAiExperience));
+        }
         };
 
         const handleDeleteAi = (index: number) => {
