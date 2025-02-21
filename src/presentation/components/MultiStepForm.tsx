@@ -11,6 +11,7 @@ import Delete from "../../assets/delete.svg";
 import { Text } from "./base/Text";
 import { StepInfo } from "../pages/SetupPage";
 import LivePreview from "./LivePreview";
+import { useNavigate } from "react-router-dom";
 
 type Step = {
     name: string,
@@ -39,10 +40,21 @@ const steps: Step[] = [
         name: "database",
         title: "Let’s add your databases",
         description: "Have you done any database work?. This is where you put them."
+    },
+    {
+        name: "cloud platforms",
+        title: "Let’s add your cloud platforms",
+        description: "Have you worked with any cloud platforms?. This is where you put them."
+    },
+    {
+        name: "AI experience",
+        title: "Do you have any AI experience?",
+        description: "Add any artifitial intelligence experience you have."
     }
 ];
 
 const MultiStepForm = ({stepInfo, setStepInfo}: {stepInfo: StepInfo, setStepInfo: (stepInfo: StepInfo) => void}) => {
+    const navigate = useNavigate();
     const [skills, setSkills] = useState<Skill[]>([])
     const [isEditing, setIsEditing] = useState(false);
 
@@ -382,7 +394,7 @@ const MultiStepForm = ({stepInfo, setStepInfo}: {stepInfo: StepInfo, setStepInfo
                 {stepInfo.currentStep === 0 ? <div></div> : <Button variant="outline" onClick={previous}>Back</Button>}
 
                 {/* Continue Button - Always in the Same Position */}
-                <Button onClick={stepInfo.currentStep === 0 ? handleSubmit(handleSave) : () => next()}>{stepInfo.currentStep === steps.length - 1 ? "Finish" : "Continue"}</Button>
+                <Button onClick={stepInfo.currentStep === 0 ? handleSubmit(handleSave) : stepInfo.currentStep === stepInfo.totalSteps - 1 ? () => navigate('/profile-page') : () => next()}>{stepInfo.currentStep === steps.length - 1 ? "Finish" : "Continue"}</Button>
             </div>
 
             <style>
