@@ -65,8 +65,8 @@ function ProfileInfo() {
             <Header
                 title={"Let’s start with your personal info"}
                 description={"Include your full name and at least one way for employers to reach you"}
-                clicked={isEdit}
-                onclick={() => {
+                isEditing={false}
+                setIsEditing={() => {
                     setIsEdited(!isEdit);
                 }}
                 hideEditButton={true}

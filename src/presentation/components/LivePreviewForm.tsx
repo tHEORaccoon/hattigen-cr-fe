@@ -38,7 +38,11 @@ const LivePreviewForm: React.FC = () => {
   return (
     <div className="container mx-auto">
 
-      <Header title="Let’s add your Databases" description="This is how your CV will look like after you add your databases." clicked={isEditing} onclick={handleEdit}/>
+      <Header 
+      title="Let’s add your Databases" description="This is how your CV will look like after you add your databases." 
+      isEditing={false}
+      setIsEditing={handleEdit}
+      />
       <div className="flex flex-col md:flex-row gap-6 mt-6">
         {/* Form Section */}
         <div className="w-full md:w-1/2 bg-white p-4 shadow rounded-lg">

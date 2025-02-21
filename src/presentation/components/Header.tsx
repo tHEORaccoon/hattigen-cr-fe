@@ -1,13 +1,15 @@
+import { Button } from "./base/Button";
+
 interface HeaderProps {
   title: string;
   description: string;
-  clicked: boolean;
-  onclick: () => void;
+  isEditing: boolean;
+  setIsEditing: any;
   hideEditButton?: boolean;
 }
 
-const Header = ({title, description, clicked, onclick,hideEditButton }: HeaderProps) => {
-  const isEdit = clicked;
+const Header = ({title, description, isEditing, setIsEditing, hideEditButton }: HeaderProps) => {
+  // const isEdit = clicked;
 return (
   <div className="md:flex md:justify-between w-full">
       <div className='flex flex-col justify-center items-start gap-1'>
@@ -18,8 +20,7 @@ return (
       </div>
       {!hideEditButton && (
         <div className="flex  md:justify-center items-center">
-
-            <button className="bg-black text-white w-20 h-8 mt-5 md:mt-0 md:w-[120px] md:h-[50px] rounded-full font-semibold" type="button" onClick={onclick}>{isEdit ? "Done" : "Edit"}</button>
+            <Button variant="secondary" onClick={setIsEditing}>{isEditing ? "Done" : "Edit"}</Button>
         </div>
         
       )}

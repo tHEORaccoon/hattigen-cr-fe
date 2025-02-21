@@ -1,39 +1,43 @@
-import { Link } from "react-router-dom";
-import { useMultiStepForm } from "../../core/hooks/useMultiStepForm";
-import Buttons from "../components/Buttons";
 import Sidebar from "../components/SideBar";
-import LanguagesScreen from "../components/LanguagesScreen";
-import FrameworkScreen from "../components/FrameworkScreen";
-import DatabaseScreen from "../components/DatabaseScreen";
-import ProfileInfo from "../components/ProfileInfo";
-import CloudPlatformScreen from "../components/CloudPlatformScreen";
-import AIScreen from "../components/AIExperienceScreen";
+import { Text } from "../components/base/Text";
+import MultiStepForm from "../components/MultiStepForm";
+import { useState } from "react";
+
+export type StepInfo = {
+  step: string,
+  totalSteps: number,
+  currentStep: number, 
+  completedSteps: boolean[]
+}
 
 function Home() {
-  const { step, next, previous, isFirstStep, isLastStep, currentStep, goTo, completedSteps, totalSteps } = useMultiStepForm([
-    <ProfileInfo />,
-    <LanguagesScreen />,
-    <FrameworkScreen />,
-    <DatabaseScreen />,
-    <CloudPlatformScreen />,
-    <AIScreen />,
-  ]);
+  const [stepInfo, setStepInfo] = useState<StepInfo>({
+    step: "", 
+    totalSteps: 5,
+    currentStep: 0,
+    completedSteps: []
+  })
+
+  const goTo = (i: number) => {
+    if (i > stepInfo.completedSteps.length) return
+    setStepInfo({...stepInfo, currentStep: i})
+  }
 
   return (
     <div className="flex flex-col md:flex-row w-full h-screen">
       {/* Sidebar - Hidden on small screens */}
       <div className="hidden md:flex">
-        <Sidebar totalSteps={totalSteps} currentStep={currentStep} completedSteps={completedSteps} goTo={goTo} />
+        <Sidebar totalSteps={stepInfo.totalSteps} currentStep={stepInfo.currentStep} completedSteps={stepInfo.completedSteps} goTo={goTo} />
       </div>
 
       {/* Mobile Step Indicator */}
       <div className="flex md:hidden w-full justify-center py-4 bg-gray-100 shadow-sm">
-        {Array.from({ length: totalSteps }, (_, index) => (
+        {Array.from({ length: stepInfo.totalSteps }, (_, index) => (
           <button
             key={index}
             className={`w-8 h-8 mx-1 text-sm font-bold rounded-full border-2 ${
-              completedSteps[index] ? "bg-green-500 text-white border-green-500" : "border-gray-400 text-gray-600"
-            } ${index === currentStep ? "bg-green-700 text-white border-green-700" : ""}`}
+              stepInfo.completedSteps[index] ? "bg-green-500 text-white border-green-500" : "border-gray-400 text-gray-600"
+            } ${index === stepInfo.currentStep ? "bg-green-700 text-white border-green-700" : ""}`}
             onClick={() => goTo(index)}
           >
             {index + 1}
@@ -43,16 +47,14 @@ function Home() {
 
       {/* Main Content */}
       <div className="flex flex-col items-center justify-center w-full container mx-auto px-4">
-        <form  className="flex flex-col w-full mt-10 md:mt-40">
-          <div>{step}</div>
-          <Buttons next={next} previous={previous} isFirstStep={isFirstStep} isLastStep={isLastStep} currentStep={currentStep} />
-        </form>
-        <div className="w-full flex flex-col items-start justify-start mt-8">
-          <div>
-            <Link to="#" className="text-[#7D7D89] text-sm">Terms</Link> |{" "}
-            <Link to="#" className="text-[#7D7D89] text-sm">Privacy Policy</Link>
+        {/* <form className="flex flex-col w-full mt-10 md:mt-40"> */}
+          <div className="flex flex-col w-full mt-10 md:mt-40">
+            <MultiStepForm setStepInfo={setStepInfo} stepInfo={stepInfo} />
           </div>
-          <p className="text-[#7D7D89] text-sm mt-4">© 2021 Raccoon Hub. All rights reserved.</p>
+          {/* <Buttons next={next} previous={previous} isFirstStep={isFirstStep} isLastStep={isLastStep} /> */}
+        {/* </form> */}
+        <div className="w-full flex flex-col items-start justify-start mt-8">
+          <Text variant="footnote" className="text-cv-gray mt-1">© 2025, Raccoon Hub. All rights reserved.</Text>
         </div>
       </div>
     </div>

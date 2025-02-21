@@ -41,13 +41,9 @@ const LoginScreen: React.FC = () => {
 
       <div className="w-full md:w-3/4 bg-white flex flex-col justify-center p-8 md:p-16 md:pl-28 drop-shadow-xl">
         <Text variant="sub-heading">Login to Raccoon Hub</Text>
-        <Button variant="secondary" iconUrl={GoogleImage} onClick={handleGoogleLogin} className="w-80 px-0 py-3 mt-4 md:mt-6">
-          Sign in with Google
-        </Button>
-        <Text variant="footnote" className="mt-3 md:mt-11 md:w-80 max-w-xs md:max-w-md text-gray">
-          By accessing this platform, you agree to our{" "}
-          <a href="#" className="text-blue-600 underline">Terms</a> and have read our{" "}
-          <a href="#" className="text-blue-600 underline">Privacy Policy</a>.
+        <Button variant="secondary" iconUrl={GoogleImage} className="w-80 px-0 py-3 mt-4 md:mt-6" onClick={handleGoogleLogin}>Sign in with Google</Button>
+        <Text variant="footnote" className="mt-3 md:mt-11 md:w-80 max-w-xs md:max-w-md text-cv-gray">
+          This patform was made and is mantained with ❤️ by the Code Racccoon dev team 👨‍💻🦝. Don't share sensitive info from this platform.
         </Text>
       </div>
     </div>

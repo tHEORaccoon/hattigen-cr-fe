@@ -13,7 +13,7 @@ const cn = (...inputs: ClassValue[]) => {
 }
 
 const inputContainerVariants = cva(
-  "flex items-center rounded-lg bg-gray-100 border border-[#E2E2E2] relative overflow-hidden",
+  "flex items-center rounded-lg border border-[#E2E2E2] relative overflow-hidden",
   {
     variants: {
       hasError: {
@@ -165,10 +165,11 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                     alt="Button Icon"
                     className="w-[15px]"
                 /></div> : null}
-          {value && !hasError && !isFocused ? <div className="pr-2"><img
+          {value && !hasError && !isFocused ? <div className="pr-2">
+          <img
           src={SuccessImage}
           alt="Button Icon"
-          className="w-[15px]"
+          className="w-[15px] bg-transparent"
       /></div> : null}
         </div>
         <Text
