@@ -1,5 +1,4 @@
 import { Button } from "./base/Button";
-import { useNavigate } from "react-router-dom";
 
 interface ButtonsProps {
     next: () => void;

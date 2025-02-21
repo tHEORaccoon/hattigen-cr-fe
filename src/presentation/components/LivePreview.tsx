@@ -1,15 +1,15 @@
 
 
-interface LivePreviewProps {
-  formData: {
-    personalInfo: { name: string; email: string };
-    languages: string[];
-    frameworks: { framework: string; experience: number }[];
-    databases: string[];
-    cloudPlatforms: string[];
-    aiExperience: { aiExp: string; experience: number }[];
-  };
-}
+// interface LivePreviewProps {
+//   formData: {
+//     personalInfo: { name: string; email: string };
+//     languages: string[];
+//     frameworks: { framework: string; experience: number }[];
+//     databases: string[];
+//     cloudPlatforms: string[];
+//     aiExperience: { aiExp: string; experience: number }[];
+//   };
+// }
 
 
 const LivePreview = () => {

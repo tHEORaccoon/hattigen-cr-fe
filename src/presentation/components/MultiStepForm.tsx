@@ -71,10 +71,11 @@ const MultiStepForm = ({stepInfo, setStepInfo}: {stepInfo: StepInfo, setStepInfo
 
     const { 
         register, 
-        formState:{errors, isSubmitting},
+        // formState:{errors, isSubmitting},
+        formState:{errors},
         control,
         handleSubmit,
-        setError,
+        // setError,
         reset,
         clearErrors
     } = useForm<FormData>({
