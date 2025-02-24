@@ -930,7 +930,7 @@ const removeItem = (category: string, item: string) => {
               "Business Intelligence",
             ].map((category) => (
               <div key={category} className="border-b py-2 pb-5 relative">
-                <button
+                {/* <button
                   className="w-full flex justify-between items-center text-black font-semibold relative"
                   onClick={() => toggleSection(category)}
                 >
@@ -939,7 +939,20 @@ const removeItem = (category: string, item: string) => {
                   <span className="w-3 h-3 bg-green-500 rounded-full absolute right-[150px] top-1/5 transform -translate-y-1/2"></span>
                 )}
                    <ChevronDown className={`transition-transform ${openSections[category] ? "rotate-180" : ""}`} />
-                </button>
+                </button> */}
+                          <button
+            className="w-full flex justify-between items-center text-black font-semibold relative px-4 py-3"
+            onClick={() => toggleSection(category)}
+          >
+            <div className="flex items-center space-x-2">
+              {category}
+              {selectedItems[category]?.length > 0 && (
+                <span className="w-2 h-2 bg-green-500 rounded-full absolute top-3 left-52"></span>
+              )}
+            </div>
+            <ChevronDown className={`transition-transform ${openSections[category] ? "rotate-180" : ""}`} />
+          </button>
+
                 {openSections[category] && (
      <div className="mt-2">
     {/* Input Section */}
