@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Edit, Trash2, ArrowDownToLine } from "lucide-react";
 import LogoImage from "../../assets/logo.png";
 import profileImg from "../../assets/profile-img.png";
-import { useNavigate } from "react-router-dom";
+import { logout } from "@/core/service";
 
 const tabs = [
   "Programming Languages",
@@ -40,11 +40,15 @@ const tabContent: Record<string, { name: string; duration: string }[]> = {
 
 const Profile: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>(tabs[0]); 
-  const navigate = useNavigate(); // Get the navigate function
+  // const navigate = useNavigate(); // Get the navigate function
 
-  const handleLogout = () => {
-    localStorage.setItem("isAuthenticated", "false"); // Store in localStorage
-    navigate("/login"); // Redirect to login page
+  const handleLogout = async () => {
+    try {
+      await logout(); // Backend should clear cookies
+      window.location.href = "/login"; // Redirect to login
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
   };
 
   return (
