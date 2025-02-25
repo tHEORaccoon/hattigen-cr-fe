@@ -53,7 +53,7 @@ const steps: Step[] = [
     }
 ];
 
-const MultiStepForm = ({stepInfo, setStepInfo}: {stepInfo: StepInfo, setStepInfo: (stepInfo: StepInfo) => void}) => {
+const MultiStepForm = ({stepInfo, setStepInfo,}: {stepInfo: StepInfo, setStepInfo: (stepInfo: StepInfo) => void}) => {
     const navigate = useNavigate();
     const [skills, setSkills] = useState<Skill[]>([])
     const [isEditing, setIsEditing] = useState(false);

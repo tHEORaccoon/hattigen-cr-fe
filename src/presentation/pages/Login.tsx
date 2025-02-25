@@ -29,9 +29,9 @@ const LoginScreen: React.FC = () => {
 
   const handleGoogleLogin = async () => {
     try {
-      console.log("VITE_API_URL_LOCAL:", import.meta.env.VITE_API_URL_LOCAL);
+      console.log("VITE_API_URL_LOCAL:", import.meta.env.VITE_API_URL);
 
-      window.location.href = `${import.meta.env.VITE_API_URL_LOCAL}/auth/google`;
+      window.location.href = `${import.meta.env.VITE_API_URL}/auth/google`;
 
 
     } catch (error) {

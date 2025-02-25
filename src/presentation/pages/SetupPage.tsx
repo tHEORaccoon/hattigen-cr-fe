@@ -18,6 +18,7 @@ function Home() {
     currentStep: 0,
     completedSteps: []
   })
+  // const [data, setData] = useState<any>({});
 
   const goTo = (i: number) => {
     if (i > stepInfo.completedSteps.length) return
@@ -30,6 +31,7 @@ function Home() {
       try {
         const response = await getUserProfile();
         console.log(response.data);
+        // setData(response.data);
       } catch (error) {
         console.error("Failed to fetch profile:", error);
       }
@@ -64,7 +66,7 @@ function Home() {
       <div className="flex flex-col items-center justify-center w-full container mx-auto px-4">
         {/* <form className="flex flex-col w-full mt-10 md:mt-40"> */}
           <div className="flex flex-col w-full mt-10 md:mt-40">
-            <MultiStepForm setStepInfo={setStepInfo} stepInfo={stepInfo} />
+            <MultiStepForm setStepInfo={setStepInfo} stepInfo={stepInfo}  />
           </div>
           {/* <Buttons next={next} previous={previous} isFirstStep={isFirstStep} isLastStep={isLastStep} /> */}
         {/* </form> */}
