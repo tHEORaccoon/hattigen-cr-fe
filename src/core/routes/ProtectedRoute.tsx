@@ -12,8 +12,9 @@ const ProtectedRoute = ({ children }: { children: React.ReactElement }) => {
 
   const checkUserLoggedIn = async () => {
     const response = await getUserProfile();
+    console.log("Response: ", response);
+    
     if (response.data) {
-      console.log("Response: ", response);
       return setIsAuthenticated(true);
     }
 
