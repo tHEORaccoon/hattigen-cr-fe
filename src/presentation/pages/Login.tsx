@@ -1,55 +1,17 @@
-import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React from "react";
 import LogoImage from "../../assets/logo.png"; 
 import RaccoonImage from "../../assets/raccoon-image.png"; 
 import GoogleImage from "../../assets/google-icon.png"; 
 import { Text } from "../components/base/Text";
 import { Button } from "../components/base/Button";
-// import axiosInstance from "../../core/service/axiosInstance"; // Your Axios setup
-import { getUserProfile } from "@/core/service";
 
 
 const LoginScreen: React.FC = () => {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        await getUserProfile(); // If this works, user is authenticated
-        console.log("User authenticated");
-        
-        navigate("/setup-page"); // Redirect to setup page
-      } catch (error) {
-        console.error("User not authenticated:", error);
-      }
-    };
-
-    checkAuth();
-  }, [navigate]);
-
   const handleGoogleLogin = async () => {
-    try {
-      console.log("VITE_API_URL_LOCAL:", import.meta.env.VITE_API_URL);
 
-      window.location.href = `${import.meta.env.VITE_API_URL}/auth/google`;
+    console.log("VITE_API_URL_LOCAL:", import.meta.env.VITE_API_URL);
 
-
-    } catch (error) {
-      console.error("Google login failed:", error);
-    }
-    // // Mock authentication logic
-    // localStorage.setItem("isAuthenticated", "true");
-
-    // const hasCompletedSetup = cook.getItem("hasCompletedSetup");
-    // const currentStep = localStorage.getItem("currentStep");
-
-    // if (hasCompletedSetup === "true") {
-    //   navigate("/profile-page"); // Go to Profile if setup is completed
-    // } else if (currentStep) {
-    //   navigate("/setup-page"); // Continue setup if user left midway
-    // } else {
-    //   navigate("/setup-page"); // Start fresh if first-time login
-    // }
+    window.location.href = `${import.meta.env.VITE_API_URL}/auth/google`;
   };
 
   return (

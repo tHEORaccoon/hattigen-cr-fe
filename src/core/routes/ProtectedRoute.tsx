@@ -7,17 +7,18 @@ const ProtectedRoute = ({ children }: { children: React.ReactElement }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
   useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        await getUserProfile(); // Verify user session
-        setIsAuthenticated(true);
-      } catch (error) {
-        setIsAuthenticated(false);
-      }
-    };
-
-    checkAuth();
+    checkUserLoggedIn();
   }, []);
+
+  const checkUserLoggedIn = async () => {
+    const response = await getUserProfile();
+    if (response.data) {
+      console.log("Response: ", response);
+      return setIsAuthenticated(true);
+    }
+
+    return setIsAuthenticated(false);
+  };
 
   if (isAuthenticated === null) return <p>Loading...</p>; // Show a loader while checking
 

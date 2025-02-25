@@ -1,8 +1,7 @@
 import Sidebar from "../components/SideBar";
 import { Text } from "../components/base/Text";
 import MultiStepForm from "../components/MultiStepForm";
-import { useEffect, useState } from "react";
-import { getUserProfile } from "@/core/service";
+import { useState } from "react";
 
 export type StepInfo = {
   step: string,
@@ -17,28 +16,13 @@ function Home() {
     totalSteps: 5,
     currentStep: 0,
     completedSteps: []
-  })
-  // const [data, setData] = useState<any>({});
+  });
 
   const goTo = (i: number) => {
     if (i > stepInfo.completedSteps.length) return
     setStepInfo({...stepInfo, currentStep: i})
   }
 
-
-  useEffect(() => {
-    const FetchProfile = async () => {
-      try {
-        const response = await getUserProfile();
-        console.log(response.data);
-        // setData(response.data);
-      } catch (error) {
-        console.error("Failed to fetch profile:", error);
-      }
-    };
-
-    FetchProfile();
-  }, [])
 
   return (
     <div className="flex flex-col md:flex-row w-full h-screen">
