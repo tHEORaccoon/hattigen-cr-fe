@@ -163,8 +163,8 @@ const MultiStepForm = ({stepInfo, setStepInfo,}: {stepInfo: StepInfo, setStepInf
     const PersonalInfo = () => {
         return (
             <div>
-                <div className="grid gap-8">
-                    <div className="grid grid-cols-2 gap-5">
+                <div className="grid gap-8  ">
+                    <div className="grid md:grid-cols-2 gap-4 ">
                     <Controller 
                         control={control}
                         name="first_name"
@@ -200,7 +200,7 @@ const MultiStepForm = ({stepInfo, setStepInfo,}: {stepInfo: StepInfo, setStepInf
                         )}
                     />
                     </div>
-                    <div className="grid grid-cols-2 gap-5">
+                    <div className="grid md:grid-cols-2 gap-5">
                         <Controller 
                             control={control}
                             name="city"
@@ -253,7 +253,7 @@ const MultiStepForm = ({stepInfo, setStepInfo,}: {stepInfo: StepInfo, setStepInf
                             />
                         </div>
                     </div>
-                    <div className="grid grid-cols-2 gap-5">
+                    <div className="grid md:grid-cols-2 gap-5">
                         <Controller 
                             control={control}
                             name="phone_number"
@@ -377,15 +377,15 @@ const MultiStepForm = ({stepInfo, setStepInfo,}: {stepInfo: StepInfo, setStepInf
                 setIsEditing={() => setIsEditing(!isEditing)} // Toggle edit mode
                 hideEditButton={stepInfo.currentStep === 0 || skills.filter(s => s.category_id === stepInfo.currentStep).length === 0}
             />
-            <div className="flex">
-                <div className="w-3/5 pr-14">
+            <div className="flex md:flex-row flex-col">
+                <div className="w-full md:w-3/5 lg:pr-14 md:pr-8">
                     <div className="mt-10">
                         {/* PERSONAL INFO FORM */}
                          {stepInfo.currentStep === 0 ? <PersonalInfo /> : <OtherSteps />}
                     </div>
                 </div>
 
-                <div className="w-2/5 pl-14">
+                <div className="hidden md:block md:w-2/5 pl-14 ">
                     <LivePreview />
                 </div>
             </div>
