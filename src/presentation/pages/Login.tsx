@@ -1,18 +1,12 @@
 import React from "react";
-import LogoImage from "../../assets/logo.png"; 
-import RaccoonImage from "../../assets/raccoon-image.png"; 
-import GoogleImage from "../../assets/google-icon.png"; 
+import LogoImage from "../../assets/logo.png";
+import RaccoonImage from "../../assets/raccoon-image.png";
+import GoogleImage from "../../assets/google-icon.png";
 import { Text } from "../components/base/Text";
 import { Button } from "../components/base/Button";
-import axiosInstance from "@/core/service/axiosInstance";
-
 
 const LoginScreen: React.FC = () => {
   const handleGoogleLogin = async () => {
-    // const resp = await axiosInstance
-    //   .get(`${import.meta.env.VITE_API_URL}/auth/google`);
-
-    //   console.log("Resp: ", resp);
     window.location.href = `${import.meta.env.VITE_API_URL}/auth/google`;
   };
 
