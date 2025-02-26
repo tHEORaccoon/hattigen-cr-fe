@@ -3,6 +3,8 @@ import { Text } from "../components/base/Text";
 import MultiStepForm from "../components/MultiStepForm";
 import { useState } from "react";
 
+// import { setPersonalInfo } from  "../../core/redux/slice/personalInfoSlice"; // Example action
+
 export type StepInfo = {
   step: string,
   totalSteps: number,
@@ -17,6 +19,8 @@ function Home() {
     currentStep: 0,
     completedSteps: []
   });
+    // Select data from Redux store
+
 
   const goTo = (i: number) => {
     if (i > stepInfo.completedSteps.length) return
@@ -50,7 +54,7 @@ function Home() {
       <div className="flex flex-col items-center justify-center w-full container mx-auto px-4">
         {/* <form className="flex flex-col w-full mt-10 md:mt-40"> */}
           <div className="flex flex-col w-full mt-10 md:mt-40">
-            <MultiStepForm setStepInfo={setStepInfo} stepInfo={stepInfo}  />
+            <MultiStepForm setStepInfo={setStepInfo} stepInfo={stepInfo}/>
           </div>
           {/* <Buttons next={next} previous={previous} isFirstStep={isFirstStep} isLastStep={isLastStep} /> */}
         {/* </form> */}
