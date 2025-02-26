@@ -4,12 +4,18 @@ interface PersonalInfoState {
   firstName: string;
   lastName: string;
   email: string;
+  city:string;
+  country:string;
+  phone:string;
 }
 
 const initialState: PersonalInfoState = {
   firstName: "",
   lastName: "",
   email: "",
+  city: "",
+  phone: "",
+  country: ""
 };
 
 const personalInfoSlice = createSlice({
@@ -24,6 +30,7 @@ const personalInfoSlice = createSlice({
     updatePersonalField: (state, action: PayloadAction<{ field: string; value: string }>) => {
       (state as any)[action.payload.field] = action.payload.value;
     },
+
   },
 });
 
