@@ -12,6 +12,8 @@ import { Text } from "./base/Text";
 import { StepInfo } from "../pages/SetupPage";
 import LivePreview from "./LivePreview";
 import { useNavigate } from "react-router-dom";
+import { useSelector} from "react-redux";
+import { RootState} from  "../../core/redux/store/store"; // Import Redux types
 
 type Step = {
     name: string,
@@ -57,6 +59,10 @@ const MultiStepForm = ({stepInfo, setStepInfo,}: {stepInfo: StepInfo, setStepInf
     const navigate = useNavigate();
     const [skills, setSkills] = useState<Skill[]>([])
     const [isEditing, setIsEditing] = useState(false);
+  // Select user data from Redux store
+  const user = useSelector((state: RootState) => state.auth.user);
+  console.log("User in ProtectedRoute:", user);
+    
 
 
     const saveSkill = (skill: Skill) => {
@@ -92,9 +98,9 @@ const MultiStepForm = ({stepInfo, setStepInfo,}: {stepInfo: StepInfo, setStepInf
         clearErrors
     } = useForm<FormData>({
         defaultValues: {
-            first_name: "",
-            last_name: "",
-            email: "",
+            first_name: user?.first_name,
+            last_name: user?.last_name,
+            email: user?.email,
             city: "",
             country: "",
             postal_code: "",
@@ -161,6 +167,7 @@ const MultiStepForm = ({stepInfo, setStepInfo,}: {stepInfo: StepInfo, setStepInf
     }, [steps])
 
     const PersonalInfo = () => {
+        console.log("Personal Info profile: ", user);
         return (
             <div>
                 <div className="grid gap-8  ">
@@ -175,9 +182,10 @@ const MultiStepForm = ({stepInfo, setStepInfo,}: {stepInfo: StepInfo, setStepInf
                                 placeholder="Kwame"
                                 type="text"
                                 errorMessage={errors?.first_name?.message}
-                                value={(value as string).trim()}
+                                value={(value as string)}
                                 {...register("first_name")}
                                 onChange={onChange}
+                                readOnly
                             />
                         )}
                     />
@@ -193,9 +201,10 @@ const MultiStepForm = ({stepInfo, setStepInfo,}: {stepInfo: StepInfo, setStepInf
                                 placeholder="Ofori"
                                 type="text"
                                 errorMessage={errors?.last_name?.message}
-                                value={(value as string).trim()}
+                                value={(value as string)}
                                 {...register("last_name")}
                                 onChange={onChange}
+                                readOnly
                             />
                         )}
                     />
@@ -283,6 +292,7 @@ const MultiStepForm = ({stepInfo, setStepInfo,}: {stepInfo: StepInfo, setStepInf
                                     value={(value as string).trim()}
                                     {...register("email")}
                                     onChange={onChange}
+                                    readOnly
                                 />
                             )}
                         />
