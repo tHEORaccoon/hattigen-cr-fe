@@ -23,8 +23,8 @@ export const authSlice = createSlice({
     setUser: (state, action: PayloadAction<AuthState["user"]>) => {
       state.user = action.payload;
     },
-    clearUser: (state) => {
-      state.user = null; // ✅ Reset user data
+    clearUser: function (state) {
+      state = initialState;
     },
   },
 });
