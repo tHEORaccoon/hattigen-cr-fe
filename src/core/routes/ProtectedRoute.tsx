@@ -4,9 +4,11 @@ import { getUserProfile } from "../../core/service";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "../../core/redux/store/store";
 import { setUser } from "../../core/redux/slice/authSlice"; // Import correct action
+import Home from "@/presentation/pages/SetupPage";
 
 const ProtectedRoute = ({ children }: { children: React.ReactElement }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const [isOnboardingComplete, setIsOnboardingComplete] = useState<boolean | null>(null);
   const dispatch = useDispatch<AppDispatch>();
 
   // Select user data from Redux store
@@ -25,6 +27,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactElement }) => {
       if (response.data) {
         dispatch(setUser(response.data)); // ✅ Correctly dispatch user data
         setIsAuthenticated(true);
+        setIsOnboardingComplete(response.data.completed_onboarding || false);
       } else {
         setIsAuthenticated(false);
       }
@@ -36,7 +39,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactElement }) => {
 
   if (isAuthenticated === null) return <p>Loading...</p>; // Show a loader while checking
 
-  return isAuthenticated ? children : <Navigate to="/login" />;
+  return isAuthenticated ? (!isOnboardingComplete ? <Home /> : children) : <Navigate to="/login" />;
 };
 
 export default ProtectedRoute;
