@@ -10,6 +10,7 @@ export const createSkill = (payload: Record<string, any>) => axiosInstance.post(
 export const getSkillById = (id: string) => axiosInstance.get(`/skills/${id}`);
 // export const updateSkill = (id: string, payload: Record<string, any>) => axiosInstance.put(`/skills/${id}`, payload);
 export const deleteSkill = (id: string) => axiosInstance.delete(`/skills/${id}`);
+export const getCategory =  () => axiosInstance.get("/skills/category/all");
 
 // Users
 export const getUserProfile = () => axiosInstance.get("/users/profile");

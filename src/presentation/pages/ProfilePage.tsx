@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { X ,ArrowDownToLine } from "lucide-react";
 import { MdEdit } from "react-icons/md";
 import LogoImage from "../../assets/logo.png";
@@ -7,8 +7,10 @@ import pinImg from "../../assets/pin 1.svg";
 import contactImg from "../../assets/contact 1.svg";
 import { logout } from "@/core/service";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch , useSelector} from "react-redux";
 import { clearUser } from "@/core/redux/slice/authSlice";
+import { RootState } from "@/core/redux/store/store";
+import { getCategory } from "@/core/service";
 
 
 const tabs = [
@@ -46,9 +48,39 @@ const tabContent: Record<string, { name: string; duration: string }[]> = {
 };
 
 const Profile: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<string>(tabs[0]); 
+ 
   const navigate = useNavigate(); // Get the navigate function
   const dispatch = useDispatch();
+  const user = useSelector((state: RootState) => state.auth.user);
+  const category = useSelector(((state: RootState) => state))
+
+  console.log(category)
+
+  useEffect(()=>{
+
+     getCategorData()
+
+  }, [])
+
+
+
+  const tabs = user?.skills
+  ? Array.from(new Set(user.skills.map((skill: any) => skill.category)))
+  : [];
+  const [activeTab, setActiveTab] = useState<string>(tabs[0]);
+
+// Group skills by category
+const tabContent: Record<string, { name: string; duration: string }[]> =
+  user?.skills?.reduce((acc: any, skill: any) => {
+    if (!acc[skill.category]) {
+      acc[skill.category] = [];
+    }
+    acc[skill.category].push({ name: skill.name, duration: skill.duration });
+    return acc;
+  }, {}) || {};
+
+
+  // console.log(getCategorData(),"hey mama")
 
   const handleLogout = async () => {
     try {
@@ -58,6 +90,20 @@ const Profile: React.FC = () => {
       }
       dispatch(clearUser()); // ✅ Clears Redux state
       navigate("/login"); // Redirect to login
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
+
+  const getCategorData = async () => {
+    try {
+      const response = await getCategory(); // Backend should clear cookies
+      if (response) {
+        console.log(response);
+        dispatch(response.data)
+      }
+      // dispatch(clearUser()); // ✅ Clears Redux state
+      // navigate("/login"); // Redirect to login
     } catch (error) {
       console.error("Logout failed:", error);
     }
@@ -97,13 +143,14 @@ const Profile: React.FC = () => {
           <div className="mt-6 text-gray-700 space-y-5">
             <div>
               <p className="font-semibold flex items-center leading-[22.5px]"><img src={contactImg} alt="contact" className="mr-2 w-4 h-4" />  Contact</p>
-              <p className="text-gray-500 text-[14px] ">richard.agbekey@codercacoon.com</p>
-              <p className="text-gray-500 text-[14px]">+233 55 450 9087</p>
+              {user? <p className="text-gray-500 text-[14px] ">{
+            user.email }</p>: <p>no name</p>}
+              {user?<p className="text-gray-500 text-[14px]">{user.phone_number}</p>:<p>no number</p>}
             </div>
 
             <div className="mt-6">
               <p className="font-semibold flex items-center"><img src={pinImg} alt="contact" className="mr-2 w-4 h-" /> Address</p>
-              <p className="text-gray-500 text-[14px] ">Suncity, North Legon, Accra, Ghana</p>
+              {user?<p className="text-gray-500 text-[14px] ">{user.city},{user.country}</p>:<p>no city</p>}
             </div>
           </div>
         </div>
@@ -126,7 +173,7 @@ const Profile: React.FC = () => {
         <div className="flex flex-wrap gap-4 border-b pb-2 text-gray-400">
           {tabs.map((tab) => (
             <button
-              key={tab}
+               key={String(tab) || index}
               className={`font-semibold px-3 py-2 ${
                 activeTab === tab ? "border-b-2 border-black text-black" : "text-gray-400"
               }`}
@@ -141,20 +188,15 @@ const Profile: React.FC = () => {
         <div className="mt-4">
           {tabContent[activeTab]?.length ? (
             tabContent[activeTab].map((skill, index) => (
-              <div
-                key={index}
-                className="flex justify-between items-center p-3 bg-white shadow-md rounded-lg my-2 text-gray-700"
-              >
+              <div key={index} className="flex justify-between items-center p-3 bg-white shadow-md rounded-lg my-2">
                 <span className="font-medium">{skill.name}</span>
-
-                {/* Duration & Actions */}
                 <div className="flex space-x-3">
-                  <span className="text-gray-500 md:mr-16 mr-4">{skill.duration}</span>
+                  <span className="text-gray-500">{skill.duration}</span>
                   <button className="text-gray-600 hover:text-black">
                     <MdEdit className="w-5 h-5" />
                   </button>
                   <button className="text-gray-600 hover:text-black">
-                    <X  className="w-5 h-5" />
+                    <X className="w-5 h-5" />
                   </button>
                 </div>
               </div>
