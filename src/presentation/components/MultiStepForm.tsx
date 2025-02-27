@@ -13,8 +13,10 @@ import { StepInfo } from "../pages/SetupPage";
 import LivePreview from "./LivePreview";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { RootState } from "../../core/redux/store/store"; // Import Redux types
+import { AppDispatch, RootState } from "../../core/redux/store/store"; // Import Redux types
 import { updateUserProfile } from "@/core/service";
+import { useDispatch } from "react-redux";
+import { setUser } from "@/core/redux/slice/authSlice";
 
 type Step = {
   name: string;
@@ -103,11 +105,7 @@ const MultiStepForm = ({
 
   // Select user data from Redux store
   const user = useSelector((state: RootState) => state.auth.user);
-  console.log("User in ProtectedRoute:", user);
-
-  useEffect(() => {
-    if (user?.onboarding_completed) navigate("/profile-page");
-  }, []);
+  const dispatch = useDispatch<AppDispatch>();
 
   const saveSkill = (skill: Skill) => {
     setSkills([...skills, skill]);
@@ -208,10 +206,10 @@ const MultiStepForm = ({
 
     const isLastStep = stepInfo.currentStep === steps.length - 1;
     if(!isLastStep){
-        payload.current_step = stepInfo.currentStep;
+        payload.current_step = stepInfo.currentStep + 1;
     }
 
-    if (isLastStep) payload.completed_onboarding = true;
+    if (isLastStep) payload.onboarding_completed = true;
 
 
     if (stepInfo.currentStep === 0) {
@@ -237,9 +235,12 @@ const MultiStepForm = ({
       if (response.status === 200) {
         console.log("Response:", response);
         console.log("Profile updated successfully", payload);
-      }
-      if (stepInfo.currentStep === stepInfo.totalSteps - 1) {
-        navigate("/profile-page");
+        
+        if (stepInfo.currentStep === stepInfo.totalSteps - 1) {
+          dispatch(setUser(response.data?.user));
+          navigate("/profile-page", {replace: true});
+          return;
+        }
       }
       next(); // Move to the next step after saving
     } catch (error) {
@@ -561,3 +562,5 @@ const MultiStepForm = ({
 };
 
 export default MultiStepForm;
+
+

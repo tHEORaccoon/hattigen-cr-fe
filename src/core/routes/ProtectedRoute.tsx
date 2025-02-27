@@ -1,46 +1,55 @@
 import React, { useEffect, useState } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { getUserProfile } from "../../core/service";
-import { useDispatch } from "react-redux";
-import {AppDispatch } from "../../core/redux/store/store";
-import { setUser } from "../../core/redux/slice/authSlice"; // Import correct action
-// import Home from "@/presentation/pages/SetupPage";
-import Profile from "@/presentation/pages/ProfilePage";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../core/redux/store/store";
+import { setUser } from "../../core/redux/slice/authSlice";
+import Home from "@/presentation/pages/SetupPage";
 
-const ProtectedRoute = ({ children }: { children: React.ReactElement }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
-  const [isOnboardingComplete, setIsOnboardingComplete] = useState<boolean | null>(null);
+
+const useFetchUser = () => {
   const dispatch = useDispatch<AppDispatch>();
-
-  // Select user data from Redux store
-  // const user = useSelector((state: RootState) => state.auth.user);
-  // console.log("User in ProtectedRoute:", user);
+  const [loading, setLoading] = useState(true);
+  const user = useSelector((state: RootState) => state.auth.user);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    checkUserLoggedIn();
-  }, []);
-
-  const checkUserLoggedIn = async () => {
-    try {
-      const response = await getUserProfile();
-      console.log("Response:", response);
-
-      if (response.data) {
-        dispatch(setUser(response.data)); // ✅ Correctly dispatch user data
-        setIsAuthenticated(true);
-        setIsOnboardingComplete(response.data.completed_onboarding || false);
-      } else {
-        setIsAuthenticated(false);
+    const fetchUserProfile = async () => {
+      if (user) {
+        setLoading(false);
+        return;
       }
-    } catch (error) {
-      console.error("Error fetching user profile:", error);
-      setIsAuthenticated(false);
-    }
-  };
 
-  if (isAuthenticated === null) return <p>Loading...</p>; // Show a loader while checking
+      try {
+        const response = await getUserProfile();
+        if (!response?.data) {
+          navigate("/auth/login", { replace: true });
+          return;
+        }
 
-  return isAuthenticated ? (!isOnboardingComplete ? <Profile /> : children) : <Navigate to="/login" />;
+        dispatch(setUser(response.data));
+      } catch (error) {
+        console.error("Error fetching user profile:", error);
+        navigate("/auth/login", { replace: true });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserProfile();
+  }, [dispatch, user, navigate]);
+
+  return { user, loading };
+};
+
+const ProtectedRoute = ({ element }: { element: React.ReactElement }) => {
+  const { user, loading } = useFetchUser();
+
+  if (loading) return <p>Loading...</p>; // Show a loader while checking authentication
+
+  if (!user) return <Navigate to="/auth/login" replace />;
+
+  return user.onboarding_completed ? element : <Home />;
 };
 
 export default ProtectedRoute;

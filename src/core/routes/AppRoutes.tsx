@@ -5,42 +5,45 @@ import ProfilePage from "../../presentation/pages/ProfilePage";
 import AdminPage from "../../presentation/pages/Admin";
 import ProtectedRoute from "./ProtectedRoute";
 
-const AppRoutes = () => {
-  return (
-    <Routes>
-      {/* Prevent logged-in users from accessing login */}
-      <Route path="/login" element={<LoginScreen />} />
+const AppRoutes = () => (
+  <Routes>
+    {/* Default Redirection */}
+    <Route path="/" element={<Navigate replace to="/setup-page" />} />
 
-      {/* Protected Routes */}
+    {/* Protected Routes */}
+    {["setup-page", "profile-page", "admin"].map((path) => (
       <Route
-        path="/setup-page"
+        key={path}
+        path={`/${path}`}
         element={
-          <ProtectedRoute>
-            <Home />
-          </ProtectedRoute>
+          <ProtectedRoute
+            element={<PageComponent path={path} />}
+          ></ProtectedRoute>
         }
       />
-      <Route
-        path="/profile-page"
-        element={
-          <ProtectedRoute>
-            <ProfilePage />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/admin"
-        element={
-          <ProtectedRoute>
-            <AdminPage />
-          </ProtectedRoute>
-        }
-      />
+    ))}
 
-      {/* Redirect unknown routes */}
-      <Route path="*" element={<Navigate to="/login" />} />
-    </Routes>
-  );
+    {/* Authentication Routes */}
+    <Route path="/auth/login" element={<LoginScreen />} />
+    <Route path="/auth" element={<Navigate replace to="/auth/login" />} />
+
+    {/* 404 - Redirect unknown routes */}
+    <Route path="*" element={<Navigate to="/auth/login" />} />
+  </Routes>
+);
+
+
+const PageComponent = ({ path }: { path: string }) => {
+  switch (path) {
+    case "setup-page":
+      return <Home />;
+    case "profile-page":
+      return <ProfilePage />;
+    case "admin":
+      return <AdminPage />;
+    default:
+      return null;
+  }
 };
 
 export default AppRoutes;

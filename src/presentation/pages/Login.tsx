@@ -11,39 +11,12 @@ import { Button } from "../components/base/Button";
 // import { getUserProfile } from "@/core/service";
 
 const LoginScreen: React.FC = () => {
-  // const navigate = useNavigate();
-  // const dispatch = useDispatch<AppDispatch>();
-  // const user = useSelector((state: RootState) => state.auth.user);
-  
-  // const handleFetchUser = async() => {
-  //   try {
-  //     const response = await getUserProfile();
-  //     console.log("Response:", response);
-
-  //     if (response.data) {
-  //       dispatch(setUser(response.data)); // ✅ Correctly dispatch user data
-  //       // setIsAuthenticated(true);
-  //       // setIsOnboardingComplete(response.data.completed_onboarding || false);
-  //     } else {
-  //       // setIsAuthenticated(false);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching user profile:", error);
-  //     // setIsAuthenticated(false);
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   console.log("Üser: ", user);  
-  //   if (user) navigate("/setup-page");
-  //   // handleFetchUser();
-
-   
-  // }, []);
-
  
   const handleGoogleLogin = async () => {
-    window.location.href = `${import.meta.env.VITE_API_URL}/auth/google`;
+    // const url = `${import.meta.env.VITE_API_URL}/auth/google?redirectUrl=${window.location.origin}/#/setup-page`;
+    const redirectUrl = `${window.location.origin}/#/setup-page`;
+    window.location.href = `${import.meta.env.VITE_API_URL}/auth/google?redirectUrl=${encodeURIComponent(redirectUrl)}`;
+    console.log(`${import.meta.env.VITE_API_URL}/auth/google?redirectUrl=${encodeURIComponent(redirectUrl)}`);
   };
 
   return (

@@ -57,7 +57,7 @@ const Profile: React.FC = () => {
         console.log(response.data);
       }
       dispatch(clearUser()); // ✅ Clears Redux state
-      navigate("/login"); // Redirect to login
+      navigate("/auth/login"); // Redirect to login
     } catch (error) {
       console.error("Logout failed:", error);
     }
