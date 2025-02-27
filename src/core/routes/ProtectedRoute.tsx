@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { getUserProfile } from "../../core/service";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState, AppDispatch } from "../../core/redux/store/store";
+import { useDispatch } from "react-redux";
+import {AppDispatch } from "../../core/redux/store/store";
 import { setUser } from "../../core/redux/slice/authSlice"; // Import correct action
-import Home from "@/presentation/pages/SetupPage";
+// import Home from "@/presentation/pages/SetupPage";
+import Profile from "@/presentation/pages/ProfilePage";
 
 const ProtectedRoute = ({ children }: { children: React.ReactElement }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
@@ -12,8 +13,8 @@ const ProtectedRoute = ({ children }: { children: React.ReactElement }) => {
   const dispatch = useDispatch<AppDispatch>();
 
   // Select user data from Redux store
-  const user = useSelector((state: RootState) => state.auth.user);
-  console.log("User in ProtectedRoute:", user);
+  // const user = useSelector((state: RootState) => state.auth.user);
+  // console.log("User in ProtectedRoute:", user);
 
   useEffect(() => {
     checkUserLoggedIn();
@@ -39,7 +40,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactElement }) => {
 
   if (isAuthenticated === null) return <p>Loading...</p>; // Show a loader while checking
 
-  return isAuthenticated ? (!isOnboardingComplete ? <Home /> : children) : <Navigate to="/login" />;
+  return isAuthenticated ? (!isOnboardingComplete ? <Profile /> : children) : <Navigate to="/login" />;
 };
 
 export default ProtectedRoute;

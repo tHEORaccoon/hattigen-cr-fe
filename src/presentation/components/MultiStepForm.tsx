@@ -174,10 +174,14 @@ const MultiStepForm = ({
     // Prepare the payload based on the step
     const payload: Record<string, any> = {};
     console.log("1st payload", payload);
-    payload.current_step = stepInfo.currentStep;
 
     const isLastStep = stepInfo.currentStep === steps.length - 1;
+    if(!isLastStep){
+        payload.current_step = stepInfo.currentStep;
+    }
+
     if (isLastStep) payload.completed_onboarding = true;
+
 
     if (stepInfo.currentStep === 0) {
       payload.city = values.city;
