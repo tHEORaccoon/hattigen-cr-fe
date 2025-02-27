@@ -24,7 +24,7 @@ export const authSlice = createSlice({
       state.user = action.payload;
     },
     clearUser: (state) => {
-      state.user = null; // ✅ Reset user data
+      state = initialState;
     },
   },
 });

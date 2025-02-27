@@ -1,32 +1,49 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
-import LoginScreen from '../../presentation/pages/Login';
-import Home from '../../presentation/pages/SetupPage';
-import ProfilePage from '../../presentation/pages/ProfilePage';
-import AdminPage from '../../presentation/pages/Admin';
-import { useSelector } from "react-redux";
-import { RootState } from "../../core/redux/store/store";
-import ProtectedRoute from './ProtectedRoute';
+import { Routes, Route, Navigate } from "react-router-dom";
+import LoginScreen from "../../presentation/pages/Login";
+import Home from "../../presentation/pages/SetupPage";
+import ProfilePage from "../../presentation/pages/ProfilePage";
+import AdminPage from "../../presentation/pages/Admin";
+import ProtectedRoute from "./ProtectedRoute";
 
+const AppRoutes = () => (
+  <Routes>
+    {/* Default Redirection */}
+    <Route path="/" element={<Navigate replace to="/setup-page" />} />
 
-const AppRoutes = () => {
-  const user = useSelector((state: RootState) => state.auth.user);
-  return (
-    <Routes>
-      {/* Prevent logged-in users from accessing login */}
+    {/* Protected Routes */}
+    {["setup-page", "profile-page", "admin"].map((path) => (
       <Route
-        path="/login"
-        element={user ? <Navigate to="/setup-page" replace /> : <LoginScreen />}
+        key={path}
+        path={`/${path}`}
+        element={
+          <ProtectedRoute
+            element={<PageComponent path={path} />}
+          ></ProtectedRoute>
+        }
       />
+    ))}
 
-      {/* Protected Routes */}
-      <Route path="/setup-page" element={<ProtectedRoute><Home /></ProtectedRoute>} />
-      <Route path="/profile-page" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
-      <Route path="/admin" element={<ProtectedRoute><AdminPage /></ProtectedRoute>} />
+    {/* Authentication Routes */}
+    <Route path="/auth/login" element={<LoginScreen />} />
+    <Route path="/auth" element={<Navigate replace to="/auth/login" />} />
 
-      {/* Redirect unknown routes */}
-      <Route path="*" element={<Navigate to="/login" />} />
-    </Routes>
-  );
+    {/* 404 - Redirect unknown routes */}
+    <Route path="*" element={<Navigate to="/auth/login" />} />
+  </Routes>
+);
+
+
+const PageComponent = ({ path }: { path: string }) => {
+  switch (path) {
+    case "setup-page":
+      return <Home />;
+    case "profile-page":
+      return <ProfilePage />;
+    case "admin":
+      return <AdminPage />;
+    default:
+      return null;
+  }
 };
 
 export default AppRoutes;
