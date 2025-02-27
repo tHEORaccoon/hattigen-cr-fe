@@ -385,7 +385,7 @@ const MultiStepForm = ({
     );
   };
 
-  const CategorySelection = () => {
+  const CategorySection = () => {
     return (
         <div className="min-h-screen flex bg-black text-white">
         <div className="flex-1 p-10 bg-white text-black">
@@ -507,7 +507,7 @@ const MultiStepForm = ({
         <div className="w-full md:w-3/5 lg:pr-14 md:pr-8">
           <div className="mt-10">
             {/* PERSONAL INFO FORM */}
-            {stepInfo.currentStep === 0 ? <PersonalInfo /> : <OtherSteps />}
+            {stepInfo.currentStep === 0 ? <PersonalInfo /> : stepInfo.currentStep === 1 ? <CategorySection/> : <OtherSteps />}
           </div>
         </div>
 
