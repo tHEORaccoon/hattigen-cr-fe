@@ -1,7 +1,10 @@
 import React, { useState } from "react";
-import { Edit, Trash2, ArrowDownToLine } from "lucide-react";
+import { X ,ArrowDownToLine } from "lucide-react";
+import { MdEdit } from "react-icons/md";
 import LogoImage from "../../assets/logo.png";
 import profileImg from "../../assets/profile-img.png";
+import pinImg from "../../assets/pin 1.svg";
+import contactImg from "../../assets/contact 1.svg";
 import { logout } from "@/core/service";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -61,7 +64,7 @@ const Profile: React.FC = () => {
   };
 
   return (
-    <div className="w-screen h-screen bg-gray-100 flex flex-col">
+    <div className="w-screen h-screen bg-white flex flex-col">
       {/* Header Section */}
       <div className="flex justify-between items-center border-b pb-4 px-4 sm:px-8 md:px-16 py-4 bg-white flex-wrap">
         <img
@@ -83,8 +86,8 @@ const Profile: React.FC = () => {
       </div>
 
       {/* Profile Section */}
-      <div className="flex flex-col md:flex-row bg-white shadow-md p-6 m-6 rounded-lg justify-between items-center relative">
-        <div className="w-48 h-60 sm:w-56 sm:h-72 rounded-lg overflow-hidden border-4 border-white shadow-md">
+      <div className="flex flex-col md:flex-row  p-6 m-6 justify-between items-center relative">
+        <div className="w-48 h-60 sm:w-56 sm:h-72 rounded-lg overflow-hidden border-4 border-white">
           <img src={profileImg} alt="Profile" className="w-full h-full object-cover" />
         </div>
         <div className="ml-6 flex-1">
@@ -93,21 +96,21 @@ const Profile: React.FC = () => {
 
           <div className="mt-6 text-gray-700 space-y-5">
             <div>
-              <p className="font-semibold flex items-center">📧 Contact</p>
-              <p className="text-gray-500">richard.agbekey@codercacoon.com</p>
-              <p className="text-gray-500">+233 55 450 9087</p>
+              <p className="font-semibold flex items-center leading-[22.5px]"><img src={contactImg} alt="contact" className="mr-2 w-4 h-4" />  Contact</p>
+              <p className="text-gray-500 text-[14px] ">richard.agbekey@codercacoon.com</p>
+              <p className="text-gray-500 text-[14px]">+233 55 450 9087</p>
             </div>
 
             <div className="mt-6">
-              <p className="font-semibold flex items-center">📍 Address</p>
-              <p className="text-gray-500">Suncity, North Legon, Accra, Ghana</p>
+              <p className="font-semibold flex items-center"><img src={pinImg} alt="contact" className="mr-2 w-4 h-" /> Address</p>
+              <p className="text-gray-500 text-[14px] ">Suncity, North Legon, Accra, Ghana</p>
             </div>
           </div>
         </div>
         <div className="hidden sm:flex c++0top-4 right-4 space-x-4">
       {/* Edit Button */}
-      <button className="absolute top-4 left-1/3 bg-gray-100 p-2 rounded-full hover:bg-gray-200">
-        <Edit className="w-5 h-5 text-gray-600" />
+      <button className="absolute top-4 left-1/3 bg-gray-200 p-2 rounded-full hover:bg-gray-300">
+        <MdEdit className="w-5 h-5 text-gray-600 hover:text-gray-700" />
       </button>
 
       {/* Senior Level Badge */}
@@ -148,10 +151,10 @@ const Profile: React.FC = () => {
                 <div className="flex space-x-3">
                   <span className="text-gray-500 md:mr-16 mr-4">{skill.duration}</span>
                   <button className="text-gray-600 hover:text-black">
-                    <Edit className="w-5 h-5" />
+                    <MdEdit className="w-5 h-5" />
                   </button>
-                  <button className="text-red-500 hover:text-red-700">
-                    <Trash2 className="w-5 h-5" />
+                  <button className="text-gray-600 hover:text-black">
+                    <X  className="w-5 h-5" />
                   </button>
                 </div>
               </div>
