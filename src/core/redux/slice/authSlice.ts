@@ -1,22 +1,23 @@
-import { createSlice } from '@reduxjs/toolkit'
-import type { PayloadAction } from '@reduxjs/toolkit'
+import { createSlice } from "@reduxjs/toolkit";
+import type { PayloadAction } from "@reduxjs/toolkit";
 
-interface User{
+interface User {
   first_name: string;
   last_name: string;
   email: string;
+  current_step?: number | 0;
+  onboarding_completed?: boolean;
 }
 interface AuthState {
-  user:User | null,
+  user: User | null;
 }
-
 
 const initialState: AuthState = {
-  user: null
-}
+  user: null,
+};
 
 export const authSlice = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState,
   reducers: {
     setUser: (state, action: PayloadAction<AuthState["user"]>) => {
@@ -26,7 +27,7 @@ export const authSlice = createSlice({
       state.user = null; // ✅ Reset user data
     },
   },
-})
+});
 
 export const { setUser, clearUser } = authSlice.actions;
 export default authSlice.reducer;
