@@ -14,8 +14,8 @@ const AppRoutes = () => {
 
       {/* Protected Routes */}
       <Route path="/setup-page" element={<ProtectedRoute><Home /></ProtectedRoute>} />
-      <Route path="/profile-page" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
-      <Route path="/admin" element={<AdminPage />} />
+      <Route path="/profile-page" element={<ProfilePage />} />
+      <Route path="/admin" element={<ProtectedRoute><AdminPage /></ProtectedRoute>} />
 
   
 
