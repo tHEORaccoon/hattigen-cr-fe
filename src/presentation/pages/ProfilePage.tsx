@@ -64,7 +64,7 @@ const Profile: React.FC = () => {
   };
 
   return (
-    <div className="w-screen h-screen bg-gray-100 flex flex-col">
+    <div className="w-screen h-screen bg-white flex flex-col">
       {/* Header Section */}
       <div className="flex justify-between items-center border-b pb-4 px-4 sm:px-8 md:px-16 py-4 bg-white flex-wrap">
         <img
@@ -96,14 +96,14 @@ const Profile: React.FC = () => {
 
           <div className="mt-6 text-gray-700 space-y-5">
             <div>
-              <p className="font-semibold flex items-center"><img src={contactImg} alt="contact" className="mr-2 w-4 h-4" />  Contact</p>
-              <p className="text-gray-500 text-[15px] ">richard.agbekey@codercacoon.com</p>
-              <p className="text-gray-500">+233 55 450 9087</p>
+              <p className="font-semibold flex items-center leading-[22.5px]"><img src={contactImg} alt="contact" className="mr-2 w-4 h-4" />  Contact</p>
+              <p className="text-gray-500 text-[14px] ">richard.agbekey@codercacoon.com</p>
+              <p className="text-gray-500 text-[14px]">+233 55 450 9087</p>
             </div>
 
             <div className="mt-6">
               <p className="font-semibold flex items-center"><img src={pinImg} alt="contact" className="mr-2 w-4 h-" /> Address</p>
-              <p className="text-gray-500 text-[15px] ">Suncity, North Legon, Accra, Ghana</p>
+              <p className="text-gray-500 text-[14px] ">Suncity, North Legon, Accra, Ghana</p>
             </div>
           </div>
         </div>
