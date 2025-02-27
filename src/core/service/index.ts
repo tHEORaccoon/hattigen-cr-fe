@@ -14,3 +14,4 @@ export const deleteSkill = (id: string) => axiosInstance.delete(`/skills/${id}`)
 // Users
 export const getUserProfile = () => axiosInstance.get("/users/profile");
 export const getAllUsers = () => axiosInstance.get("/users/all");
+export const updateUserProfile = (payload: Record<string, any>) => axiosInstance.patch("/users/profile/update", payload);

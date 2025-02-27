@@ -24,4 +24,48 @@ axiosInstance.interceptors.response.use(
   }
 );
 
+
+// ✅ Track refresh state
+let isRefreshing = false;
+let refreshSubscribers: (() => void)[] = [];
+
+// ✅ Function to refresh the token
+const refreshToken = async () => {
+  if (!isRefreshing) {
+    isRefreshing = true;
+    try {
+      await axiosInstance.post("/auth/refresh");
+      refreshSubscribers.forEach((callback) => callback()); // Retry failed requests
+    } catch (error) {
+      console.error("Refresh token failed:", error);
+      return Promise.reject(error);
+    } finally {
+      isRefreshing = false;
+      refreshSubscribers = [];
+    }
+  }
+};
+
+// ✅ Interceptor to retry failed requests
+axiosInstance.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+
+      try {
+        await refreshToken(); // Wait for token refresh
+        return axiosInstance(originalRequest); // Retry failed request
+      } catch (refreshError) {
+        console.error("Token refresh failed. Logging out...");
+        window.location.href = "/login"; // Redirect to login
+      }
+    }
+
+    return Promise.reject(error);
+  }
+);
+
 export default axiosInstance;

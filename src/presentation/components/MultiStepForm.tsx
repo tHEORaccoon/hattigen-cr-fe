@@ -14,6 +14,8 @@ import LivePreview from "./LivePreview";
 import { useNavigate } from "react-router-dom";
 import { useSelector} from "react-redux";
 import { RootState} from  "../../core/redux/store/store"; // Import Redux types
+import { updateUserProfile, getUserProfile } from "@/core/service";
+
 
 type Step = {
     name: string,
@@ -24,7 +26,8 @@ type Step = {
 type Skill = {
     title: string,
     months_of_experience: number,
-    category_id: number
+    category_id: number,
+    skill_id: string
 }
 
 const steps: Step[] = [
@@ -63,11 +66,26 @@ const MultiStepForm = ({stepInfo, setStepInfo,}: {stepInfo: StepInfo, setStepInf
   const user = useSelector((state: RootState) => state.auth.user);
   console.log("User in ProtectedRoute:", user);
     
+    useEffect(() => {
+        const fetchProfile = async () => {
+            try {
+                const response = await getUserProfile();
+                if (response.status === 200) {
+                    console.log("Response:", response.data);
+                }
+            } catch (error) {
+                console.error("Error fetching user profile:", error);
+            }
+        };
+
+        fetchProfile();
+    }, [])
 
 
     const saveSkill = (skill: Skill) => {
         setSkills([...skills, skill]);
     }
+
 
     const formSchema = z.object({
         // ...(currentStep === 0 ? {
@@ -129,28 +147,68 @@ const MultiStepForm = ({stepInfo, setStepInfo,}: {stepInfo: StepInfo, setStepInf
         
     }
 
-    const handleSave:SubmitHandler<FormData> = async (values: FormData) => {
-        console.log("Form fields: ", values);
-        console.log("Current step", stepInfo.currentStep);
+    const handleCreate: SubmitHandler<FormData> = async (values: FormData) => {
         if (stepInfo.currentStep > 0) {
             saveSkill({
-                category_id: stepInfo.currentStep, 
-                title: values.skill as string, 
-                months_of_experience: values.months as number
+                category_id: stepInfo.currentStep,
+                skill_id: stepInfo.currentStep.toString(),
+                title: values.skill as string,
+                months_of_experience: Number(values.months),
             });
 
             reset({
-                first_name: values.first_name,
-                last_name: values.last_name,
-                email: values.email,
-                city: values.city,
-                country: values.country,
-                postal_code: values.postal_code,
-                phone_number: values.phone_number, skill: '', months: '' }, { keepValues: false });
-
-            return;
+                ...values,
+                skill: '',
+                months: ''
+            }, { keepValues: false });
         }
-        next();
+    }
+
+    const handleSave = async (values: any) => {
+        console.log("Form fields: ", values);
+        console.log("Current step", stepInfo.currentStep);
+        
+    
+        // Prepare the payload based on the step
+        const payload: Record<string, any> = {};
+        console.log("1st payload", payload);
+        
+    
+        if (stepInfo.currentStep === 0) {
+            payload.city = values.city;
+            payload.country = values.country;
+            // payload.zip_code = values.postal_code;
+            payload.phone_number = values.phone_number;
+
+            console.log("Payload in if", payload);
+        } else {
+            // Other steps (Skills, Frameworks, etc.)
+            console.log("skills", skills);
+
+            payload.skills = skills.map((skill) => ({
+                skill_id: "67bd7cce6115934c44ece7d3",
+                months_of_experience: skill.months_of_experience
+            }))
+            console.log("payload", payload.skills);
+        }
+        
+    
+        try {
+            console.log("Payload in try", payload);
+            const response = await updateUserProfile(payload); // Use the function instead of direct axios call
+            if(response.status === 200) {
+                console.log("Response:", response);
+                console.log("Profile updated successfully", payload);
+                
+            }
+            if (stepInfo.currentStep === stepInfo.totalSteps - 1 ){
+                navigate('/profile-page') 
+            }
+            next() // Move to the next step after saving
+        } catch (error) {
+            console.error("Error updating profile:", error);
+        }
+
     };
 
     const handleDeleteSkill = (index: number) => {
@@ -297,6 +355,7 @@ const MultiStepForm = ({stepInfo, setStepInfo,}: {stepInfo: StepInfo, setStepInf
                             )}
                         />
                     </div>
+                    <button>hello there</button>
                 </div>
             </div> 
         )
@@ -348,7 +407,7 @@ const MultiStepForm = ({stepInfo, setStepInfo,}: {stepInfo: StepInfo, setStepInf
                     </div>
                     <button 
                         className="w-[40px] h-[40px] bg-primary rounded-full p-0 mt-6 flex active:bg-primary-dark"
-                        onClick={handleSubmit(handleSave)}>
+                        onClick={handleSubmit(handleCreate)}>
                         <img
                             src={CheckMark}
                             alt="Google Icon"
@@ -404,7 +463,7 @@ const MultiStepForm = ({stepInfo, setStepInfo,}: {stepInfo: StepInfo, setStepInf
                 {stepInfo.currentStep === 0 ? <div></div> : <Button variant="outline" onClick={previous}>Back</Button>}
 
                 {/* Continue Button - Always in the Same Position */}
-                <Button onClick={stepInfo.currentStep === 0 ? handleSubmit(handleSave) : stepInfo.currentStep === stepInfo.totalSteps - 1 ? () => navigate('/profile-page') : () => next()}>{stepInfo.currentStep === steps.length - 1 ? "Finish" : "Continue"}</Button>
+                <Button onClick={stepInfo.currentStep === 0 ? handleSubmit(handleSave) : () => handleSave("")}>{stepInfo.currentStep === steps.length - 1 ? "Finish" : "Continue"}</Button>
             </div>
 
             <style>
