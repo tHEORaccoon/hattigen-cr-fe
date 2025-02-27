@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { getUserProfile } from "../../core/service";
+
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../core/redux/store/store";
 import { setUser } from "../../core/redux/slice/authSlice";
 import Home from "@/presentation/pages/SetupPage";
+
+
 
 
 const useFetchUser = () => {
@@ -49,7 +52,9 @@ const ProtectedRoute = ({ element }: { element: React.ReactElement }) => {
 
   if (!user) return <Navigate to="/auth/login" replace />;
 
+
   return user.onboarding_completed ? element : <Home />;
+
 };
 
 export default ProtectedRoute;

@@ -62,6 +62,24 @@ const steps: Step[] = [
   },
 ];
 
+const categories = [
+    "Programming Languages",
+    "Databases",
+    "Frameworks",
+    "Tools",
+    "Skillsets",
+    "Cloud Platforms",
+    "AI Experience",
+    "Mobile Environments",
+    "E-Learning Tools",
+    "Spoken Languages",
+    "Office Tools",
+    "Project Management Tools",
+    "Roles",
+    "Business Intelligence",
+    "Reference Brands/Projects",
+  ];
+
 const MultiStepForm = ({
   stepInfo,
   setStepInfo,
@@ -72,6 +90,19 @@ const MultiStepForm = ({
   const navigate = useNavigate();
   const [skills, setSkills] = useState<Skill[]>([]);
   const [isEditing, setIsEditing] = useState(false);
+
+
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+
+  const toggleCategory = (category: string) => {
+    setSelectedCategories((prev) =>
+      prev.includes(category)
+        ? prev.filter((c) => c !== category)
+        : [...prev, category]
+    );
+  };
+  
+
   // Select user data from Redux store
   const user = useSelector((state: RootState) => state.auth.user);
   const dispatch = useDispatch<AppDispatch>();
@@ -175,10 +206,13 @@ const MultiStepForm = ({
 
     const isLastStep = stepInfo.currentStep === steps.length - 1;
     if(!isLastStep){
+
         payload.current_step = stepInfo.currentStep + 1;
     }
 
     if (isLastStep) payload.onboarding_completed = true;
+
+
 
 
     if (stepInfo.currentStep === 0) {
@@ -359,6 +393,30 @@ const MultiStepForm = ({
     );
   };
 
+  const CategorySection = () => {
+    return (
+        <div className="min-h-screen flex bg-black text-white">
+        <div className="flex-1 p-10 bg-white text-black">
+          <h2 className="text-2xl font-bold">Select what categories you have experience in</h2>
+          <p className="text-gray-600">Include your full name and at least one way for employers to reach you.</p>
+  
+          <div className="mt-6 flex flex-wrap gap-3">
+            {categories.map((category) => (
+              <button
+                key={category}
+                onClick={() => toggleCategory(category)}
+                className={`px-4 py-2 rounded-full transition-all font-medium ${selectedCategories.includes(category) ? "bg-black text-white" : "bg-gray-200 text-black border border-black"}`}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
+  
+        </div>
+      </div>
+    );
+  };
+
   const OtherSteps = () => {
     return (
       <div>
@@ -457,7 +515,7 @@ const MultiStepForm = ({
         <div className="w-full md:w-3/5 lg:pr-14 md:pr-8">
           <div className="mt-10">
             {/* PERSONAL INFO FORM */}
-            {stepInfo.currentStep === 0 ? <PersonalInfo /> : <OtherSteps />}
+            {stepInfo.currentStep === 0 ? <PersonalInfo /> : stepInfo.currentStep === 1 ? <CategorySection/> : <OtherSteps />}
           </div>
         </div>
 

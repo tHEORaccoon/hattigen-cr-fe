@@ -1,17 +1,11 @@
-// import React, { useEffect } from "react";
 import LogoImage from "../../assets/logo.png";
 import RaccoonImage from "../../assets/raccoon-image.png";
 import GoogleImage from "../../assets/google-icon.png";
 import { Text } from "../components/base/Text";
 import { Button } from "../components/base/Button";
-// import { AppDispatch, RootState } from "@/core/redux/store/store";
-// import { useDispatch, useSelector } from "react-redux";
-// import { useNavigate } from "react-router-dom";
-// import { setUser } from "@/core/redux/slice/authSlice";
-// import { getUserProfile } from "@/core/service";
 
 const LoginScreen: React.FC = () => {
- 
+
   const handleGoogleLogin = async () => {
     // const url = `${import.meta.env.VITE_API_URL}/auth/google?redirectUrl=${window.location.origin}/#/setup-page`;
     const redirectUrl = `${window.location.origin}/#/setup-page`;
