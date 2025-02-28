@@ -9,6 +9,7 @@ import { logout } from "@/core/service";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { clearUser } from "@/core/redux/slice/authSlice";
+import CVPreviewModal from "../components/CVPreviewModal";
 
 
 const tabs = [
@@ -48,6 +49,7 @@ const tabContent: Record<string, { name: string; duration: string }[]> = {
 const Profile: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>(tabs[0]); 
   const navigate = useNavigate(); // Get the navigate function
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const dispatch = useDispatch();
 
   const handleLogout = async () => {
@@ -73,16 +75,18 @@ const Profile: React.FC = () => {
           className="w-10 sm:w-12 md:w-24 max-w-[80px] md:max-w-[100px]"
         />
          <div className="flex items-center space-x-1 sm:space-x-4 flex-wrap">
-          <button className="text-gray-500 hover:text-black flex items-center text-sm sm:text-base px-2 py-1 sm:px-4 sm:py-2">
+          <button onClick={() => setIsPreviewOpen(true)} className="text-gray-500 hover:text-black flex items-center text-sm sm:text-base px-2 py-1 sm:px-4 sm:py-2">
             Preview
           </button>
-          <button className="text-gray-600 hover:text-black flex items-center text-sm sm:text-base px-2 py-1 sm:px-4 sm:py-2">
+          <button className="text-gray-500 hover:text-black flex items-center text-sm sm:text-base px-2 py-1 sm:px-4 sm:py-2">
             Download CV <ArrowDownToLine className="w-4 h-4 sm:w-5 sm:h-5 ml-1 sm:ml-2" />
           </button>
           <button onClick={handleLogout} className="text-red-500 hover:text-red-700 font-medium text-sm sm:text-base px-2 py-1 sm:px-4 sm:py-2">
             Logout
           </button>
         </div>
+            {/* CV Preview Popup */}
+        <CVPreviewModal isOpen={isPreviewOpen} onClose={() => setIsPreviewOpen(false)} />
       </div>
 
       {/* Profile Section */}
