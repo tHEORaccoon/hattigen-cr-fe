@@ -64,10 +64,10 @@ const Profile: React.FC = () => {
 
 
 
-  const tabs = user?.skills
+  const tabs :  string[] = user?.skills
   ? Array.from(new Set(user.skills.map((skill: any) => skill.category)))
   : [];
-  const [activeTab, setActiveTab] = useState<string>(tabs[0]);
+  const [activeTab, setActiveTab] = useState<string>(tabs[0] || "")
 
 // Group skills by category
 const tabContent: Record<string, { name: string; duration: string }[]> =
@@ -173,7 +173,7 @@ const tabContent: Record<string, { name: string; duration: string }[]> =
         <div className="flex flex-wrap gap-4 border-b pb-2 text-gray-400">
           {tabs.map((tab) => (
             <button
-               key={String(tab) || index}
+               key={String(tab)}
               className={`font-semibold px-3 py-2 ${
                 activeTab === tab ? "border-b-2 border-black text-black" : "text-gray-400"
               }`}
