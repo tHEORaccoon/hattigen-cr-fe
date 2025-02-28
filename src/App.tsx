@@ -1,12 +1,8 @@
-import { HashRouter as Router } from "react-router-dom";
-import AppRoutes from "./core/routes/AppRoutes";
+import { RouterProvider } from "react-router-dom";
+import router from "./core/routes/AppRoutes";
 
 function App() {
-  return (
-    <Router>
-      <AppRoutes/> {/* Render the AppRoutes component */}
-    </Router>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;

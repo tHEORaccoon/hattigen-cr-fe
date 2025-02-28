@@ -14,7 +14,7 @@ const LoginScreen: React.FC = () => {
  
   const handleGoogleLogin = async () => {
     // const url = `${import.meta.env.VITE_API_URL}/auth/google?redirectUrl=${window.location.origin}/#/setup-page`;
-    const redirectUrl = `${window.location.origin}/#/setup-page`;
+    const redirectUrl = `${window.location.origin}/setup-page`;
     window.location.href = `${import.meta.env.VITE_API_URL}/auth/google?redirectUrl=${encodeURIComponent(redirectUrl)}`;
     console.log(`${import.meta.env.VITE_API_URL}/auth/google?redirectUrl=${encodeURIComponent(redirectUrl)}`);
   };
