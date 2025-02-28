@@ -80,6 +80,23 @@ const categories = [
     "Reference Brands/Projects",
   ];
 
+  // const groupedCategories = [
+  //   {
+  //     name: "Programming Languages",
+  //     slug: "programming-languages",
+  //     title: "Let’s add your languages",
+  //     description: "Add every programming language you have ever worked with.",
+  //     sub_categories: ["HTML", "JAVA", "Python", "C++", "C#", "JavaScript"],
+  //   },
+  //   {
+  //     name: "Spoken Languages",
+  //     slug: "spoken-languages",
+  //     title: "Let’s add your spoken languages",
+  //     description: "Add every spoken language you have ever worked with.",
+  //     sub_categories: ["TWI", "English"],
+  //   },
+  // ];
+
 const MultiStepForm = ({
   stepInfo,
   setStepInfo,
