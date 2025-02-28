@@ -409,7 +409,7 @@ const MultiStepForm = ({
 
   const CategorySection = () => {
     return (
-        <div className="min-h-screen flex bg-black text-white">
+        <div className="flex bg-black text-white">
         <div className="flex-1 p-10 bg-white text-black">
           <h2 className="text-2xl font-bold">Select what categories you have experience in</h2>
           <p className="text-gray-600">Include your full name and at least one way for employers to reach you.</p>
