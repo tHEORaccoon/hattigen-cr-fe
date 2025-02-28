@@ -8,7 +8,7 @@ import ProtectedRoute from "./ProtectedRoute";
 const AppRoutes = () => (
   <Routes>
     {/* Default Redirection */}
-    <Route path="/" element={<Navigate replace to="/setup-page" />} />
+    {/* <Route path="/" element={<Navigate replace to="/setup-page" />} /> */}
 
     {/* Protected Routes */}
     {["setup-page", "profile-page", "admin"].map((path) => (

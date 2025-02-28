@@ -401,7 +401,6 @@ const MultiStepForm = ({
               )}
             />
           </div>
-          <button>hello there</button>
         </div>
       </div>
     );
