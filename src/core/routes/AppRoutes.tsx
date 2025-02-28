@@ -1,14 +1,16 @@
 import { createBrowserRouter, Navigate, RouteObject } from "react-router-dom";
-import LoginScreen from "../../presentation/pages/Login";
-import Home from "../../presentation/pages/SetupPage";
-import ProfilePage from "../../presentation/pages/ProfilePage";
-import AdminPage from "../../presentation/pages/Admin";
+import {
+  SetupPage,
+  ProfilePage,
+  AdminPage,
+  LoginPage,
+} from "../../presentation/pages";
 import ProtectedRoute from "./ProtectedRoute";
 
 const PageComponent = ({ path }: { path: string }) => {
   switch (path) {
     case "setup-page":
-      return <Home />;
+      return <SetupPage />;
     case "profile-page":
       return <ProfilePage />;
     case "admin":
@@ -23,6 +25,7 @@ const routes: RouteObject[] = [
     path: "/",
     element: <ProtectedRoute />,
     children: [
+      { index: true, element: <Navigate to="/profile-page" /> },
       ...["setup-page", "profile-page", "admin"].map((path) => ({
         path,
         element: <PageComponent path={path} />,
@@ -31,7 +34,7 @@ const routes: RouteObject[] = [
   },
   {
     path: "/auth",
-    children: [{ path: "login", element: <LoginScreen /> }],
+    children: [{ path: "login", element: <LoginPage /> }],
   },
   {
     path: "*",
