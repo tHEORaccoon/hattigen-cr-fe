@@ -28,7 +28,7 @@ const routes: RouteObject[] = [
       { index: true, element: <Navigate to="/profile-page" /> },
       ...["setup-page", "profile-page", "admin"].map((path) => ({
         path,
-        element: <PageComponent path={path} />,
+        Component: () => <PageComponent path={path} />,
       })),
     ],
   },
@@ -44,13 +44,11 @@ const routes: RouteObject[] = [
 
 const router = createBrowserRouter(routes, {
   future: {
-    future: {
-      v7_fetcherPersist: true, // Retains fetcher state during navigation
-      v7_partialHydration: true, // Supports partial hydration for server-side rendering
-      v7_normalizeFormMethod: true, // Normalizes form methods (e.g., POST or GET)
-      v7_skipActionErrorRevalidation: true, // Prevents revalidation when action errors occur
-      v7_relativeSplatPath: true, // Enables relative paths in nested routes
-    },
+    v7_fetcherPersist: true, // Retains fetcher state during navigation
+    v7_partialHydration: true, // Supports partial hydration for server-side rendering
+    v7_normalizeFormMethod: true, // Normalizes form methods (e.g., POST or GET)
+    v7_skipActionErrorRevalidation: true, // Prevents revalidation when action errors occur
+    v7_relativeSplatPath: true, // Enables relative paths in nested routes
   },
 });
 
