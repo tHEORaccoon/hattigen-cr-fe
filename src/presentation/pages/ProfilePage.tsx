@@ -20,14 +20,14 @@ const Profile: React.FC = () => {
   const categories = useSelector((state: RootState) => state.category.categories);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
 
-  console.log(user,"eee")
-  const [activeTab, setActiveTab] = useState("")
-
-// Check its type
 
 
 
-  console.log(activeTab,"tabtab")
+
+  const tabs :  string[] = user?.skills
+  ? Array.from(new Set(user.skills.map((skill: any) => skill.category)))
+  : [];
+  const [activeTab, setActiveTab] = useState<string>(tabs[0] || "")
 
   useEffect(() => {
     fetchCategories();
