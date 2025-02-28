@@ -34,7 +34,7 @@ const refreshToken = async () => {
   if (!isRefreshing) {
     isRefreshing = true;
     try {
-      await axiosInstance.post("/auth/refresh");
+      await axiosInstance.post("/refresh");
       refreshSubscribers.forEach((callback) => callback()); // Retry failed requests
     } catch (error) {
       console.error("Refresh token failed:", error);
@@ -60,7 +60,7 @@ axiosInstance.interceptors.response.use(
         return axiosInstance(originalRequest); // Retry failed request
       } catch (refreshError) {
         console.error("Token refresh failed. Logging out...");
-        window.location.href = "/login"; // Redirect to login
+        window.location.href = "/auth/login"; // Redirect to login
       }
     }
 
