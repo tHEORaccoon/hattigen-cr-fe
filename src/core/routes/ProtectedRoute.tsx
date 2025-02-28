@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Navigate, Outlet, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 import { getUserProfile } from "../../core/service";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../core/redux/store/store";
@@ -42,14 +42,14 @@ const useFetchUser = () => {
   return { user, loading };
 };
 
-const ProtectedRoute = () => {
+const ProtectedRoute = ({ element }: { element: React.ReactElement }) => {
   const { user, loading } = useFetchUser();
 
   if (loading) return <p>Loading...</p>; // Show a loader while checking authentication
 
   if (!user) return <Navigate to="/auth/login" replace />;
 
-  return user.onboarding_completed ? <Outlet /> : <Home />;
+  return user.onboarding_completed ? element : <Home />;
 };
 
 export default ProtectedRoute;
