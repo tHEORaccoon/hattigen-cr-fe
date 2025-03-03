@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { X} from "lucide-react";
+import { X, Edit} from "lucide-react";
 import { MdEdit } from "react-icons/md";
 import LogoImage from "../../assets/logo.png";
 import profileImg from "../../assets/profile-img.png";
@@ -14,18 +14,19 @@ import { setCategories } from "@/core/redux/slice/categorySlice";
 import { RootState } from "@/core/redux/store/store";
 import DownloadDropdown from "../components/DownloadDropdown";
 import ShareCV from "../components/ShareCV";
-
-
+import Loader from "./Loader";
 const Profile: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.auth.user);
   const categories = useSelector((state: RootState) => state.category.categories);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+ 
 
 
 
-
+  console.log(user,"jjjgg")
+  console.log(categories,"catjjjgg")
 
   const tabs :  string[] = user?.skills
   ? Array.from(new Set(user.skills.map((skill: any) => skill.category)))
@@ -59,6 +60,8 @@ const Profile: React.FC = () => {
   categories.forEach((category) => {
     groupedSkills[category.id] =
       user?.skills?.filter((skill: any) => skill.category_id === category.id) || [];
+
+      
   });
 
   console.log(groupedSkills,"ss")
@@ -75,6 +78,14 @@ const Profile: React.FC = () => {
       console.error("Logout failed:", error);
     }
   };
+
+  if(!user){
+    return(
+      <>
+      <Loader/>
+      </>
+    )
+  }
 
   return (
     <div className="w-screen h-screen bg-white flex flex-col">
@@ -113,7 +124,7 @@ const Profile: React.FC = () => {
 
         </div>
         <div className="ml-6 flex-1">
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold">{user?.first_name || "No Name"}</h2>
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold">{user?.first_name || "No Name"}{" "}{user?.last_name}</h2>
           <p className="text-base sm:text-lg text-green-600">Full Stack Engineer</p>
           <div className="mt-6 text-gray-700 space-y-5">
             <div>
@@ -130,6 +141,24 @@ const Profile: React.FC = () => {
               <p className="text-gray-500 text-[14px]">{user ? `${user.city}, ${user.country}` : "No address"}</p>
             </div>
           </div>
+
+          <div className="hidden sm:flex c++0top-4 right-4 space-x-4">
+            
+    
+        <Edit className="w-5 h-5 text-gray-600" />
+      <button className="absolute top-4 left-1/3 bg-gray-200 p-2 rounded-full hover:bg-gray-300">
+      <MdEdit className="w-5 h-5 text-gray-600 hover:text-gray-700" /></button>
+
+       {/* Senior Level Badge */}
+       <div className="absolute top-4 right-16 flex items-center text-blue-500 font-medium">
+        <span className="ml-2">Senior Level</span>
+      </div>
+  
+         </div>
+
+
+
+
         </div>
       </div>
 
@@ -156,25 +185,25 @@ const Profile: React.FC = () => {
 
         {/* Skills List */}
         <div className="mt-4">
-          {activeTab && groupedSkills[activeTab]?.length > 0 ? (
-            groupedSkills[activeTab].map((skill: any, index: number) => (
-              <div key={index} className="flex justify-between items-center p-3 bg-white shadow-md rounded-lg my-2">
-                <span className="font-medium">{skill.name}</span>
-                <div className="flex space-x-3">
-                  <span className="text-gray-500">{skill.months_of_experience} months</span>
-                  <button className="text-gray-600 hover:text-black">
-                    <MdEdit className="w-5 h-5" />
-                  </button>
-                  <button className="text-gray-600 hover:text-black">
-                    <X className="w-5 h-5" />
-                  </button>
-                </div>
-              </div>
-            ))
-          ) : (
-            <p className="text-gray-500 mt-4">No skills available for this category.</p>
-          )}
+  {groupedSkills[activeTab]?.length > 0 ? (
+    groupedSkills[activeTab].map((skill: any, index: number) => (
+      <div key={index} className="flex justify-between items-center p-3 bg-white shadow-md rounded-lg my-2">
+        <span className="font-medium">{skill.skill_id?.name || "Unknown Skill"}</span>
+        <div className="flex space-x-3">
+          <span className="text-gray-500">{skill.months_of_experience} months</span>
+          <button className="text-gray-600 hover:text-black">
+            <MdEdit className="w-5 h-5" />
+          </button>
+          <button className="text-gray-600 hover:text-black">
+            <X className="w-5 h-5" />
+          </button>
         </div>
+      </div>
+    ))
+  ) : (
+    <p className="text-gray-500 mt-4">No skills available for this category.</p>
+  )}
+</div>
       </div>
     </div>
   );
