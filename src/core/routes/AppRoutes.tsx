@@ -4,6 +4,7 @@ import Home from "../../presentation/pages/SetupPage";
 import ProfilePage from "../../presentation/pages/ProfilePage";
 import AdminPage from "../../presentation/pages/Admin";
 import ProtectedRoute from "./ProtectedRoute";
+import PublicCV from "@/presentation/pages/PublicCV";
 
 const AppRoutes = () => (
   <Routes>
@@ -22,6 +23,9 @@ const AppRoutes = () => (
         }
       />
     ))}
+
+    {/* Public Shareable CV Route */}
+    <Route path="/cv/:encodedData" element={<PublicCV />} />
 
     {/* Authentication Routes */}
     <Route path="/auth/login" element={<LoginScreen />} />
