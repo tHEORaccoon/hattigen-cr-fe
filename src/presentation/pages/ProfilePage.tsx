@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { X, ArrowDownToLine } from "lucide-react";
+import { X, ArrowDownToLine, Edit} from "lucide-react";
 import { MdEdit } from "react-icons/md";
 import LogoImage from "../../assets/logo.png";
 import profileImg from "../../assets/profile-img.png";
@@ -12,17 +12,20 @@ import { clearUser } from "@/core/redux/slice/authSlice";
 import CVPreviewModal from "../components/CVPreviewModal";
 import { setCategories } from "@/core/redux/slice/categorySlice";
 import { RootState } from "@/core/redux/store/store";
-
+import Alert from "../components/base/Alert";
+import Loader from "./Loader";
 const Profile: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.auth.user);
   const categories = useSelector((state: RootState) => state.category.categories);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  const [alert, setAlert] = useState<{ message: string; type: "success" | "error" } | null>(null);
 
 
 
-
+  console.log(user,"jjjgg")
+  console.log(categories,"catjjjgg")
 
   const tabs :  string[] = user?.skills
   ? Array.from(new Set(user.skills.map((skill: any) => skill.category)))
@@ -73,6 +76,14 @@ const Profile: React.FC = () => {
     }
   };
 
+  if(!user){
+    return(
+      <>
+      <Loader/>
+      </>
+    )
+  }
+
   return (
     <div className="w-screen h-screen bg-white flex flex-col">
       {/* Header */}
@@ -108,7 +119,7 @@ const Profile: React.FC = () => {
 
         </div>
         <div className="ml-6 flex-1">
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold">{user?.first_name || "No Name"}</h2>
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold">{user?.first_name || "No Name"}{" "}{user?.last_name}</h2>
           <p className="text-base sm:text-lg text-green-600">Full Stack Engineer</p>
           <div className="mt-6 text-gray-700 space-y-5">
             <div>
@@ -125,6 +136,24 @@ const Profile: React.FC = () => {
               <p className="text-gray-500 text-[14px]">{user ? `${user.city}, ${user.country}` : "No address"}</p>
             </div>
           </div>
+
+          <div className="hidden sm:flex c++0top-4 right-4 space-x-4">
+            
+    
+        <Edit className="w-5 h-5 text-gray-600" />
+      <button className="absolute top-4 left-1/3 bg-gray-200 p-2 rounded-full hover:bg-gray-300">
+      <MdEdit className="w-5 h-5 text-gray-600 hover:text-gray-700" /></button>
+
+       {/* Senior Level Badge */}
+       <div className="absolute top-4 right-16 flex items-center text-blue-500 font-medium">
+        <span className="ml-2">Senior Level</span>
+      </div>
+  
+         </div>
+
+
+
+
         </div>
       </div>
 
