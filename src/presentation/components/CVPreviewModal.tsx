@@ -1,5 +1,7 @@
 import React from "react";
 import { X } from "lucide-react";
+import { RootState } from "@/core/redux/store/store";
+import { useSelector } from "react-redux";
 
 interface CVPreviewModalProps {
   isOpen: boolean;
@@ -7,6 +9,10 @@ interface CVPreviewModalProps {
 }
 
 const CVPreviewModal: React.FC<CVPreviewModalProps> = ({ isOpen, onClose }) => {
+  const user = useSelector((state: RootState) => state.auth.user);
+  const categories = useSelector((state: RootState) => state.category.categories);
+  console.log(categories,'categories');
+  
   if (!isOpen) return null;
 
   return (
@@ -29,10 +35,10 @@ const CVPreviewModal: React.FC<CVPreviewModalProps> = ({ isOpen, onClose }) => {
         <div className="p-6 max-w-3xl mx-auto bg-white shadow-lg rounded-lg">
       {/* Header Section */}
       <div className="text-center mb-6">
-        <h2 className="text-2xl font-bold">RICHARD AGBEKEY</h2>
-        <p className="text-gray-600">Full Stack Engineer</p>
-        <p className="text-gray-500">📧 richard.agbekey@codercacoon.com | 📞 +233 55 450 9087</p>
-        <p className="text-gray-500">📍 Suncity, North Legon, Accra, Ghana</p>
+        <h2 className="text-2xl font-bold">{user?.first_name} {user?.last_name}</h2>
+        {/* <p className="text-gray-600">{user?.role?.name}</p> */}
+        <p className="text-gray-500">📧 {user?.email} | 📞 {user?.phone_number}</p>
+        <p className="text-gray-500">📍 {user?.city}, {user?.country}</p>
       </div>
 
       {/* Professional Summary */}
@@ -74,11 +80,16 @@ const CVPreviewModal: React.FC<CVPreviewModalProps> = ({ isOpen, onClose }) => {
       {/* Skills */}
       <div className="mb-6">
         <h3 className="text-lg font-semibold">🔹 SKILLS</h3>
-        <p className="text-gray-700"><strong>💻 Programming Languages:</strong> JavaScript, TypeScript, Python, Java</p>
+        {categories.map((category) => (
+          <p key={category.id} className="text-gray-700">
+            <strong>{category.name}:</strong> 
+          </p>
+        ))}
+        {/* <p className="text-gray-700"><strong>💻 Programming Languages:</strong> JavaScript, TypeScript, Python, Java</p>
         <p className="text-gray-700"><strong>⚙ Frameworks & Libraries:</strong> React, Next.js, Django, Express.js</p>
         <p className="text-gray-700"><strong>🗄 Databases & ORM:</strong> PostgreSQL, MongoDB, Prisma</p>
         <p className="text-gray-700"><strong>☁ Cloud Platforms:</strong> AWS, Firebase</p>
-        <p className="text-gray-700"><strong>🛠 Tools & DevOps:</strong> Docker, Git, CI/CD, Webpack</p>
+        <p className="text-gray-700"><strong>🛠 Tools & DevOps:</strong> Docker, Git, CI/CD, Webpack</p> */}
       </div>
 
       {/* Education */}
