@@ -45,7 +45,7 @@ const DownloadDropdown = ({ user }: { user: any }) => {
       ],
     });
 
-    Packer.toBlob(doc).then((blob) => {
+    Packer.toBlob(doc).then((blob: any) => {
       saveAs(blob, "CV.docx");
     });
   };
