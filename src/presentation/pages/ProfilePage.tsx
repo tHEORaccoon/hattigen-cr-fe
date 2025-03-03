@@ -60,7 +60,6 @@ const Profile: React.FC = () => {
 
   console.log(groupedSkills,"ss")
 
-
   const handleLogout = async () => {
     try {
       const response = await logout();
