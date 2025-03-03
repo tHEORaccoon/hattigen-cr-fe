@@ -107,6 +107,7 @@ const MultiStepForm = ({
   const navigate = useNavigate();
   const [skills, setSkills] = useState<Skill[]>([]);
   const [isEditing, setIsEditing] = useState(false);
+  
 
 
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
