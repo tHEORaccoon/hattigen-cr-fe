@@ -2,11 +2,17 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
 interface User {
+  skills: any;
+  phone_number: number;
+  city: string;
+  country: string;
   first_name: string;
   last_name: string;
   email: string;
+  profile_picture:string
   current_step?: number | 0;
   onboarding_completed?: boolean;
+
 }
 interface AuthState {
   user: User | null;
