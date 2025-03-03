@@ -1,109 +1,72 @@
 import React, { useEffect, useState } from "react";
-import { X ,ArrowDownToLine } from "lucide-react";
+import { X, ArrowDownToLine } from "lucide-react";
 import { MdEdit } from "react-icons/md";
 import LogoImage from "../../assets/logo.png";
 import profileImg from "../../assets/profile-img.png";
 import pinImg from "../../assets/pin 1.svg";
 import contactImg from "../../assets/contact 1.svg";
-import { logout } from "@/core/service";
+import { logout, getCategory } from "@/core/service";
 import { useNavigate } from "react-router-dom";
-import { useDispatch , useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { clearUser } from "@/core/redux/slice/authSlice";
+import { setCategories } from "@/core/redux/slice/categorySlice";
 import { RootState } from "@/core/redux/store/store";
-import { getCategory } from "@/core/service";
-
-
-const tabs = [
-  "Programming Languages",
-  "Frameworks",
-  "Databases & ORM",
-  "Cloud Platforms",
-  "AI Experience",
-  "Mobile Environments",
-  "Skillsets",
-  "Tools",
-];
-
-const tabContent: Record<string, { name: string; duration: string }[]> = {
-  "Programming Languages": [
-    { name: "Java", duration: "12 months" },
-    { name: "Python", duration: "40 months" },
-    { name: "JavaScript", duration: "36 months" },
-    { name: "C++", duration: "42 months" },
-  ],
-  Frameworks: [
-    { name: "React", duration: "24 months" },
-    { name: "Next.js", duration: "18 months" },
-    { name: "Django", duration: "30 months" },
-  ],
-  "Databases & ORM": [
-    { name: "PostgreSQL", duration: "36 months" },
-    { name: "MongoDB", duration: "24 months" },
-  ],
-  "Cloud Platforms": [{ name: "AWS", duration: "20 months" }],
-  "AI Experience": [{ name: "TensorFlow", duration: "12 months" }],
-  "Mobile Environments": [{ name: "React Native", duration: "15 months" }],
-  Skillsets: [{ name: "Problem Solving", duration: "N/A" }],
-  Tools: [{ name: "Docker", duration: "14 months" }],
-};
 
 const Profile: React.FC = () => {
- 
-  const navigate = useNavigate(); // Get the navigate function
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.auth.user);
-  const category = useSelector(((state: RootState) => state))
+  const categories = useSelector((state: RootState) => state.category.categories);
 
-  console.log(category)
 
-  useEffect(()=>{
+  console.log(user,"eee")
+  const [activeTab, setActiveTab] = useState("")
 
-     getCategorData()
-
-  }, [])
+// Check its type
 
 
 
-  const tabs :  string[] = user?.skills
-  ? Array.from(new Set(user.skills.map((skill: any) => skill.category)))
-  : [];
-  const [activeTab, setActiveTab] = useState<string>(tabs[0] || "")
+  console.log(activeTab,"tabtab")
 
-// Group skills by category
-const tabContent: Record<string, { name: string; duration: string }[]> =
-  user?.skills?.reduce((acc: any, skill: any) => {
-    if (!acc[skill.category]) {
-      acc[skill.category] = [];
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  useEffect(() => {
+    if (categories.length > 0) {
+      console.log(categories[0],'JJ')
+      setActiveTab(categories[0].name); // Set the first category as active
     }
-    acc[skill.category].push({ name: skill.name, duration: skill.duration });
-    return acc;
-  }, {}) || {};
+  }, [categories]);
 
-
-  // console.log(getCategorData(),"hey mama")
-
-  const handleLogout = async () => {
+  const fetchCategories = async () => {
     try {
-      const response = await logout(); // Backend should clear cookies
-      if (response.status) {
-        console.log(response.data);
+      const response = await getCategory();
+      if (response) {
+        dispatch(setCategories(response.data));
       }
-      dispatch(clearUser()); // ✅ Clears Redux state
-      navigate("/auth/login"); // Redirect to login
     } catch (error) {
-      console.error("Logout failed:", error);
+      console.error("Error fetching categories:", error);
     }
   };
 
-  const getCategorData = async () => {
+  // **Group user's skills by category ID**
+  const groupedSkills: Record<string, any[]> = {};
+  categories.forEach((category) => {
+    groupedSkills[category.id] =
+      user?.skills?.filter((skill: any) => skill.category_id === category.id) || [];
+  });
+
+  console.log(groupedSkills,"ss")
+
+  const handleLogout = async () => {
     try {
-      const response = await getCategory(); // Backend should clear cookies
-      if (response) {
-        console.log(response);
-        dispatch(response.data)
+      const response = await logout();
+      if (response.status) {
+        console.log(response.data);
       }
-      // dispatch(clearUser()); // ✅ Clears Redux state
-      // navigate("/login"); // Redirect to login
+      dispatch(clearUser());
+      navigate("/auth/login");
     } catch (error) {
       console.error("Logout failed:", error);
     }
@@ -111,17 +74,11 @@ const tabContent: Record<string, { name: string; duration: string }[]> =
 
   return (
     <div className="w-screen h-screen bg-white flex flex-col">
-      {/* Header Section */}
+      {/* Header */}
       <div className="flex justify-between items-center border-b pb-4 px-4 sm:px-8 md:px-16 py-4 bg-white flex-wrap">
-        <img
-          src={LogoImage}
-          alt="Code Raccoon Logo"
-          className="w-10 sm:w-12 md:w-24 max-w-[80px] md:max-w-[100px]"
-        />
-         <div className="flex items-center space-x-1 sm:space-x-4 flex-wrap">
-          <button className="text-gray-500 hover:text-black flex items-center text-sm sm:text-base px-2 py-1 sm:px-4 sm:py-2">
-            Preview
-          </button>
+        <img src={LogoImage} alt="Code Raccoon Logo" className="w-10 sm:w-12 md:w-24 max-w-[80px] md:max-w-[100px]" />
+        <div className="flex items-center space-x-1 sm:space-x-4 flex-wrap">
+          <button className="text-gray-500 hover:text-black flex items-center text-sm sm:text-base px-2 py-1 sm:px-4 sm:py-2">Preview</button>
           <button className="text-gray-600 hover:text-black flex items-center text-sm sm:text-base px-2 py-1 sm:px-4 sm:py-2">
             Download CV <ArrowDownToLine className="w-4 h-4 sm:w-5 sm:h-5 ml-1 sm:ml-2" />
           </button>
@@ -132,66 +89,65 @@ const tabContent: Record<string, { name: string; duration: string }[]> =
       </div>
 
       {/* Profile Section */}
-      <div className="flex flex-col md:flex-row  p-6 m-6 justify-between items-center relative">
+      <div className="flex flex-col md:flex-row p-6 m-6 justify-between items-center relative">
         <div className="w-48 h-60 sm:w-56 sm:h-72 rounded-lg overflow-hidden border-4 border-white">
-          <img src={profileImg} alt="Profile" className="w-full h-full object-cover" />
+        <img
+                 src={user?.profile_picture || profileImg}
+                 alt="Profile"
+                 className="w-full h-full object-cover"
+        />
+
         </div>
         <div className="ml-6 flex-1">
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold">Richard Agbekey</h2>
-          <p className=" text-base sm:text-lg text-green-600">Full stack engineer</p>
-
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold">{user?.first_name || "No Name"}</h2>
+          <p className="text-base sm:text-lg text-green-600">Full Stack Engineer</p>
           <div className="mt-6 text-gray-700 space-y-5">
             <div>
-              <p className="font-semibold flex items-center leading-[22.5px]"><img src={contactImg} alt="contact" className="mr-2 w-4 h-4" />  Contact</p>
-              {user? <p className="text-gray-500 text-[14px] ">{
-            user.email }</p>: <p>no name</p>}
-              {user?<p className="text-gray-500 text-[14px]">{user.phone_number}</p>:<p>no number</p>}
+              <p className="font-semibold flex items-center leading-[22.5px]">
+                <img src={contactImg} alt="contact" className="mr-2 w-4 h-4" /> Contact
+              </p>
+              <p className="text-gray-500 text-[14px]">{user?.email || "No email"}</p>
+              <p className="text-gray-500 text-[14px]">{user?.phone_number || "No phone number"}</p>
             </div>
-
             <div className="mt-6">
-              <p className="font-semibold flex items-center"><img src={pinImg} alt="contact" className="mr-2 w-4 h-" /> Address</p>
-              {user?<p className="text-gray-500 text-[14px] ">{user.city},{user.country}</p>:<p>no city</p>}
+              <p className="font-semibold flex items-center">
+                <img src={pinImg} alt="address" className="mr-2 w-4 h-4" /> Address
+              </p>
+              <p className="text-gray-500 text-[14px]">{user ? `${user.city}, ${user.country}` : "No address"}</p>
             </div>
           </div>
         </div>
-        <div className="hidden sm:flex c++0top-4 right-4 space-x-4">
-      {/* Edit Button */}
-      <button className="absolute top-4 left-1/3 bg-gray-200 p-2 rounded-full hover:bg-gray-300">
-        <MdEdit className="w-5 h-5 text-gray-600 hover:text-gray-700" />
-      </button>
-
-      {/* Senior Level Badge */}
-      <div className="absolute top-4 right-16 flex items-center text-blue-500 font-medium">
-        <span className="ml-2">Senior Level</span>
       </div>
-    </div>
 
-      </div>
-      {/* Experience Section */}
+      {/* Skills / Experience Section */}
       <div className="m-6">
-        {/* Tab Navigation */}
-        <div className="flex flex-wrap gap-4 border-b pb-2 text-gray-400">
-          {tabs.map((tab) => (
-            <button
-               key={String(tab)}
-              className={`font-semibold px-3 py-2 ${
-                activeTab === tab ? "border-b-2 border-black text-black" : "text-gray-400"
-              }`}
-              onClick={() => setActiveTab(tab)}
-            >
-              {tab}
-            </button>
-          ))}
+        {/* Category Tabs */}
+        <div className="flex flex-wrap gap-4 border-b pb-2">
+          {categories.length > 0 ? (
+            categories.map((tab) => (          
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.name)}
+                className={`px-3 py-2 font-semibold ${
+                  activeTab === tab.name ? "border-b-2 border-black text-black" : "text-gray-400 border-gray-400"
+                }`}
+              >
+                {tab.name}
+              </button>
+            ))
+          ) : (
+            <p className="text-gray-500">No categories available.</p>
+          )}
         </div>
 
-        {/* Tab Content */}
+        {/* Skills List */}
         <div className="mt-4">
-          {tabContent[activeTab]?.length ? (
-            tabContent[activeTab].map((skill, index) => (
+          {activeTab && groupedSkills[activeTab]?.length > 0 ? (
+            groupedSkills[activeTab].map((skill: any, index: number) => (
               <div key={index} className="flex justify-between items-center p-3 bg-white shadow-md rounded-lg my-2">
                 <span className="font-medium">{skill.name}</span>
                 <div className="flex space-x-3">
-                  <span className="text-gray-500">{skill.duration}</span>
+                  <span className="text-gray-500">{skill.months_of_experience} months</span>
                   <button className="text-gray-600 hover:text-black">
                     <MdEdit className="w-5 h-5" />
                   </button>
@@ -202,7 +158,7 @@ const tabContent: Record<string, { name: string; duration: string }[]> =
               </div>
             ))
           ) : (
-            <p className="text-gray-500 mt-4">No data available for this category.</p>
+            <p className="text-gray-500 mt-4">No skills available for this category.</p>
           )}
         </div>
       </div>
@@ -211,5 +167,3 @@ const tabContent: Record<string, { name: string; duration: string }[]> =
 };
 
 export default Profile;
-
-
