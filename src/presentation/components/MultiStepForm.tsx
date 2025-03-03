@@ -17,6 +17,8 @@ import { AppDispatch, RootState } from "../../core/redux/store/store"; // Import
 import { updateUserProfile } from "@/core/service";
 import { useDispatch } from "react-redux";
 import { setUser } from "@/core/redux/slice/authSlice";
+import Select from 'react-select';
+import countryList from "react-select-country-list";
 
 type Step = {
   name: string;
@@ -278,6 +280,10 @@ const MultiStepForm = ({
     });
   }, [steps]);
 
+
+  // PERSONAL INFO COMPONENT
+  const options = countryList().getData();
+  
   const PersonalInfo = () => {
     console.log("Personal Info profile: ", user);
     return (
@@ -334,20 +340,28 @@ const MultiStepForm = ({
                 />
               )}
             />
-            <div className="grid grid-cols-2 gap-5">
+            <div className="grid grid-cols-1 gap-5">
+            <label htmlFor="country-select" className="text-sm font-medium text-gray-700">
+              Country
+            </label>
               <Controller
                 control={control}
                 name="country"
                 render={({ field: { onChange, value } }) => (
-                  <Input
-                    label="Country"
-                    placeholder="Ghana"
-                    type="text"
-                    errorMessage={errors?.country?.message}
-                    value={(value as string).trim()}
-                    {...register("country")}
-                    onChange={onChange}
-                  />
+                  // <Input
+                  //   label="Country"
+                  //   placeholder="Ghana"
+                  //   type="text"
+                  //   errorMessage={errors?.country?.message}
+                  //   value={(value as string).trim()}
+                  //   {...register("country")}
+                  //   onChange={onChange}
+                  // />
+                  <Select options={options}
+                  onChange={onChange}
+                  name="country"
+                  value={value}
+                  placeholder="Select Country"/>
                 )}
               />
 
@@ -363,6 +377,7 @@ const MultiStepForm = ({
                     value={(value as string).trim()}
                     {...register("postal_code")}
                     onChange={onChange}
+                    className="w-[100px] "
                   />
                 )}
               />
