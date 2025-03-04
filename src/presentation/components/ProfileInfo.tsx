@@ -4,8 +4,8 @@ import Rectagle from "../../assets/Rectangle.png"
 import NoImage from "../../assets/no-image.png"
 import { updateProfileInfoData } from "../../core/redux/slice/cvFormSlice";
 import {useSelector, useDispatch} from "react-redux";
-
-
+import Select from "react-select";
+import countryList from "react-select-country-list";
 function ProfileInfo() {
 
     
@@ -21,6 +21,8 @@ function ProfileInfo() {
         phone: "",
     });
     const [isTyping, setIsTyping] = useState<{ [key: string]: boolean }>({});
+
+    const options = countryList().getData();
 
     const dispatch = useDispatch()
     const state = useSelector((h)=>(
@@ -58,6 +60,12 @@ function ProfileInfo() {
         setUserData(updatedUserData);
         dispatch(updateProfileInfoData(updatedUserData));
 
+    };
+
+    const handleCountryChange = (selectedOption: any) => {
+        const updatedUserData = { ...userData, country: selectedOption.label };
+        setUserData(updatedUserData);
+        dispatch(updateProfileInfoData(updatedUserData));
     };
 
     return (
@@ -165,7 +173,7 @@ function ProfileInfo() {
                                 >
                                  country
                                 </label>
-                                <input
+                                {/* <input
                                     className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                                     id="countr"
                                     name="country"
@@ -175,6 +183,14 @@ function ProfileInfo() {
                                     onChange={handleInputChange}
                                     onFocus={() => handleInputFocus("country")}
                                     onBlur={() => handleInputBlur("country")}
+                                /> */}
+                                <h1>What is this???????!!!!</h1>
+                                <Select
+                                    options={options}
+                                    value={options.find(option => option.label === userData.country)}
+                                    onChange={handleCountryChange}
+                                    className="basic-single"
+                                    classNamePrefix="select"
                                 />
                             </div>
                                 <div className="w-full md:w-1/2 px-3 md:mb-0">
