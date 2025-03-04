@@ -22,12 +22,6 @@ import { getCategory } from "@/core/service";
 import Select from "react-select";
 import countryList from "react-select-country-list";
 
-type Step = {
-  name: string;
-  title: string;
-  description: string;
-};
-
 type Skill = {
   title: string;
   months_of_experience: number;
