@@ -16,9 +16,9 @@ const CVPreviewModal: React.FC<CVPreviewModalProps> = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-black bg-opacity-50  flex items-center justify-center z-50">
       {/* Modal Container */}
-      <div className="bg-white w-11/12 md:w-3/4 lg:w-1/2 p-6 rounded-lg shadow-lg relative">
+      <div className="bg-white w-11/12 h-full p-6 rounded-lg shadow-lg relative">
         {/* Close Button */}
         <button
           onClick={onClose}
@@ -31,7 +31,7 @@ const CVPreviewModal: React.FC<CVPreviewModalProps> = ({ isOpen, onClose }) => {
         <h2 className="text-xl font-semibold text-center mb-4">CV Preview</h2>
 
         {/* Preview Content */}
-        <div className="border p-4 rounded-md bg-gray-100 h-96 overflow-y-auto">
+        <div className="border p-4 rounded-md bg-gray-100 h-full overflow-y-auto">
         <div className="p-6 max-w-3xl mx-auto bg-white shadow-lg rounded-lg">
       {/* Header Section */}
       <div className="text-center mb-6">
@@ -81,7 +81,7 @@ const CVPreviewModal: React.FC<CVPreviewModalProps> = ({ isOpen, onClose }) => {
       <div className="mb-6">
         <h3 className="text-lg font-semibold">🔹 SKILLS</h3>
         {categories.map((category) => (
-          <p key={category.id} className="text-gray-700">
+          <p key={category._id} className="text-gray-700">
             <strong>{category.name}:</strong> 
           </p>
         ))}

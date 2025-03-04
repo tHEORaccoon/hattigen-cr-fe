@@ -19,6 +19,8 @@ import { useDispatch } from "react-redux";
 import { setUser, User } from "@/core/redux/slice/authSlice";
 import { setCategories } from "@/core/redux/slice/categorySlice";
 import { getCategory } from "@/core/service";
+import Select from "react-select";
+import countryList from "react-select-country-list";
 
 type Step = {
   name: string;
@@ -33,76 +35,6 @@ type Skill = {
   skill_id: string;
 };
 
-// const steps: Step[] = [
-//   {
-//     name: "personal info",
-//     title: "Let’s start with your personal info",
-//     description: "Include your full name and at least one way for employers to reach you.",
-//   },
-//   {
-//     name: "programming language",
-//     title: "Select what categories you have experience in",
-//     description: "You can choose only the categories you will like to edit",
-//   },
-//   {
-//     name: "programming language",
-//     title: "Let’s add your languages",
-//     description: "Add every programming language you have ever worked with.",
-//   },
-//   {
-//     name: "database",
-//     title: "Let’s add your databases",
-//     description:
-//       "Have you done any database work?. This is where you put them.",
-//   },
-//   {
-//     name: "cloud platforms",
-//     title: "Let’s add your cloud platforms",
-//     description:
-//       "Have you worked with any cloud platforms?. This is where you put them.",
-//   },
-//   {
-//     name: "AI experience",
-//     title: "Do you have any AI experience?",
-//     description: "Add any artifitial intelligence experience you have.",
-//   },
-// ];
-
-// const categories = [
-//     "Programming Languages",
-//     "Databases",
-//     "Frameworks",
-//     "Tools",
-//     "Skillsets",
-//     "Cloud Platforms",
-//     "AI Experience",
-//     "Mobile Environments",
-//     "E-Learning Tools",
-//     "Spoken Languages",
-//     "Office Tools",
-//     "Project Management Tools",
-//     "Roles",
-//     "Business Intelligence",
-//     "Reference Brands/Projects",
-//   ];
-
-  // const groupedCategories = [
-  //   {
-  //     name: "Programming Languages",
-  //     slug: "programming-languages",
-  //     title: "Let’s add your languages",
-  //     description: "Add every programming language you have ever worked with.",
-  //     sub_categories: ["HTML", "JAVA", "Python", "C++", "C#", "JavaScript"],
-  //   },
-  //   {
-  //     name: "Spoken Languages",
-  //     slug: "spoken-languages",
-  //     title: "Let’s add your spoken languages",
-  //     description: "Add every spoken language you have ever worked with.",
-  //     sub_categories: ["TWI", "English"],
-  //   },
-  // ];
-
 const MultiStepForm = ({
   stepInfo,
   setStepInfo,
@@ -115,6 +47,7 @@ const MultiStepForm = ({
   const navigate = useNavigate();
   const [skills, setSkills] = useState<Skill[]>([]);
   const [isEditing, setIsEditing] = useState(false);
+  const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
 
   // Select user data from Redux store
   // const user = useSelector((state: RootState) => state.auth.user);
@@ -260,9 +193,10 @@ const MultiStepForm = ({
     //   completedSteps: stepInfo.completedSteps,
     // });
 
+
     if (stepInfo.currentStep === 0) {
       payload.city = values.city;
-      payload.country = values.country;
+      payload.country = selectedCountry;
       payload.phone_number = values.phone_number;
     } else {
       // Other steps (Skills, Frameworks, etc.)
@@ -279,6 +213,7 @@ const MultiStepForm = ({
         dispatch(setUser(response.data?.user));
         if (stepInfo.currentStep === stepInfo.totalSteps - 1) {
           navigate("/profile-page", {replace: true});
+
           return;
         }
       }
@@ -317,109 +252,126 @@ const MultiStepForm = ({
     });
   }, [steps]);
 
+  //Formatting country options
+  const options = countryList().getData();
+  const countryOptions = options.map((option: any) => ({
+    value: option.label,
+    label: option.label,
+  }));
+
+  // PERSONAL INFO COMPONENT
   const PersonalInfo = () => {
     return (
-      <div>
-        <div className="grid gap-8  ">
-          <div className="grid md:grid-cols-2 gap-4 ">
-            <Controller
-              control={control}
-              name="first_name"
-              render={({ field: { onChange, value } }) => (
-                <Input
-                  label="First Name"
-                  placeholder="Kwame"
-                  type="text"
-                  errorMessage={errors?.first_name?.message}
-                  value={value as string}
-                  {...register("first_name")}
-                  onChange={onChange}
-                  disabled
-                />
-              )}
-            />
-
-            <Controller
-              control={control}
-              name="last_name"
-              render={({ field: { onChange, value } }) => (
-                <Input
-                  label="Last Name"
-                  placeholder="Ofori"
-                  type="text"
-                  errorMessage={errors?.last_name?.message}
-                  value={value as string}
-                  {...register("last_name")}
-                  onChange={onChange}
-                  disabled
-                />
-              )}
-            />
-          </div>
-          <div className="grid md:grid-cols-2 gap-5">
-            <Controller
-              control={control}
-              name="city"
-              render={({ field: { onChange, value } }) => (
-                <Input
-                  label="City"
-                  placeholder="Accra"
-                  type="text"
-                  errorMessage={errors?.city?.message}
-                  value={(value as string).trim()}
-                  {...register("city")}
-                  onChange={onChange}
-                />
-              )}
-            />
-            <div className="grid grid-cols-2 gap-5">
-              <Controller
-                control={control}
-                name="country"
-                render={({ field: { onChange, value } }) => (
-                  <Input
-                    label="Country"
-                    placeholder="Ghana"
-                    type="text"
-                    errorMessage={errors?.country?.message}
-                    value={(value as string).trim()}
-                    {...register("country")}
-                    onChange={onChange}
-                  />
-                )}
+      <div className="grid gap-8">
+        <div className="grid md:grid-cols-2 gap-4">
+          <Controller
+            control={control}
+            name="first_name"
+            render={({ field: { onChange, value } }) => (
+              <Input
+                label="First Name"
+                placeholder="Kwame"
+                type="text"
+                errorMessage={errors?.first_name?.message}
+                value={value as string}
+                {...register("first_name")}
+                onChange={onChange}
+                readOnly
               />
+            )}
+          />
 
-              <Controller
-                control={control}
-                name="postal_code"
-                render={({ field: { onChange, value } }) => (
-                  <Input
-                    label="Postal Code"
-                    placeholder="0233"
-                    type="text"
-                    errorMessage={errors?.postal_code?.message}
-                    value={(value as string).trim()}
-                    {...register("postal_code")}
-                    onChange={onChange}
-                  />
-                )}
+          <Controller
+            control={control}
+            name="last_name"
+            render={({ field: { onChange, value } }) => (
+              <Input
+                label="Last Name"
+                placeholder="Ofori"
+                type="text"
+                errorMessage={errors?.last_name?.message}
+                value={value as string}
+                {...register("last_name")}
+                onChange={onChange}
+                readOnly
               />
-            </div>
-          </div>
-          <div className="grid md:grid-cols-2 gap-5">
-            <Controller
-              control={control}
-              name="phone_number"
-              render={({ field: { onChange, value } }) => (
-                <Input
-                  label="Phone"
-                  placeholder="055 450 9087"
-                  type="tel"
-                  errorMessage={errors?.phone_number?.message}
-                  value={(value as string).trim()}
-                  {...register("phone_number")}
-                  onChange={onChange}
+            )}
+          />
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-4">
+          <Controller
+            control={control}
+            name="country"
+            render={({ field }) => (
+              <div className="flex flex-col gap-1">
+                <label
+                  htmlFor="country-select"
+                  className="text-sm font-medium text-gray-700"
+                >
+                  <Text variant="label-text" color="black">
+                    Country
+                  </Text>
+                </label>
+                <Select
+                  options={countryOptions}
+                  {...field}
+                  onChange={(selectedOption: any) => {
+                    field.onChange(selectedOption?.value);
+                    setSelectedCountry(selectedOption?.value || null);
+                  }}
+                  value={countryOptions.find(
+                    (option: any) => option.value === field.value
+                  )}
+                  placeholder="Select Country"
+                  isSearchable
+                  styles={{
+                    control: (styles: any) => ({
+                      ...styles,
+                      backgroundColor: "white",
+                      border: "1px solid rgb(221, 226, 231)",
+                      padding: "3px",
+                      borderRadius: "0.575rem",
+                      ":hover": {
+                        border: "1px solid #E5E7EB",
+                      },
+                    }),
+                  }}
                 />
+              </div>
+            )}
+          />
+          <Controller
+            control={control}
+            name="city"
+            render={({ field: { onChange, value } }) => (
+              <Input
+                label="City"
+                placeholder="Accra"
+                type="text"
+                errorMessage={errors?.city?.message}
+                value={(value as string).trim()}
+                {...register("city")}
+                onChange={onChange}
+              />
+            )}
+          />
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-5">
+          <Controller
+            control={control}
+            name="phone_number"
+            render={({ field: { onChange, value } }) => (
+              <Input
+                label="Phone"
+                placeholder="055 450 9087"
+                type="tel"
+                errorMessage={errors?.phone_number?.message}
+                value={(value as string).trim()}
+                {...register("phone_number")}
+                onChange={onChange}
+              />
               )}
             />
             <Controller
@@ -448,7 +400,7 @@ const MultiStepForm = ({
     return (
         <div className="flex bg-black text-white">
         <div className="flex-1 bg-white text-black">
-  
+
           <div className="mt-6 flex flex-wrap gap-3">
             {categories.map((category) => (
               <button
@@ -460,7 +412,6 @@ const MultiStepForm = ({
               </button>
             ))}
           </div>
-  
         </div>
       </div>
     );
@@ -564,7 +515,13 @@ const MultiStepForm = ({
         <div className="w-full md:w-3/5 lg:pr-14 md:pr-8">
           <div className="mt-10">
             {/* PERSONAL INFO FORM */}
-            {stepInfo.currentStep === 0 ? <PersonalInfo /> : stepInfo.currentStep === 1 ? <CategorySection/> : <OtherSteps />}
+            {stepInfo.currentStep === 0 ? (
+              <PersonalInfo />
+            ) : stepInfo.currentStep === 1 ? (
+              <CategorySection />
+            ) : (
+              <OtherSteps />
+            )}
           </div>
         </div>
 
@@ -614,5 +571,3 @@ const MultiStepForm = ({
 };
 
 export default MultiStepForm;
-
-
