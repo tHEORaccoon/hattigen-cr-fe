@@ -10,6 +10,7 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ totalSteps, currentStep, completedSteps, goTo }) => {
+  console.log(completedSteps)
   return (
     <div className="w-1/8 h-full bg-black p-8 flex flex-col items-center">
       <div className="m-auto">

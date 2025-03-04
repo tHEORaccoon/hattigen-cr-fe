@@ -3,6 +3,8 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 interface Category {
   id: number;
   name: string;
+  title: string;
+  description: string
 }
 
 interface CategoriesState {
