@@ -12,6 +12,8 @@ const useFetchUserAndRedirect = () => {
     const fetchUserProfile = async () => {
       try {
         const response = await getUserProfile();
+        console.log("response", response);
+        
         const userData = response?.data;
 
         if (!userData) {
