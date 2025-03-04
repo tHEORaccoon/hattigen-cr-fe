@@ -15,6 +15,9 @@ import { RootState } from "@/core/redux/store/store";
 import DownloadDropdown from "../components/DownloadDropdown";
 import ShareCV from "../components/ShareCV";
 import Loader from "./Loader";
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+
 const Profile: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -23,6 +26,8 @@ const Profile: React.FC = () => {
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
 
 
+  const [deleteSkill, setDeleteSkill] = useState<{ name: string; tab: string } | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
 
   console.log(user, "jjjgg")
@@ -70,11 +75,44 @@ const Profile: React.FC = () => {
   } else {
     console.error("User skills or categories are missing!");
   }
-
-
-  console.log(groupedSkills[activeTab], "sskizlls")
-  console.log("Active Tab ID:", activeTab);
-  console.log("Grouped Skills Object:", groupedSkills);
+  
+  //handle Delete function
+  const handleDeleteConfirm = async () => {
+    if (!deleteSkill) return;
+  
+    try {
+      // Call API to delete the skill 
+      // const response = await fetch(`/api/skills/${deleteSkill.name}`, {
+      //   method: "DELETE",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      // });
+  
+      // if (!response.ok) {
+      //   throw new Error("Failed to delete skill");
+      // }
+  
+      // Fxn to update the UI by removing the deleted skill
+      // dispatch(
+      //   setCategories(
+      //     categories.map((category) =>
+      //       category.name === deleteSkill.tab
+      //         ? {
+      //             ...category,
+      //             skills: category.skills.filter((skill: any) => skill.name !== deleteSkill.name),
+      //           }
+      //         : category
+      //     )
+      //   )
+      // );
+  
+      setIsModalOpen(false); 
+      setDeleteSkill(null); 
+    } catch (error) {
+      console.error("Error deleting skill:", error);
+    }
+  };
 
   const handleLogout = async () => {
     try {
@@ -204,7 +242,12 @@ const Profile: React.FC = () => {
                     <MdEdit className="w-5 h-5" />
                   </button>
                   <button className="text-gray-600 hover:text-black">
-                    <X className="w-5 h-5" />
+                    <X className="w-5 h-5" 
+                     onClick={() => {
+                    setDeleteSkill({ name: skill.name, tab: activeTab });
+                    setIsModalOpen(true);
+                  }}
+                    />
                   </button>
                 </div>
               </div>
@@ -214,8 +257,23 @@ const Profile: React.FC = () => {
           )}
         </div>
       </div>
+      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Confirm Deletion</DialogTitle>
+          </DialogHeader>
+          <p>Are you sure you want to delete <strong>{deleteSkill?.name}</strong>?</p>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsModalOpen(false)}>Cancel</Button>
+            <Button variant="destructive" onClick={handleDeleteConfirm}>Delete</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
 
 export default Profile;
+
+
+
