@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { X, Edit } from "lucide-react";
 import { MdEdit } from "react-icons/md";
-import LogoImage from "../../assets/logo.png";
-import profileImg from "../../assets/profile-img.png";
-import pinImg from "../../assets/pin 1.svg";
-import contactImg from "../../assets/contact 1.svg";
 import { logout, getCategory } from "@/core/service";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,6 +19,7 @@ import Loader from "@/presentation/components/Loader";
 import CVPreviewModal from "@/presentation/components/CVPreviewModal";
 import DownloadDropdown from "@/presentation/components/DownloadDropdown";
 import ShareCV from "@/presentation/components/ShareCV";
+import { LogoImage, profileImg, contactImg, pinImg } from "@/assets";
 
 const Profile: React.FC = () => {
   const navigate = useNavigate();
