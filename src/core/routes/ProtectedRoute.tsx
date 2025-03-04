@@ -44,6 +44,8 @@ const useFetchUser = () => {
 
 const ProtectedRoute = ({ element }: { element: React.ReactElement }) => {
   const { user, loading } = useFetchUser();
+  console.log("user", user);
+  
 
   if (loading) return <p>Loading...</p>; // Show a loader while checking authentication
 

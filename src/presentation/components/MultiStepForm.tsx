@@ -263,7 +263,7 @@ const MultiStepForm = ({
 
   //Formatting country options
   const options = countryList().getData();
-  const countryOptions = options.map((option) => ({
+  const countryOptions = options.map((option: any) => ({
     value: option.label,
     label: option.label,
   }));
@@ -325,17 +325,17 @@ const MultiStepForm = ({
                 <Select
                   options={countryOptions}
                   {...field}
-                  onChange={(selectedOption) => {
+                  onChange={(selectedOption: any) => {
                     field.onChange(selectedOption?.value);
                     setSelectedCountry(selectedOption?.value || null);
                   }}
                   value={countryOptions.find(
-                    (option) => option.value === field.value
+                    (option: any) => option.value === field.value
                   )}
                   placeholder="Select Country"
                   isSearchable
                   styles={{
-                    control: (styles) => ({
+                    control: (styles: any) => ({
                       ...styles,
                       backgroundColor: "white",
                       border: "1px solid rgb(221, 226, 231)",

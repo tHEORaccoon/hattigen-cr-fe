@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { X, ArrowDownToLine } from "lucide-react";
+import { X} from "lucide-react";
 import { MdEdit } from "react-icons/md";
 import LogoImage from "../../assets/logo.png";
 import profileImg from "../../assets/profile-img.png";
@@ -12,6 +12,9 @@ import { clearUser } from "@/core/redux/slice/authSlice";
 import CVPreviewModal from "../components/CVPreviewModal";
 import { setCategories } from "@/core/redux/slice/categorySlice";
 import { RootState } from "@/core/redux/store/store";
+import DownloadDropdown from "../components/DownloadDropdown";
+import ShareCV from "../components/ShareCV";
+
 
 const Profile: React.FC = () => {
   const navigate = useNavigate();
@@ -86,9 +89,11 @@ const Profile: React.FC = () => {
           <button onClick={() => setIsPreviewOpen(true)} className="text-gray-500 hover:text-black flex items-center text-sm sm:text-base px-2 py-1 sm:px-4 sm:py-2">
             Preview
           </button>
-          <button className="text-gray-500 hover:text-black flex items-center text-sm sm:text-base px-2 py-1 sm:px-4 sm:py-2">
+          <DownloadDropdown  user={user}/>
+          <ShareCV />
+          {/* <button className="text-gray-500 hover:text-black flex items-center text-sm sm:text-base px-2 py-1 sm:px-4 sm:py-2">
             Download CV <ArrowDownToLine className="w-4 h-4 sm:w-5 sm:h-5 ml-1 sm:ml-2" />
-          </button>
+          </button> */}
           <button onClick={handleLogout} className="text-red-500 hover:text-red-700 font-medium text-sm sm:text-base px-2 py-1 sm:px-4 sm:py-2">
             Logout
           </button>
