@@ -38,11 +38,11 @@ type Skill = {
 const MultiStepForm = ({
   stepInfo,
   setStepInfo,
-  user
+  user,
 }: {
   stepInfo: StepInfo;
   setStepInfo: (stepInfo: StepInfo) => void;
-  user: User
+  user: User;
 }) => {
   const navigate = useNavigate();
   const [skills, setSkills] = useState<Skill[]>([]);
@@ -53,10 +53,12 @@ const MultiStepForm = ({
   // const user = useSelector((state: RootState) => state.auth.user);
   const dispatch = useDispatch<AppDispatch>();
   const [steps, setSteps] = useState(user ? user.steps : []);
-  console.log(steps)
+  console.log(steps);
 
   // const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const categories = useSelector((state: RootState) => state.category.categories);
+  const categories = useSelector(
+    (state: RootState) => state.category.categories
+  );
 
   const toggleCategory = (category: any) => {
     // setSelectedCategories((prev) =>
@@ -67,8 +69,9 @@ const MultiStepForm = ({
     setSteps((prev) =>
       prev.includes(category)
         ? prev.filter((c) => c !== category)
-        : [...prev, category])
-    
+        : [...prev, category]
+    );
+
     // console.log(steps);
     // setStepInfo({
     //   step: "",
@@ -76,7 +79,7 @@ const MultiStepForm = ({
     //   currentStep: user?.current_step || 0,
     //   completedSteps: stepInfo.completedSteps,
     // });
-    dispatch(setUser({...user, steps: steps}));
+    dispatch(setUser({ ...user, steps: steps }));
     // console.log(user);
   };
 
@@ -135,7 +138,10 @@ const MultiStepForm = ({
 
   const next = () => {
     if (stepInfo.currentStep === steps.length - 1) return;
-    const completed = stepInfo.currentStep === stepInfo.completedSteps.length ? [...stepInfo.completedSteps, true] : stepInfo.completedSteps;
+    const completed =
+      stepInfo.currentStep === stepInfo.completedSteps.length
+        ? [...stepInfo.completedSteps, true]
+        : stepInfo.completedSteps;
     setStepInfo({
       ...stepInfo,
       currentStep: stepInfo.currentStep + 1,
@@ -171,9 +177,9 @@ const MultiStepForm = ({
   };
 
   const handleSave = async (values: any) => {
-    dispatch(setUser({...user, steps: steps}));
+    dispatch(setUser({ ...user, steps: steps }));
     // console.log(user)
-    console.log(steps)
+    console.log(steps);
     // return;
 
     // Prepare the payload based on the step
@@ -193,7 +199,6 @@ const MultiStepForm = ({
     //   completedSteps: stepInfo.completedSteps,
     // });
 
-
     if (stepInfo.currentStep === 0) {
       payload.city = values.city;
       payload.country = selectedCountry;
@@ -209,10 +214,9 @@ const MultiStepForm = ({
     try {
       const response = await updateUserProfile(payload); // Use the function instead of direct axios call
       if (response.status === 200) {
-        
         dispatch(setUser(response.data?.user));
         if (stepInfo.currentStep === stepInfo.totalSteps - 1) {
-          navigate("/profile-page", {replace: true});
+          navigate("/profile-page", { replace: true });
 
           return;
         }
@@ -238,7 +242,6 @@ const MultiStepForm = ({
     }
   };
 
-  
   useEffect(() => {
     fetchCategories();
   }, []);
@@ -372,25 +375,24 @@ const MultiStepForm = ({
                 {...register("phone_number")}
                 onChange={onChange}
               />
-              )}
-            />
-            <Controller
-              control={control}
-              name="email"
-              render={({ field: { onChange, value } }) => (
-                <Input
-                  label="Email"
-                  placeholder="example@email.com"
-                  type="tel"
-                  errorMessage={errors?.email?.message}
-                  value={(value as string)?.trim()}
-                  {...register("email")}
-                  onChange={onChange}
-                  disabled
-                />
-              )}
-            />
-          </div>
+            )}
+          />
+          <Controller
+            control={control}
+            name="email"
+            render={({ field: { onChange, value } }) => (
+              <Input
+                label="Email"
+                placeholder="example@email.com"
+                type="tel"
+                errorMessage={errors?.email?.message}
+                value={(value as string)?.trim()}
+                {...register("email")}
+                onChange={onChange}
+                disabled
+              />
+            )}
+          />
         </div>
       </div>
     );
@@ -398,15 +400,18 @@ const MultiStepForm = ({
 
   const CategorySection = () => {
     return (
-        <div className="flex bg-black text-white">
+      <div className="flex bg-black text-white">
         <div className="flex-1 bg-white text-black">
-
           <div className="mt-6 flex flex-wrap gap-3">
             {categories.map((category) => (
               <button
                 key={category.name}
                 onClick={() => toggleCategory(category)}
-                className={`px-4 py-2 rounded-full transition-all font-medium ${steps.find(s => s.name === category.name) ? "bg-black text-white" : "bg-gray-200 text-black border border-black"}`}
+                className={`px-4 py-2 rounded-full transition-all font-medium ${
+                  steps.find((s) => s.name === category.name)
+                    ? "bg-black text-white"
+                    : "bg-gray-200 text-black border border-black"
+                }`}
               >
                 {category.name}
               </button>
@@ -547,7 +552,10 @@ const MultiStepForm = ({
               : () => handleSave("")
           }
         >
-          {steps[steps.length - 1].name !== "categories" && stepInfo.currentStep === steps.length - 1 ? "Finish" : "Continue"}
+          {steps[steps.length - 1].name !== "categories" &&
+          stepInfo.currentStep === steps.length - 1
+            ? "Finish"
+            : "Continue"}
         </Button>
       </div>
 
