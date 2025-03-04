@@ -28,19 +28,20 @@ const Profile: React.FC = () => {
   console.log(user,"jjjgg")
   console.log(categories,"catjjjgg")
 
-  const tabs :  string[] = user?.skills
-  ? Array.from(new Set(user.skills.map((skill: any) => skill.category)))
-  : [];
-  const [activeTab, setActiveTab] = useState<string>(tabs[0] || "")
+  // const tabs :  string[] = user?.skills
+  // ? Array.from(new Set(user.skills.map((skill: any) => skill.category)))
+  // : [];
+  
+  const [activeTab, setActiveTab] = useState<string>(categories.length > 0 ? categories[0]._id : "");
+
 
   useEffect(() => {
     fetchCategories();
   }, []);
 
   useEffect(() => {
-    if (categories.length > 0) {
-      console.log(categories[0],'JJ')
-      setActiveTab(categories[0].name); // Set the first category as active
+    if (categories.length > 0 && !activeTab) {
+      setActiveTab(categories[0]._id);
     }
   }, [categories]);
 
@@ -57,15 +58,31 @@ const Profile: React.FC = () => {
 
   // **Group user's skills by category ID**
   const groupedSkills: Record<string, any[]> = {};
-  categories.forEach((category) => {
-    groupedSkills[category.id] =
-      user?.skills?.filter((skill: any) => skill.category_id === category.id) || [];
 
-      
-  });
+  // Ensure `categories` and `user.skills` exist
+  if (user?.skills && categories.length > 0) {
+    console.log("User skills exist. Grouping now...");
+    
+    categories.forEach((category) => {
+      groupedSkills[category._id] = user.skills.filter((skill: any) => {
+        console.log(`Checking skill:`, skill);
+        console.log(`Category ID from skills:`, skill?.skill_id?.category_id?._id);
+        console.log(`Matching with category ID:`, category._id);
+  
+        return skill?.skill_id?.category_id?._id === category._id;
+      });
+    });
+  
+    console.log("Updated grouped skills:", groupedSkills);
+  } else {
+    console.error("User skills or categories are missing!");
+  }
+  
 
-  console.log(groupedSkills,"ss")
-
+  console.log(groupedSkills[activeTab],"sskizlls")
+  console.log("Active Tab ID:", activeTab);
+  console.log("Grouped Skills Object:", groupedSkills);
+  
   const handleLogout = async () => {
     try {
       const response = await logout();
@@ -169,10 +186,10 @@ const Profile: React.FC = () => {
           {categories.length > 0 ? (
             categories.map((tab) => (          
               <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.name)}
+                key={tab._id}
+                onClick={() => setActiveTab(tab._id)}
                 className={`px-3 py-2 font-semibold ${
-                  activeTab === tab.name ? "border-b-2 border-black text-black" : "text-gray-400 border-gray-400"
+                  activeTab === tab._id ? "border-b-2 border-black text-black" : "text-gray-400 border-gray-400"
                 }`}
               >
                 {tab.name}
@@ -185,10 +202,10 @@ const Profile: React.FC = () => {
 
         {/* Skills List */}
         <div className="mt-4">
-  {groupedSkills[activeTab]?.length > 0 ? (
+  {groupedSkills[activeTab] && groupedSkills[activeTab].length > 0 ? (
     groupedSkills[activeTab].map((skill: any, index: number) => (
       <div key={index} className="flex justify-between items-center p-3 bg-white shadow-md rounded-lg my-2">
-        <span className="font-medium">{skill.skill_id?.name || "Unknown Skill"}</span>
+        <span className="font-medium">{skill.skill_id?.name|| "Unknown Skill"}</span>
         <div className="flex space-x-3">
           <span className="text-gray-500">{skill.months_of_experience} months</span>
           <button className="text-gray-600 hover:text-black">
