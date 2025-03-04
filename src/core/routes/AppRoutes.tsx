@@ -5,6 +5,7 @@ import ProfilePage from "../../presentation/pages/ProfilePage";
 import AdminPage from "../../presentation/pages/Admin";
 import ProtectedRoute from "./ProtectedRoute";
 import PublicCV from "@/presentation/pages/PublicCV";
+import AuthCallback from "@/presentation/components/AuthCallback";
 
 const AppRoutes = () => (
   <Routes>
@@ -26,6 +27,11 @@ const AppRoutes = () => (
 
     {/* Public Shareable CV Route */}
     <Route path="/cv/:encodedData" element={<PublicCV />} />
+    <Route 
+        path="/auth/callback" 
+        element={
+          <ProtectedRoute element={<AuthCallback />}></ProtectedRoute>
+        } />
 
     {/* Authentication Routes */}
     <Route path="/auth/login" element={<LoginScreen />} />

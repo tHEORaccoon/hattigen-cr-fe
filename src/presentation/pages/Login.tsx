@@ -7,7 +7,8 @@ import { Button } from "../components/base/Button";
 const LoginScreen: React.FC = () => {
  
   const handleGoogleLogin = async () => {
-    const redirectUrl = `${window.location.origin}/#/profile-page`;
+    // const redirectUrl = `${window.location.origin}/#/profile-page`;
+    const redirectUrl = `${window.location.origin}/#/auth/callback`; // Temporary redirect
     window.open(`${import.meta.env.VITE_API_URL}/auth/google?redirectUrl=${encodeURIComponent(redirectUrl)}`, "_self");
     console.log(`${import.meta.env.VITE_API_URL}/auth/google?redirectUrl=${encodeURIComponent(redirectUrl)}`);
   };
