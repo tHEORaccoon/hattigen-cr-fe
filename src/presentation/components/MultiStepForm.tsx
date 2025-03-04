@@ -4,12 +4,10 @@ import { useEffect, useState } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Header from "./Header";
-// import { useMultiStepForm } from "../../core/hooks/useMultiSteoForm";
 import { Button } from "./base/Button";
 import CheckMark from "../../assets/check.svg";
 import Delete from "../../assets/delete.svg";
 import { Text } from "./base/Text";
-import { StepInfo } from "../pages/SetupPage";
 import LivePreview from "./LivePreview";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -17,19 +15,7 @@ import { AppDispatch, RootState } from "../../core/redux/store/store"; // Import
 import { updateUserProfile } from "@/core/service";
 import { useDispatch } from "react-redux";
 import { setUser } from "@/core/redux/slice/authSlice";
-
-type Step = {
-  name: string;
-  title: string;
-  description: string;
-};
-
-type Skill = {
-  title: string;
-  months_of_experience: number;
-  category_id: number;
-  skill_id: string;
-};
+import { Skill, Step, StepInfo } from "@/types";
 
 const steps: Step[] = [
   {
@@ -63,39 +49,39 @@ const steps: Step[] = [
 ];
 
 const categories = [
-    "Programming Languages",
-    "Databases",
-    "Frameworks",
-    "Tools",
-    "Skillsets",
-    "Cloud Platforms",
-    "AI Experience",
-    "Mobile Environments",
-    "E-Learning Tools",
-    "Spoken Languages",
-    "Office Tools",
-    "Project Management Tools",
-    "Roles",
-    "Business Intelligence",
-    "Reference Brands/Projects",
-  ];
+  "Programming Languages",
+  "Databases",
+  "Frameworks",
+  "Tools",
+  "Skillsets",
+  "Cloud Platforms",
+  "AI Experience",
+  "Mobile Environments",
+  "E-Learning Tools",
+  "Spoken Languages",
+  "Office Tools",
+  "Project Management Tools",
+  "Roles",
+  "Business Intelligence",
+  "Reference Brands/Projects",
+];
 
-  // const groupedCategories = [
-  //   {
-  //     name: "Programming Languages",
-  //     slug: "programming-languages",
-  //     title: "Let’s add your languages",
-  //     description: "Add every programming language you have ever worked with.",
-  //     sub_categories: ["HTML", "JAVA", "Python", "C++", "C#", "JavaScript"],
-  //   },
-  //   {
-  //     name: "Spoken Languages",
-  //     slug: "spoken-languages",
-  //     title: "Let’s add your spoken languages",
-  //     description: "Add every spoken language you have ever worked with.",
-  //     sub_categories: ["TWI", "English"],
-  //   },
-  // ];
+// const groupedCategories = [
+//   {
+//     name: "Programming Languages",
+//     slug: "programming-languages",
+//     title: "Let’s add your languages",
+//     description: "Add every programming language you have ever worked with.",
+//     sub_categories: ["HTML", "JAVA", "Python", "C++", "C#", "JavaScript"],
+//   },
+//   {
+//     name: "Spoken Languages",
+//     slug: "spoken-languages",
+//     title: "Let’s add your spoken languages",
+//     description: "Add every spoken language you have ever worked with.",
+//     sub_categories: ["TWI", "English"],
+//   },
+// ];
 
 const MultiStepForm = ({
   stepInfo,
@@ -107,8 +93,6 @@ const MultiStepForm = ({
   const navigate = useNavigate();
   const [skills, setSkills] = useState<Skill[]>([]);
   const [isEditing, setIsEditing] = useState(false);
-  
-
 
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
@@ -119,7 +103,6 @@ const MultiStepForm = ({
         : [...prev, category]
     );
   };
-  
 
   // Select user data from Redux store
   const user = useSelector((state: RootState) => state.auth.user);
@@ -223,12 +206,11 @@ const MultiStepForm = ({
     console.log("1st payload", payload);
 
     const isLastStep = stepInfo.currentStep === steps.length - 1;
-    if(!isLastStep){
-        payload.current_step = stepInfo.currentStep + 1;
+    if (!isLastStep) {
+      payload.current_step = stepInfo.currentStep + 1;
     }
 
     if (isLastStep) payload.onboarding_completed = true;
-
 
     if (stepInfo.currentStep === 0) {
       payload.city = values.city;
@@ -253,10 +235,10 @@ const MultiStepForm = ({
       if (response.status === 200) {
         console.log("Response:", response);
         console.log("Profile updated successfully", payload);
-        
+
         if (stepInfo.currentStep === stepInfo.totalSteps - 1) {
           dispatch(setUser(response.data?.user));
-          navigate("/profile-page", {replace: true});
+          navigate("/profile-page", { replace: true });
           return;
         }
       }
@@ -409,23 +391,31 @@ const MultiStepForm = ({
 
   const CategorySection = () => {
     return (
-        <div className="flex bg-black text-white">
+      <div className="flex bg-black text-white">
         <div className="flex-1 p-10 bg-white text-black">
-          <h2 className="text-2xl font-bold">Select what categories you have experience in</h2>
-          <p className="text-gray-600">Include your full name and at least one way for employers to reach you.</p>
-  
+          <h2 className="text-2xl font-bold">
+            Select what categories you have experience in
+          </h2>
+          <p className="text-gray-600">
+            Include your full name and at least one way for employers to reach
+            you.
+          </p>
+
           <div className="mt-6 flex flex-wrap gap-3">
             {categories.map((category) => (
               <button
                 key={category}
                 onClick={() => toggleCategory(category)}
-                className={`px-4 py-2 rounded-full transition-all font-medium ${selectedCategories.includes(category) ? "bg-black text-white" : "bg-gray-200 text-black border border-black"}`}
+                className={`px-4 py-2 rounded-full transition-all font-medium ${
+                  selectedCategories.includes(category)
+                    ? "bg-black text-white"
+                    : "bg-gray-200 text-black border border-black"
+                }`}
               >
                 {category}
               </button>
             ))}
           </div>
-  
         </div>
       </div>
     );
@@ -529,7 +519,13 @@ const MultiStepForm = ({
         <div className="w-full md:w-3/5 lg:pr-14 md:pr-8">
           <div className="mt-10">
             {/* PERSONAL INFO FORM */}
-            {stepInfo.currentStep === 0 ? <PersonalInfo /> : stepInfo.currentStep === 1 ? <CategorySection/> : <OtherSteps />}
+            {stepInfo.currentStep === 0 ? (
+              <PersonalInfo />
+            ) : stepInfo.currentStep === 1 ? (
+              <CategorySection />
+            ) : (
+              <OtherSteps />
+            )}
           </div>
         </div>
 
@@ -579,5 +575,3 @@ const MultiStepForm = ({
 };
 
 export default MultiStepForm;
-
-

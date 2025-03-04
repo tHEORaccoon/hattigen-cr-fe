@@ -5,19 +5,14 @@ import {
   SheetTrigger,
   SheetContent,
   SheetClose,
-} from "../../components/ui/sheet";
-import { Button } from "../../components/ui/button";
+} from "../../../components/ui/sheet";
+import { Button } from "../../../components/ui/button";
 import { Link } from "react-router-dom";
-
-import LogoImage from "../../assets/logo.png";
-import adminProfile from "../../assets/admin-profile-img.png";
-import img1 from "../../assets/img1.jpg";
-import img2 from "../../assets/img2.jpg";
-import CheckCircleSuccess from "../../assets/success.png";
-import DownloadDropdown from "../components/DownloadDropdown";
-import ShareCV from "../components/ShareCV";
+import DownloadDropdown from "../../components/DownloadDropdown";
+import ShareCV from "../../components/ShareCV";
 import { RootState } from "@/core/redux/store/store";
 import { useSelector } from "react-redux";
+import { adminProfile, CheckCircleSuccess, img1, img2, LogoImage } from "@/assets";
 
 const developers = [
   {

@@ -1,17 +1,11 @@
-import Sidebar from "../components/SideBar";
-import { Text } from "../components/base/Text";
-import MultiStepForm from "../components/MultiStepForm";
 import { useEffect, useState } from "react";
 import { RootState } from "@/core/redux/store/store";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
-export type StepInfo = {
-  step: string;
-  totalSteps: number;
-  currentStep: number;
-  completedSteps: boolean[];
-};
+import { StepInfo } from "@/types";
+import Sidebar from "@/presentation/components/SideBar";
+import MultiStepForm from "@/presentation/components/MultiStepForm";
+import { Text } from "../../components/base/Text";
 
 const useRedirectOnboarding = (user: RootState["auth"]["user"]) => {
   const navigate = useNavigate();
