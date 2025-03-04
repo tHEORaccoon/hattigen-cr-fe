@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface Category {
-  id: number;
+  _id: string 
   name: string;
 }
 
