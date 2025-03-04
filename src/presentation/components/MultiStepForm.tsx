@@ -16,15 +16,11 @@ import { useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../core/redux/store/store"; // Import Redux types
 import { updateUserProfile } from "@/core/service";
 import { useDispatch } from "react-redux";
-import { setUser } from "@/core/redux/slice/authSlice";
+import { setUser, User } from "@/core/redux/slice/authSlice";
+import { setCategories } from "@/core/redux/slice/categorySlice";
+import { getCategory } from "@/core/service";
 import Select from "react-select";
 import countryList from "react-select-country-list";
-
-type Step = {
-  name: string;
-  title: string;
-  description: string;
-};
 
 type Skill = {
   title: string;
@@ -33,80 +29,53 @@ type Skill = {
   skill_id: string;
 };
 
-const steps: Step[] = [
-  {
-    name: "personal info",
-    title: "Let’s start with your personal info",
-    description:
-      "Include your full name and at least one way for employers to reach you.",
-  },
-  {
-    name: "programming language",
-    title: "Let’s add your languages",
-    description: "Add every programming language you have ever worked with.",
-  },
-  {
-    name: "database",
-    title: "Let’s add your databases",
-    description:
-      "Have you done any database work?. This is where you put them.",
-  },
-  {
-    name: "cloud platforms",
-    title: "Let’s add your cloud platforms",
-    description:
-      "Have you worked with any cloud platforms?. This is where you put them.",
-  },
-  {
-    name: "AI experience",
-    title: "Do you have any AI experience?",
-    description: "Add any artifitial intelligence experience you have.",
-  },
-];
-
-const categories = [
-  "Programming Languages",
-  "Databases",
-  "Frameworks",
-  "Tools",
-  "Skillsets",
-  "Cloud Platforms",
-  "AI Experience",
-  "Mobile Environments",
-  "E-Learning Tools",
-  "Spoken Languages",
-  "Office Tools",
-  "Project Management Tools",
-  "Roles",
-  "Business Intelligence",
-  "Reference Brands/Projects",
-];
-
 const MultiStepForm = ({
   stepInfo,
   setStepInfo,
+  user,
 }: {
   stepInfo: StepInfo;
   setStepInfo: (stepInfo: StepInfo) => void;
+  user: User;
 }) => {
   const navigate = useNavigate();
   const [skills, setSkills] = useState<Skill[]>([]);
   const [isEditing, setIsEditing] = useState(false);
-
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
 
-  const toggleCategory = (category: string) => {
-    setSelectedCategories((prev) =>
+  // Select user data from Redux store
+  // const user = useSelector((state: RootState) => state.auth.user);
+  const dispatch = useDispatch<AppDispatch>();
+  const [steps, setSteps] = useState(user ? user.steps : []);
+  console.log(steps);
+
+  // const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const categories = useSelector(
+    (state: RootState) => state.category.categories
+  );
+
+  const toggleCategory = (category: any) => {
+    // setSelectedCategories((prev) =>
+    //   prev.includes(category)
+    //     ? prev.filter((c) => c !== category)
+    //     : [...prev, category]
+    // );
+    setSteps((prev) =>
       prev.includes(category)
         ? prev.filter((c) => c !== category)
         : [...prev, category]
     );
-  };
 
-  // Select user data from Redux store
-  const user = useSelector((state: RootState) => state.auth.user);
-  const dispatch = useDispatch<AppDispatch>();
+    // console.log(steps);
+    // setStepInfo({
+    //   step: "",
+    //   totalSteps: steps ? steps.length : 2,
+    //   currentStep: user?.current_step || 0,
+    //   completedSteps: stepInfo.completedSteps,
+    // });
+    dispatch(setUser({ ...user, steps: steps }));
+    // console.log(user);
+  };
 
   const saveSkill = (skill: Skill) => {
     setSkills([...skills, skill]);
@@ -146,10 +115,10 @@ const MultiStepForm = ({
       first_name: user?.first_name,
       last_name: user?.last_name,
       email: user?.email,
-      city: "",
-      country: "",
-      postal_code: "",
-      phone_number: "",
+      city: user?.city ? user?.city : "",
+      country: user?.country ? user?.country : "",
+      postal_code: user?.postal_code ? user?.postal_code : "",
+      phone_number: user?.phone_number ? user?.phone_number : "",
       skill: "",
       months: "",
     },
@@ -163,10 +132,14 @@ const MultiStepForm = ({
 
   const next = () => {
     if (stepInfo.currentStep === steps.length - 1) return;
+    const completed =
+      stepInfo.currentStep === stepInfo.completedSteps.length
+        ? [...stepInfo.completedSteps, true]
+        : stepInfo.completedSteps;
     setStepInfo({
       ...stepInfo,
       currentStep: stepInfo.currentStep + 1,
-      completedSteps: [...stepInfo.completedSteps, true],
+      completedSteps: completed,
     });
     restExcess();
   };
@@ -198,47 +171,47 @@ const MultiStepForm = ({
   };
 
   const handleSave = async (values: any) => {
-    console.log("Form fields: ", values);
-    console.log("Current step", stepInfo.currentStep);
+    dispatch(setUser({ ...user, steps: steps }));
+    // console.log(user)
+    console.log(steps);
+    // return;
 
     // Prepare the payload based on the step
     const payload: Record<string, any> = {};
-    console.log("1st payload", payload);
+
+    payload.current_step = stepInfo.currentStep + 1;
+    payload.steps = steps;
 
     const isLastStep = stepInfo.currentStep === steps.length - 1;
-    if (!isLastStep) {
-      payload.current_step = stepInfo.currentStep + 1;
-    }
 
     if (isLastStep) payload.onboarding_completed = true;
+
+    // setStepInfo({
+    //   step: "",
+    //   totalSteps: steps ? steps.length : 2,
+    //   currentStep: user?.current_step || 0,
+    //   completedSteps: stepInfo.completedSteps,
+    // });
 
     if (stepInfo.currentStep === 0) {
       payload.city = values.city;
       payload.country = selectedCountry;
       payload.phone_number = values.phone_number;
-
-      console.log("Payload in if", payload);
     } else {
       // Other steps (Skills, Frameworks, etc.)
-      console.log("skills", skills);
-
       payload.skills = skills.map((skill) => ({
         skill_id: "67bd7cce6115934c44ece7d3",
         months_of_experience: skill.months_of_experience,
       }));
-      console.log("payload", payload.skills);
     }
 
     try {
-      console.log("Payload in try", payload);
       const response = await updateUserProfile(payload); // Use the function instead of direct axios call
       if (response.status === 200) {
-        console.log("Response:", response);
-        console.log("Profile updated successfully", payload);
-
+        dispatch(setUser(response.data?.user));
         if (stepInfo.currentStep === stepInfo.totalSteps - 1) {
-          dispatch(setUser(response.data?.user));
           navigate("/profile-page", { replace: true });
+
           return;
         }
       }
@@ -252,12 +225,27 @@ const MultiStepForm = ({
     setSkills(skills.filter((_, i) => i !== index));
   };
 
+  const fetchCategories = async () => {
+    try {
+      const response = await getCategory();
+      if (response) {
+        dispatch(setCategories(response.data));
+      }
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
   useEffect(() => {
     setStepInfo({
       step: "",
-      totalSteps: steps.length,
+      totalSteps: steps ? steps.length : 2,
       currentStep: user?.current_step || 0,
-      completedSteps: [],
+      completedSteps: stepInfo.completedSteps,
     });
   }, [steps]);
 
@@ -390,12 +378,12 @@ const MultiStepForm = ({
               <Input
                 label="Email"
                 placeholder="example@email.com"
-                type="email"
+                type="tel"
                 errorMessage={errors?.email?.message}
                 value={(value as string)?.trim()}
                 {...register("email")}
                 onChange={onChange}
-                readOnly
+                disabled
               />
             )}
           />
@@ -407,27 +395,19 @@ const MultiStepForm = ({
   const CategorySection = () => {
     return (
       <div className="flex bg-black text-white">
-        <div className="flex-1 p-10 bg-white text-black">
-          <h2 className="text-2xl font-bold">
-            Select what categories you have experience in
-          </h2>
-          <p className="text-gray-600">
-            Include your full name and at least one way for employers to reach
-            you.
-          </p>
-
+        <div className="flex-1 bg-white text-black">
           <div className="mt-6 flex flex-wrap gap-3">
             {categories.map((category) => (
               <button
-                key={category}
+                key={category.name}
                 onClick={() => toggleCategory(category)}
                 className={`px-4 py-2 rounded-full transition-all font-medium ${
-                  selectedCategories.includes(category)
+                  steps.find((s) => s.name === category.name)
                     ? "bg-black text-white"
                     : "bg-gray-200 text-black border border-black"
                 }`}
               >
-                {category}
+                {category.name}
               </button>
             ))}
           </div>
@@ -566,7 +546,10 @@ const MultiStepForm = ({
               : () => handleSave("")
           }
         >
-          {stepInfo.currentStep === steps.length - 1 ? "Finish" : "Continue"}
+          {steps[steps.length - 1].name !== "categories" &&
+          stepInfo.currentStep === steps.length - 1
+            ? "Finish"
+            : "Continue"}
         </Button>
       </div>
 
