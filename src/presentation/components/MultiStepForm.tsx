@@ -9,7 +9,7 @@ import { Text } from "./base/Text";
 import LivePreview from "./LivePreview";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../core/redux/store/store";
+import { AppDispatch, RootState } from "@/core/redux/store/store";
 import { updateUserProfile } from "@/core/service";
 import { useDispatch } from "react-redux";
 import { setUser, User } from "@/core/redux/slice/authSlice";
