@@ -17,15 +17,8 @@ import { setCategories } from "@/core/redux/slice/categorySlice";
 import { getCategory } from "@/core/service";
 import Select from "react-select";
 import countryList from "react-select-country-list";
-import { StepInfo } from "@/types";
+import { Skill, StepInfo } from "@/types";
 import { CheckMark, Delete } from "@/assets";
-
-type Skill = {
-  title: string;
-  months_of_experience: number;
-  category_id: number;
-  skill_id: string;
-};
 
 const MultiStepForm = ({
   stepInfo,
