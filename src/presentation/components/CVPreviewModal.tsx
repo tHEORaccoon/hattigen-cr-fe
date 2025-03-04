@@ -81,7 +81,7 @@ const CVPreviewModal: React.FC<CVPreviewModalProps> = ({ isOpen, onClose }) => {
       <div className="mb-6">
         <h3 className="text-lg font-semibold">🔹 SKILLS</h3>
         {categories.map((category) => (
-          <p key={category.id} className="text-gray-700">
+          <p key={category._id} className="text-gray-700">
             <strong>{category.name}:</strong> 
           </p>
         ))}
