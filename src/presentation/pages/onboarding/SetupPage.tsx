@@ -66,7 +66,7 @@ const Home = () => {
       {/* Main Content */}
       <div className="flex flex-col items-center justify-center w-full container mx-auto px-4">
         <div className="flex flex-col w-full mt-10 md:mt-40">
-          <MultiStepForm setStepInfo={setStepInfo} stepInfo={stepInfo} />
+          {user && <MultiStepForm setStepInfo={setStepInfo} stepInfo={stepInfo} user={user} />}
         </div>
         <div className="w-full flex flex-col items-start justify-start mt-8">
           <Text variant="footnote" className="text-cv-gray mt-1">

@@ -125,6 +125,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             }),
             inputContainerClasses
           )}
+          style={{cursor: disabled ? "not-allowed" : "default"}}
         >
           {iconLeftUrl && <div className="pl-4"><img
                     src={iconLeftUrl}
@@ -143,6 +144,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                 isPassword: isPassword ? true : false,
               })
             )}
+            style={{cursor: disabled ? "not-allowed" : "default"}}
             {...props}
           />
           {isPassword && (
