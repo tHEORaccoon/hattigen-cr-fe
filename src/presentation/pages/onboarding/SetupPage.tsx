@@ -17,7 +17,7 @@ const useRedirectOnboarding = (user: RootState["auth"]["user"]) => {
   }, [user, navigate]);
 };
 
-const Home = () => {
+const SetupPage = () => {
   const user = useSelector((state: RootState) => state.auth.user);
   useRedirectOnboarding(user); 
 
@@ -78,4 +78,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default SetupPage;

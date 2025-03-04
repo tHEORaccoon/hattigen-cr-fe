@@ -4,15 +4,12 @@ import { useEffect, useState } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Header from "./Header";
-// import { useMultiStepForm } from "../../core/hooks/useMultiSteoForm";
 import { Button } from "./base/Button";
-import CheckMark from "../../assets/check.svg";
-import Delete from "../../assets/delete.svg";
 import { Text } from "./base/Text";
 import LivePreview from "./LivePreview";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../core/redux/store/store"; // Import Redux types
+import { AppDispatch, RootState } from "../../core/redux/store/store";
 import { updateUserProfile } from "@/core/service";
 import { useDispatch } from "react-redux";
 import { setUser, User } from "@/core/redux/slice/authSlice";
@@ -21,6 +18,7 @@ import { getCategory } from "@/core/service";
 import Select from "react-select";
 import countryList from "react-select-country-list";
 import { StepInfo } from "@/types";
+import { CheckMark, Delete } from "@/assets";
 
 type Skill = {
   title: string;
@@ -39,42 +37,23 @@ const MultiStepForm = ({
   user: User;
 }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
   const [skills, setSkills] = useState<Skill[]>([]);
   const [isEditing, setIsEditing] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
-
-  // Select user data from Redux store
-  // const user = useSelector((state: RootState) => state.auth.user);
-  const dispatch = useDispatch<AppDispatch>();
   const [steps, setSteps] = useState(user ? user.steps : []);
-  console.log(steps);
-
-  // const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const categories = useSelector(
     (state: RootState) => state.category.categories
   );
 
   const toggleCategory = (category: any) => {
-    // setSelectedCategories((prev) =>
-    //   prev.includes(category)
-    //     ? prev.filter((c) => c !== category)
-    //     : [...prev, category]
-    // );
     setSteps((prev) =>
-      prev.includes(category)
-        ? prev.filter((c) => c !== category)
+      prev.find(c => c.name === category.name)
+        ? prev.filter((c) => c.name !== category.name)
         : [...prev, category]
     );
 
-    // console.log(steps);
-    // setStepInfo({
-    //   step: "",
-    //   totalSteps: steps ? steps.length : 2,
-    //   currentStep: user?.current_step || 0,
-    //   completedSteps: stepInfo.completedSteps,
-    // });
     dispatch(setUser({ ...user, steps: steps }));
-    // console.log(user);
   };
 
   const saveSkill = (skill: Skill) => {
@@ -82,7 +61,6 @@ const MultiStepForm = ({
   };
 
   const formSchema = z.object({
-    // ...(currentStep === 0 ? {
     email: z.string().email("Enter an valid email"),
     first_name: z.string().min(1, "First name is required"),
     last_name: z.string().min(1, "Last name is required"),
@@ -90,7 +68,6 @@ const MultiStepForm = ({
     country: z.string().optional(),
     postal_code: z.string().optional(),
     phone_number: z.string().min(5).max(20).optional(),
-    // } : {}),
     ...(stepInfo.currentStep !== 0
       ? {
           skill: z.string().min(1, "Enter a skill"),
@@ -103,11 +80,9 @@ const MultiStepForm = ({
 
   const {
     register,
-    // formState:{errors, isSubmitting},
     formState: { errors },
     control,
     handleSubmit,
-    // setError,
     reset,
     clearErrors,
   } = useForm<FormData>({
@@ -172,11 +147,6 @@ const MultiStepForm = ({
 
   const handleSave = async (values: any) => {
     dispatch(setUser({ ...user, steps: steps }));
-    // console.log(user)
-    console.log(steps);
-    // return;
-
-    // Prepare the payload based on the step
     const payload: Record<string, any> = {};
 
     payload.current_step = stepInfo.currentStep + 1;
@@ -186,19 +156,11 @@ const MultiStepForm = ({
 
     if (isLastStep) payload.onboarding_completed = true;
 
-    // setStepInfo({
-    //   step: "",
-    //   totalSteps: steps ? steps.length : 2,
-    //   currentStep: user?.current_step || 0,
-    //   completedSteps: stepInfo.completedSteps,
-    // });
-
     if (stepInfo.currentStep === 0) {
       payload.city = values.city;
       payload.country = selectedCountry;
       payload.phone_number = values.phone_number;
     } else {
-      // Other steps (Skills, Frameworks, etc.)
       payload.skills = skills.map((skill) => ({
         skill_id: "67bd7cce6115934c44ece7d3",
         months_of_experience: skill.months_of_experience,
@@ -206,7 +168,7 @@ const MultiStepForm = ({
     }
 
     try {
-      const response = await updateUserProfile(payload); // Use the function instead of direct axios call
+      const response = await updateUserProfile(payload);
       if (response.status === 200) {
         dispatch(setUser(response.data?.user));
         if (stepInfo.currentStep === stepInfo.totalSteps - 1) {
@@ -215,7 +177,7 @@ const MultiStepForm = ({
           return;
         }
       }
-      next(); // Move to the next step after saving
+      next();
     } catch (error) {
       console.error("Error updating profile:", error);
     }
@@ -249,14 +211,12 @@ const MultiStepForm = ({
     });
   }, [steps]);
 
-  //Formatting country options
   const options = countryList().getData();
   const countryOptions = options.map((option: any) => ({
     value: option.label,
     label: option.label,
   }));
 
-  // PERSONAL INFO COMPONENT
   const PersonalInfo = () => {
     return (
       <div className="grid gap-8">

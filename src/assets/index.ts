@@ -8,3 +8,5 @@ export { default as adminProfile } from "./admin-profile-img.png";
 export { default as img1 } from "./img1.jpg";
 export { default as img2 } from "./img2.jpg";
 export { default as CheckCircleSuccess } from "./success.png";
+export { default as CheckMark } from "./check.svg";
+export { default as Delete } from "./delete.svg";
