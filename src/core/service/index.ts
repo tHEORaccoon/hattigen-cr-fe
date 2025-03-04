@@ -1,7 +1,6 @@
 import axiosInstance from "./axiosInstance";
 
 // Authentication
-export const loginWithGoogle = () => axiosInstance.get("/auth/google");
 export const logout = () => axiosInstance.post("/auth/logout");
 
 // Skills

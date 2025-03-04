@@ -9,7 +9,7 @@ export interface User {
   first_name: string;
   last_name: string;
   email: string;
-  profile_picture:string
+  profile_picture: string;
   current_step?: number | 0;
   onboarding_completed?: boolean;
   steps: {name: string, title: string, description: string}[],
@@ -31,10 +31,17 @@ export const authSlice = createSlice({
       state.user = action.payload;
     },
     clearUser: (state) => {
-      state = {...state, user: null};
+      state = { ...state, user: null };
+    },
+    loginWithGoogle: () => {
+      const authUrl = `${import.meta.env.VITE_API_URL}/auth/google`;
+      const redirectUrl = `${window.location.origin}/#/auth/callback`;
+      const url = `${authUrl}?redirectUrl=${encodeURIComponent(redirectUrl)}`;
+
+      window.open(url, "_self");
     },
   },
 });
 
-export const { setUser, clearUser } = authSlice.actions;
+export const { setUser, clearUser, loginWithGoogle } = authSlice.actions;
 export default authSlice.reducer;

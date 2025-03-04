@@ -10,9 +10,11 @@ interface CVPreviewModalProps {
 
 const CVPreviewModal: React.FC<CVPreviewModalProps> = ({ isOpen, onClose }) => {
   const user = useSelector((state: RootState) => state.auth.user);
-  const categories = useSelector((state: RootState) => state.category.categories);
-  console.log(categories,'categories');
-  
+  const categories = useSelector(
+    (state: RootState) => state.category.categories
+  );
+  console.log(categories, "categories");
+
   if (!isOpen) return null;
 
   return (
@@ -32,80 +34,113 @@ const CVPreviewModal: React.FC<CVPreviewModalProps> = ({ isOpen, onClose }) => {
 
         {/* Preview Content */}
         <div className="border p-4 rounded-md bg-gray-100 h-full overflow-y-auto">
-        <div className="p-6 max-w-3xl mx-auto bg-white shadow-lg rounded-lg">
-      {/* Header Section */}
-      <div className="text-center mb-6">
-        <h2 className="text-2xl font-bold">{user?.first_name} {user?.last_name}</h2>
-        {/* <p className="text-gray-600">{user?.role?.name}</p> */}
-        <p className="text-gray-500">📧 {user?.email} | 📞 {user?.phone_number}</p>
-        <p className="text-gray-500">📍 {user?.city}, {user?.country}</p>
-      </div>
+          <div className="p-6 max-w-3xl mx-auto bg-white shadow-lg rounded-lg">
+            {/* Header Section */}
+            <div className="text-center mb-6">
+              <h2 className="text-2xl font-bold">
+                {user?.first_name} {user?.last_name}
+              </h2>
+              {/* <p className="text-gray-600">{user?.role?.name}</p> */}
+              <p className="text-gray-500">
+                📧 {user?.email} | 📞 {user?.phone_number}
+              </p>
+              <p className="text-gray-500">
+                📍 {user?.city}, {user?.country}
+              </p>
+            </div>
 
-      {/* Professional Summary */}
-      <div className="mb-6">
-        <h3 className="text-lg font-semibold">🔹 PROFESSIONAL SUMMARY</h3>
-        <p className="text-gray-700">
-          Results-driven Full Stack Engineer with expertise in JavaScript, React, Node.js, and cloud platforms.
-          Passionate about building scalable web applications, optimizing performance, and improving user experience.
-          Adept at working in agile teams to deliver high-quality solutions.
-        </p>
-      </div>
+            {/* Professional Summary */}
+            <div className="mb-6">
+              <h3 className="text-lg font-semibold">🔹 PROFESSIONAL SUMMARY</h3>
+              <p className="text-gray-700">
+                Results-driven Full Stack Engineer with expertise in JavaScript,
+                React, Node.js, and cloud platforms. Passionate about building
+                scalable web applications, optimizing performance, and improving
+                user experience. Adept at working in agile teams to deliver
+                high-quality solutions.
+              </p>
+            </div>
 
-      {/* Work Experience */}
-      <div className="mb-6">
-        <h3 className="text-lg font-semibold">🔹 WORK EXPERIENCE</h3>
+            {/* Work Experience */}
+            <div className="mb-6">
+              <h3 className="text-lg font-semibold">🔹 WORK EXPERIENCE</h3>
 
-        <div className="mt-4">
-          <h4 className="font-medium">Software Engineer</h4>
-          <p className="text-gray-500">📍 Tech Company | 🗓 Jan 2022 - Present</p>
-          <ul className="list-disc list-inside text-gray-700">
-            <li>Developed and maintained React applications for web platforms.</li>
-            <li>Integrated REST APIs, optimized frontend performance, and enhanced UI/UX.</li>
-            <li>Collaborated with backend engineers to improve API efficiency and scalability.</li>
-            <li>Implemented state management solutions using Redux Toolkit.</li>
-          </ul>
-        </div>
+              <div className="mt-4">
+                <h4 className="font-medium">Software Engineer</h4>
+                <p className="text-gray-500">
+                  📍 Tech Company | 🗓 Jan 2022 - Present
+                </p>
+                <ul className="list-disc list-inside text-gray-700">
+                  <li>
+                    Developed and maintained React applications for web
+                    platforms.
+                  </li>
+                  <li>
+                    Integrated REST APIs, optimized frontend performance, and
+                    enhanced UI/UX.
+                  </li>
+                  <li>
+                    Collaborated with backend engineers to improve API
+                    efficiency and scalability.
+                  </li>
+                  <li>
+                    Implemented state management solutions using Redux Toolkit.
+                  </li>
+                </ul>
+              </div>
 
-        <div className="mt-4">
-          <h4 className="font-medium">Junior Developer</h4>
-          <p className="text-gray-500">📍 Startup XYZ | 🗓 Jul 2020 - Dec 2021</p>
-          <ul className="list-disc list-inside text-gray-700">
-            <li>Built responsive web applications using React and TypeScript.</li>
-            <li>Assisted in database management using PostgreSQL and MongoDB.</li>
-            <li>Contributed to code reviews, debugging, and testing processes.</li>
-          </ul>
-        </div>
-      </div>
+              <div className="mt-4">
+                <h4 className="font-medium">Junior Developer</h4>
+                <p className="text-gray-500">
+                  📍 Startup XYZ | 🗓 Jul 2020 - Dec 2021
+                </p>
+                <ul className="list-disc list-inside text-gray-700">
+                  <li>
+                    Built responsive web applications using React and
+                    TypeScript.
+                  </li>
+                  <li>
+                    Assisted in database management using PostgreSQL and
+                    MongoDB.
+                  </li>
+                  <li>
+                    Contributed to code reviews, debugging, and testing
+                    processes.
+                  </li>
+                </ul>
+              </div>
+            </div>
 
-      {/* Skills */}
-      <div className="mb-6">
-        <h3 className="text-lg font-semibold">🔹 SKILLS</h3>
-        {categories.map((category) => (
-          <p key={category._id} className="text-gray-700">
-            <strong>{category.name}:</strong> 
-          </p>
-        ))}
-        {/* <p className="text-gray-700"><strong>💻 Programming Languages:</strong> JavaScript, TypeScript, Python, Java</p>
-        <p className="text-gray-700"><strong>⚙ Frameworks & Libraries:</strong> React, Next.js, Django, Express.js</p>
-        <p className="text-gray-700"><strong>🗄 Databases & ORM:</strong> PostgreSQL, MongoDB, Prisma</p>
-        <p className="text-gray-700"><strong>☁ Cloud Platforms:</strong> AWS, Firebase</p>
-        <p className="text-gray-700"><strong>🛠 Tools & DevOps:</strong> Docker, Git, CI/CD, Webpack</p> */}
-      </div>
+            {/* Skills */}
+            <div className="mb-6">
+              <h3 className="text-lg font-semibold">🔹 SKILLS</h3>
+              {categories.map((category) => (
+                <p key={category._id} className="text-gray-700">
+                  <strong>{category.name}:</strong>
+                </p>
+              ))}
+            </div>
 
-      {/* Education */}
-      <div className="mb-6">
-        <h3 className="text-lg font-semibold">🔹 EDUCATION</h3>
-        <p className="text-gray-700"><strong>🎓 Bachelor’s in Computer Science</strong></p>
-        <p className="text-gray-500">📍 University of Ghana | 🗓 2018 - 2022</p>
-      </div>
+            {/* Education */}
+            <div className="mb-6">
+              <h3 className="text-lg font-semibold">🔹 EDUCATION</h3>
+              <p className="text-gray-700">
+                <strong>🎓 Bachelor’s in Computer Science</strong>
+              </p>
+              <p className="text-gray-500">
+                📍 University of Ghana | 🗓 2018 - 2022
+              </p>
+            </div>
 
-      {/* Certifications */}
-      <div>
-        <h3 className="text-lg font-semibold">🔹 CERTIFICATIONS</h3>
-        <p className="text-gray-700">🏅 AWS Certified Developer – Associate</p>
-        <p className="text-gray-700">🏅 React Developer Certification</p>
-      </div>
-    </div>
+            {/* Certifications */}
+            <div>
+              <h3 className="text-lg font-semibold">🔹 CERTIFICATIONS</h3>
+              <p className="text-gray-700">
+                🏅 AWS Certified Developer – Associate
+              </p>
+              <p className="text-gray-700">🏅 React Developer Certification</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>

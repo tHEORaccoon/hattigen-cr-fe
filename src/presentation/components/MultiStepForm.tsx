@@ -9,7 +9,6 @@ import { Button } from "./base/Button";
 import CheckMark from "../../assets/check.svg";
 import Delete from "../../assets/delete.svg";
 import { Text } from "./base/Text";
-import { StepInfo } from "../pages/SetupPage";
 import LivePreview from "./LivePreview";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -21,6 +20,7 @@ import { setCategories } from "@/core/redux/slice/categorySlice";
 import { getCategory } from "@/core/service";
 import Select from "react-select";
 import countryList from "react-select-country-list";
+import { StepInfo } from "@/types";
 
 type Skill = {
   title: string;
@@ -555,18 +555,18 @@ const MultiStepForm = ({
 
       <style>
         {`
-                    @keyframes wiggle {
-                        0% { transform: rotate(0deg); }
-                        25% { transform: rotate(2deg); }
-                        50% { transform: rotate(-2deg); }
-                        75% { transform: rotate(2deg); }
-                        100% { transform: rotate(0deg); }
-                    }
+            @keyframes wiggle {
+                0% { transform: rotate(0deg); }
+                25% { transform: rotate(2deg); }
+                50% { transform: rotate(-2deg); }
+                75% { transform: rotate(2deg); }
+                100% { transform: rotate(0deg); }
+            }
 
-                    .animate-wiggle {
-                        animation: wiggle 0.4s infinite ease-in;
-                    }
-                `}
+            .animate-wiggle {
+                animation: wiggle 0.4s infinite ease-in;
+            }
+        `}
       </style>
     </div>
   );

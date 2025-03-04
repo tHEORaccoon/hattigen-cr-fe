@@ -4,8 +4,7 @@ import { getUserProfile } from "../../core/service";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../core/redux/store/store";
 import { setUser } from "../../core/redux/slice/authSlice";
-import Home from "@/presentation/pages/SetupPage";
-
+import { SetupPage } from "@/presentation/pages";
 
 const useFetchUser = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -45,13 +44,12 @@ const useFetchUser = () => {
 const ProtectedRoute = ({ element }: { element: React.ReactElement }) => {
   const { user, loading } = useFetchUser();
   console.log("user", user);
-  
 
   if (loading) return <p>Loading...</p>; // Show a loader while checking authentication
 
   if (!user) return <Navigate to="/auth/login" replace />;
 
-  return user.onboarding_completed ? element : <Home />;
+  return user.onboarding_completed ? element : <SetupPage />;
 };
 
 export default ProtectedRoute;

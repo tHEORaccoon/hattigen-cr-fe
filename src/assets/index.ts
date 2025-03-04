@@ -1,0 +1,10 @@
+export { default as LogoImage } from "./logo.png";
+export { default as profileImg } from "./profile-img.png";
+export { default as pinImg } from "./pin 1.svg";
+export { default as contactImg } from "./contact 1.svg";
+export { default as RaccoonImage } from "./raccoon-image.png";
+export { default as GoogleImage } from "./google-icon.png";
+export { default as adminProfile } from "./admin-profile-img.png";
+export { default as img1 } from "./img1.jpg";
+export { default as img2 } from "./img2.jpg";
+export { default as CheckCircleSuccess } from "./success.png";
